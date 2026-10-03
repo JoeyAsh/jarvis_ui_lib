@@ -23,8 +23,9 @@ glow instead of shadows), published to npm as **`jarvis-react-ui`** (MIT). It co
 primitives, compositions, a window/slot-grid system and a CSS/Three.js orb. The dev entry is a
 live **showcase** (`npm run dev` → http://localhost:5173).
 
-Stack: React 19, TypeScript 6 (strict), Vite 8, Tailwind v4 (`@tailwindcss/vite`), Three.js,
-lucide-react, Vitest 4 + React Testing Library (jsdom), ESLint 10 (type-checked), Prettier.
+Stack: React 19, TypeScript 7 (strict; `tsc` from `@typescript/native`, TS 6 API kept as `typescript` for
+typescript-eslint / vite-plugin-dts), Vite 8, Tailwind v4 (`@tailwindcss/vite`), Three.js,
+lucide-react, Vitest 5 + React Testing Library (jsdom), ESLint 10 (type-checked), Prettier.
 
 ## Commands
 
