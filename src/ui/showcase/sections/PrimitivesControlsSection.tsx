@@ -8,6 +8,7 @@ import { Divider } from '../../primitives/Divider';
 import { Link } from '../../primitives/Link';
 import { Hint } from '../../primitives/Hint';
 import { ShowcaseCard } from '../ShowcaseCard';
+import { SectionHeader } from '../SectionHeader';
 
 export function PrimitivesControlsSection(): ReactElement {
     const [query, setQuery] = useState('');
@@ -15,13 +16,10 @@ export function PrimitivesControlsSection(): ReactElement {
 
     return (
         <section id="primitives-controls" className="flex flex-col gap-4">
-            <div>
-                <h2 className="text-[12px] text-text font-mono mb-1">PRIMITIVES — Controls</h2>
-                <p className="text-[10px] text-text-secondary font-mono">
-                    Input · IconButton · Tooltip · Switch · Divider · Link
-                </p>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
+            <SectionHeader title="Primitives · Controls">
+                Input · IconButton · Tooltip · Switch · Divider · Link
+            </SectionHeader>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                 <ShowcaseCard
                     label="INPUT WITH ADORNMENTS"
                     code={`<Input\n  placeholder="Search docs…"\n  startAdornment={<Search size={12} />}\n  endAdornment={<Hint.Key>CTRL K</Hint.Key>}\n/>`}

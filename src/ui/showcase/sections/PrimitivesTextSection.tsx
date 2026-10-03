@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { Button } from '../../primitives/Button';
 import { Label } from '../../primitives/Label';
 import { Metric } from '../../primitives/Metric';
@@ -9,6 +9,7 @@ import { ProgressBar } from '../../primitives/ProgressBar';
 import { Sparkline } from '../../primitives/Sparkline';
 import { Icon } from '../../primitives/Icon';
 import { ShowcaseCard } from '../ShowcaseCard';
+import { SectionHeader } from '../SectionHeader';
 import {
     Mic,
     MicOff,
@@ -29,7 +30,8 @@ import {
     ChevronLeft,
     ChevronRight,
 } from 'lucide-react';
-import type { IconEntry } from './IconsSection.types';
+import type { IconEntry } from './PrimitivesTextSection.types';
+import { Divider } from '../../primitives/Divider';
 
 const CPU_DATA = [18, 16, 14, 12, 14, 10, 8, 11, 6, 9, 5, 7, 11, 8, 6];
 const TEMP_DATA = [14, 13, 11, 12, 9, 7, 5, 4, 3, 2, 1, 2, 4, 6, 8];
@@ -57,23 +59,15 @@ const ICONS: IconEntry[] = [
 
 export function PrimitivesTextSection(): ReactElement {
     return (
-        <section id="primitives-text" className="flex flex-col gap-8">
-            <div>
-                <h2 className="text-[12px] text-text font-mono mb-1">
-                    PRIMITIVES — Text &amp; Data
-                </h2>
-                <p className="text-[10px] text-text-secondary font-mono">
-                    Button · Label · Metric · Mono · BrandMark · Pill · ProgressBar · Sparkline ·
-                    Icon
-                </p>
-            </div>
+        <section id="primitives-text" className="flex flex-col gap-4">
+            <SectionHeader title="Primitives · Text & Data">
+                Button · Label · Metric · Mono · BrandMark · Pill · ProgressBar · Sparkline · Icon
+            </SectionHeader>
 
             {/* Buttons */}
             <div className="flex flex-col gap-3">
-                <span className="text-[9px] uppercase tracking-[2px] font-mono text-text-secondary">
-                    Buttons
-                </span>
-                <div className="grid grid-cols-3 gap-3">
+                <Divider label="Buttons" />
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                     <ShowcaseCard
                         label="PRIMARY MD"
                         code={`<Button variant="primary">CONNECT</Button>`}
@@ -105,10 +99,8 @@ export function PrimitivesTextSection(): ReactElement {
 
             {/* Labels, Metric, Mono, BrandMark */}
             <div className="flex flex-col gap-3">
-                <span className="text-[9px] uppercase tracking-[2px] font-mono text-text-secondary">
-                    Labels · Metric · Mono · BrandMark
-                </span>
-                <div className="grid grid-cols-3 gap-3">
+                <Divider label="Labels · Metric · Mono · BrandMark" />
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                     <ShowcaseCard label="LABEL DEFAULT" code={`<Label>CPU USAGE</Label>`}>
                         <Label>CPU USAGE</Label>
                     </ShowcaseCard>
@@ -144,9 +136,7 @@ export function PrimitivesTextSection(): ReactElement {
 
             {/* Pill */}
             <div className="flex flex-col gap-3">
-                <span className="text-[9px] uppercase tracking-[2px] font-mono text-text-secondary">
-                    Pill
-                </span>
+                <Divider label="Pill" />
                 <ShowcaseCard label="PILL VARIANTS" code={`<Pill variant="ok">ONLINE</Pill>`}>
                     <div className="flex flex-wrap gap-2 justify-center">
                         <Pill>DEFAULT</Pill>
@@ -160,10 +150,8 @@ export function PrimitivesTextSection(): ReactElement {
 
             {/* ProgressBar + Sparkline */}
             <div className="flex flex-col gap-3">
-                <span className="text-[9px] uppercase tracking-[2px] font-mono text-text-secondary">
-                    ProgressBar · Sparkline
-                </span>
-                <div className="grid grid-cols-3 gap-3">
+                <Divider label="ProgressBar · Sparkline" />
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                     <ShowcaseCard
                         label="PROGRESS BAR"
                         code={`<ProgressBar value={0.42} />\n<ProgressBar value={0.7} variant="bright" />`}
@@ -201,14 +189,12 @@ export function PrimitivesTextSection(): ReactElement {
 
             {/* Icons */}
             <div className="flex flex-col gap-3">
-                <span className="text-[9px] uppercase tracking-[2px] font-mono text-text-secondary">
-                    Icons (lucide-react)
-                </span>
+                <Divider label="Icons (lucide-react)" />
                 <ShowcaseCard
                     label="ICON GRID — lucide-react · stroke-width 1.75"
                     code={`<Icon icon={Mic} size="md" />`}
                 >
-                    <div className="grid grid-cols-9 gap-3 w-full">
+                    <div className="grid w-full grid-cols-3 gap-3 sm:grid-cols-6 xl:grid-cols-9">
                         {ICONS.map(({ name, icon }) => (
                             <div
                                 key={name}
