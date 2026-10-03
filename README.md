@@ -1,68 +1,160 @@
-# JARVIS UI Library
+# jarvis-react-ui
 
-Sharp, HUD-style React component library (primitives, compositions, window system, CSS/Three.js orb)
-with a live showcase. Extracted from the [JARVIS](https://github.com/JoeyAsh/JARVIS) monorepo
-(`frontend/src/ui`, branch `refactor/component-migration`). The library's runtime dependencies
-(shared types, `cx` util, SFX audio subset, design tokens, sounds) are part of this repo as real,
-working source.
+Sharp, dark, HUD-style React components: primitives, compositions, a window/slot-grid system and a
+CSS / Three.js orb. JetBrains Mono, glow instead of shadows, built-in UI sound effects.
 
-Stack: Vite 8, React 19, TypeScript, Tailwind v4 (`@tailwindcss/vite`), Three.js, lucide-react, Vitest.
+[![CI](https://github.com/JoeyAsh/jarvis_ui_lib/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeyAsh/jarvis_ui_lib/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/jarvis-react-ui)](https://www.npmjs.com/package/jarvis-react-ui)
+[![license](https://img.shields.io/npm/l/jarvis-react-ui)](LICENSE)
 
-## Run the preview
+<!-- TODO: add a screenshot of the showcase here -->
+
+## Features
+
+- 30+ primitives and compositions (panels, buttons, pills, metrics, sparklines, HUD shell, status dock, ...)
+- Drag, resize and snap window system on a 9-slot grid (`WindowManager`)
+- CSS orb (`CssOrb`) and a Three.js orb (`ThreeOrb`, separate entry so `three` stays optional)
+- Optional UI sound effects (click, hover, drag, boot, ...) through a small React context
+- Fully typed (TypeScript declarations included), ESM only, tree-shakeable
+- Ships one compiled stylesheet. Tailwind is **not** required in your project
+
+## Install
 
 ```bash
-npm install
-npm run dev        # opens the showcase at http://localhost:5173
+npm i jarvis-react-ui
 ```
 
-Other scripts: `npm run build` (tsc + vite build), `npm run preview`, `npm test`, `npm run lint`,
-`npm run typecheck`.
+Peer dependencies: `react` and `react-dom` (^19) and `lucide-react`. `three` is only needed if you
+use `ThreeOrb` from `jarvis-react-ui/orb`.
 
-## Structure
-
-```
-index.html              Showcase entry (loads src/ui/showcase/main.tsx)
-public/
-  sounds/               UI sound effects (SFX) used by the audio engine
-  favicon.svg
-src/
-  ui/                   The library
-    index.ts            Single public barrel - import everything from '@ui'
-    primitives/         Atomic display components
-    compositions/       Multi-primitive components (HUDShell, WindowManager, StatusDock, ...)
-    orb/                CssOrb + ThreeOrb (lazy-loaded)
-    window/             Window / drag / resize system + slot grid
-    showcase/           Component gallery (the preview app)
-    ui.css, components.css
-  common/               Part of the lib: shared types (OrbState, PanelId, SlotId, ...) and
-                        utils (cx, time formatters)
-  core/audio/           Part of the lib: SFX subset - SfxContext/SfxProvider, useClickSfx,
-                        useHoverSfx, useAudioEngine, audioEngine, SFX config (+ tests)
-  styles/tokens.css     Design tokens (CSS custom properties, JetBrains Mono)
-  index.css             Tailwind v4 theme mapped to the tokens
-  test/setup.ts         Vitest setup (jest-dom)
+```bash
+npm i react react-dom lucide-react   # plus three, for the Three.js orb
 ```
 
-Path aliases (tsconfig + vite): `@ui`, `@ui/*`, `@common/*`, `@core/*`, `@test/*`.
+## Quick start
 
-## Design rules
+```tsx
+import 'jarvis-react-ui/style.css'; // once, e.g. in your app entry
+import { Panel, Button, Pill, Metric } from 'jarvis-react-ui';
 
-- Import from the `@ui` barrel only; no deep imports (except `@ui/orb/*`).
-- One component per file; each primitive in its own folder with a `.types.ts` sibling.
-  No `interface`/`type` declarations in `.tsx` files.
-- No inline styles for color or font. Use CSS variables from `src/index.css` / `tokens.css`.
-- CSS Modules only for keyframes / blend modes / multi-layer backdrop-filter; everything else is
-  Tailwind utilities. No global `import './Foo.css'` in components.
-- No `border-radius` above 4 px. Sharp HUD aesthetic.
-- All colors via `var(--token)`, never hardcoded hex.
-- JetBrains Mono only (loaded from Google Fonts in `tokens.css`).
-- `src/ui/orb/orbEngine.ts` is a black box - do not modify.
+export function App() {
+    return (
+        <Panel title="System">
+            <Metric value={42} unit="%" />
+            <Pill variant="ok">online</Pill>
+            <Button>Run diagnostics</Button>
+        </Panel>
+    );
+}
+```
 
-Adding a primitive: create `src/ui/primitives/MyThing/{MyThing.tsx,MyThing.types.ts,index.ts}`,
-export it from `src/ui/index.ts`, add `__tests__/MyThing.test.tsx`. See `src/ui/README.md`.
+The stylesheet contains the design tokens (CSS custom properties), a compiled utility layer used by
+the components, keyframes and all component styles. It also includes Tailwind's preflight reset, so
+import it once at the root of your app. It loads JetBrains Mono from Google Fonts.
 
-## Notes
+The showcase (`npm run dev`) demonstrates every component with its variants and usage snippets.
 
-- `.npmrc` sets `legacy-peer-deps=true` (eslint-plugin-jsx-a11y does not yet declare ESLint 10 support).
-- Lint: `npm run lint` is clean (0 errors, 0 warnings) with the full type-checked rule set;
-  no rules are downgraded. `vite.config.ts` is linted via `tsconfig.node.json`.
+### Sound effects
+
+Interactive components play sounds through a React context. Without a provider they are silent
+no-ops. To enable audio, mount the engine once and pass it to `SfxProvider`:
+
+```tsx
+import { SfxProvider, useAudioEngine } from 'jarvis-react-ui';
+
+export function Root({ children }: { children: React.ReactNode }) {
+    const { playOneShot, play, stop } = useAudioEngine('idle', true);
+    return (
+        <SfxProvider playOneShot={playOneShot} play={play} stop={stop}>
+            {children}
+        </SfxProvider>
+    );
+}
+```
+
+The audio engine currently loads its files from the **hard-coded URL path `/sounds/`** of your site
+(there is no base-URL option yet). Copy the bundled sounds into your static directory:
+
+```bash
+cp -r node_modules/jarvis-react-ui/public/sounds public/sounds
+```
+
+The files are also addressable as `jarvis-react-ui/sounds/*` through the package `exports` map for
+bundlers that handle assets. Browsers only start audio after a user gesture. Missing files are
+logged and skipped; nothing throws.
+
+### Three.js orb
+
+```tsx
+import { ThreeOrb } from 'jarvis-react-ui/orb'; // requires the `three` peer dependency
+
+export const Orb = () => <ThreeOrb state="idle" />;
+```
+
+`CssOrb` is exported from the main entry and has no extra dependency.
+
+## Components
+
+**Primitives** - `Button`, `Pill`, `Label`, `Metric`, `Mono`, `ProgressBar`, `Sparkline`, `Panel`,
+`TopBar`, `StatusLabel`, `Icon`, `BrandMark`, `Hint`, `PushToTalkButton`, `WaveformMeter`,
+`WaveStrip`, and decorative layers: `CornerBrackets`, `Scanlines`, `GridBackground`, `GlowFrame`,
+`Reticle`, `LightTrace`, `PanelBloom`, `PanelRails`, `ViewportCorners`, `StarField`, `Reactor`.
+
+**Compositions** - `HUDShell`, `GlassCard`, `StatusBadge`, `StatusDock`, `WindowManager`.
+
+**Window system** - `Window`, `SnapOverlay`, `SwapOverlay`, `SlotGhost`, slot-grid helpers
+(`computeSlot`, `computeAllSlots`, `slotAtPoint`, ...) and the hooks `useDraggable`, `useResizable`
+and `useSlotDrag`.
+
+**Orb** - `CssOrb` (main entry), `ThreeOrb` and `createOrb` (`jarvis-react-ui/orb`).
+
+**Audio** - `SfxProvider`, `useSfx`, `useClickSfx`, `useHoverSfx`, `useAudioEngine`.
+
+**Utilities** - `cx`, `formatDuration`, `formatAge`, `formatTime`, `relativeTime`.
+
+## Theming
+
+All colors, spacing, z-indices, glow and motion values are CSS custom properties on `:root`
+(`--bg`, `--surface`, `--accent`, `--text`, `--glow`, `--r-1`, `--s-*`, `--z-*`, `--dur-*`, ...).
+Override them after importing the stylesheet:
+
+```css
+:root {
+    --accent: #e8a84c;
+    --accent-bright: #ffc870;
+}
+```
+
+Components use the tokens only, so one override re-themes everything. Design rules: sharp edges
+(max 4px radius), glow instead of drop shadows, JetBrains Mono only.
+
+## Showcase and development
+
+```bash
+git clone https://github.com/JoeyAsh/jarvis_ui_lib.git
+cd jarvis_ui_lib
+npm ci
+npm run dev              # live showcase at http://localhost:5173
+```
+
+| Script                   | Purpose                                         |
+| ------------------------ | ----------------------------------------------- |
+| `npm run dev`            | Showcase dev server                             |
+| `npm run build`          | Build the library into `dist/` (JS, .d.ts, CSS) |
+| `npm run build:showcase` | Type-check and build the showcase app           |
+| `npm test`               | Vitest (single run)                             |
+| `npm run typecheck`      | `tsc --noEmit`                                  |
+| `npm run lint`           | ESLint (0 errors and 0 warnings required)       |
+| `npm run format:check`   | Prettier check (`npm run format` writes)        |
+
+## Contributing
+
+Contributions are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md). Releases are described in
+[RELEASING.md](RELEASING.md).
+
+## License
+
+[MIT](LICENSE) (c) 2026 JoeyAsh.
+
+The sound effects in `public/sounds` were generated with ElevenLabs by the author and are
+distributed under the same MIT license by their owner, see [NOTICE](NOTICE).

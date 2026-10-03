@@ -17,6 +17,7 @@ export default defineConfig({
             { find: /^@test\/(.*)/, replacement: resolve(import.meta.dirname, 'src/test') + '/$1' },
         ],
     },
+    build: { outDir: 'dist-showcase', emptyOutDir: true },
     server: { port: 5173, open: true },
     test: {
         environment: 'jsdom',

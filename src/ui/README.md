@@ -1,13 +1,13 @@
-# @ui — JARVIS UI Library
+# @ui — jarvis-react-ui library source
 
-Headless, design-system-native component primitives and compositions consumed by the app layer.
+Headless, design-system-native component primitives and compositions published as the `jarvis-react-ui` npm package.
 
 ## Structure
 
 ```
 src/ui/
 ├── index.ts            # Single barrel — import everything from '@ui'
-├── ui.css              # Global design-token overrides (loaded once by App)
+├── ui.css              # Shared keyframes
 ├── primitives/         # Atomic, stateless display components
 ├── compositions/       # Multi-primitive components (HUDShell, WindowManager, StatusDock…)
 ├── orb/                # CssOrb + ThreeOrb (lazy-loaded via React.lazy)
@@ -45,4 +45,4 @@ The only exception is `@ui/window/*` when window hooks are needed inside the win
 3. Add tests at `MyThing/__tests__/MyThing.test.tsx`.
 4. Justify any `.module.css` file with a comment explaining why Tailwind alone is insufficient.
 
-See `docs/FRONTEND.md` for the full architecture and path-alias reference.
+See `CLAUDE.md` and `.claude/rules/` for the full conventions and path-alias reference.
