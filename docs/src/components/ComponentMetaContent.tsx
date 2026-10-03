@@ -1,6 +1,7 @@
 import { use } from 'react';
 import type { ReactElement } from 'react';
-import { CodeBlock, Link, Pill } from '@ui';
+import { Link, Pill } from '@ui';
+import { DocsCodeBlock } from './DocsCodeBlock';
 import { apiDoc } from '../utils/registry';
 import { sourceUrl } from '../utils/paths';
 import type { ComponentMetaProps } from './ComponentMeta.types';
@@ -12,7 +13,7 @@ export function ComponentMetaContent({ component }: ComponentMetaProps): ReactEl
 
     return (
         <div className="my-6 flex flex-col gap-3">
-            <CodeBlock code={statement} language="ts" />
+            <DocsCodeBlock code={statement} language="ts" />
             <div className="flex flex-wrap items-center gap-4 text-[10px]">
                 <Pill>{doc.group}</Pill>
                 <Link href={sourceUrl(doc.file)} external variant="muted">

@@ -68,4 +68,28 @@ describe('CodeBlock', () => {
         expect(screen.getByRole('button', { name: 'expand' })).toBeDefined();
         expect(container.firstElementChild?.className).toContain('extra');
     });
+
+    it('calls onCopy with the code after a successful copy', async () => {
+        const writeText = vi.fn(() => Promise.resolve());
+        vi.stubGlobal('navigator', { clipboard: { writeText } });
+        const onCopy = vi.fn();
+        render(<CodeBlock code="npm i jarvis-react-ui" onCopy={onCopy} />);
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: 'Copy code' }));
+            await Promise.resolve();
+        });
+        expect(onCopy).toHaveBeenCalledWith('npm i jarvis-react-ui');
+    });
+
+    it('does not call onCopy when copying fails', async () => {
+        const writeText = vi.fn(() => Promise.reject(new Error('denied')));
+        vi.stubGlobal('navigator', { clipboard: { writeText } });
+        const onCopy = vi.fn();
+        render(<CodeBlock code="x" onCopy={onCopy} />);
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: 'Copy code' }));
+            await Promise.resolve();
+        });
+        expect(onCopy).not.toHaveBeenCalled();
+    });
 });

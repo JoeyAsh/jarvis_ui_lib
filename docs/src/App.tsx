@@ -1,14 +1,14 @@
 import { Route, Routes } from 'react-router';
 import type { ReactElement } from 'react';
 import { DocsLayout } from './layout/DocsLayout';
-import { DocsSfxRoot } from './layout/DocsSfxRoot';
+import { JarvisProvider } from '@ui';
 import { MdxPage } from './layout/MdxPage';
 import { NotFound } from './layout/NotFound';
 import { PAGE_ROUTES } from './routes';
 
 export function App(): ReactElement {
     return (
-        <DocsSfxRoot>
+        <JarvisProvider soundBaseUrl={`${import.meta.env.BASE_URL}sounds/`}>
             <Routes>
                 <Route element={<DocsLayout />}>
                     {PAGE_ROUTES.map(({ slug, Page }) =>
@@ -29,7 +29,7 @@ export function App(): ReactElement {
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
-        </DocsSfxRoot>
+        </JarvisProvider>
     );
 }
 

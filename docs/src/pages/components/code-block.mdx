@@ -35,6 +35,14 @@ Without `title`, `language`, `actions` and the copy button, the header is not re
 
 <Demo name="code-block/NotCopyable" align="stretch" />
 
+## Copy feedback
+
+`onCopy` is called with the code after it reached the clipboard. Combine it with
+[useToast](/components/toast) to confirm the copy; reusing a toast `id` keeps repeated copies from
+stacking.
+
+<Demo name="code-block/CopyToast" align="stretch" />
+
 ## Syntax highlighting
 
 CodeBlock does not ship a highlighter. To show colored code, highlight it yourself (ideally at

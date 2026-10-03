@@ -7,14 +7,31 @@
 
 ## Enable sound
 
-Mount the audio engine once and pass its functions to `SfxProvider`:
+[JarvisProvider](/components/jarvis-provider) turns sound on for the whole app. Sound is on by
+default; `sfx={false}` starts muted, and `useJarvis()` returns `{ isMuted, toggleMute }` for a mute
+switch. The user's choice is stored in `localStorage`, so it survives reloads. Try the **SFX** switch
+in the header of this site.
+
+```tsx
+import { JarvisProvider } from 'jarvis-react-ui';
+
+<JarvisProvider sfx={false}>
+    <App />
+</JarvisProvider>;
+```
+
+### Manual setup
+
+Without `JarvisProvider`, mount the audio engine yourself and pass it to `SfxProvider`:
 
 ```tsx
 import type { ReactNode } from 'react';
 import { SfxProvider, useAudioEngine } from 'jarvis-react-ui';
 
 export function SoundRoot({ children }: { children: ReactNode }) {
-    const { playOneShot, play, stop } = useAudioEngine('idle', true);
+    const { playOneShot, play, stop } = useAudioEngine('idle', true, false, {
+        initialMuted: false,
+    });
     return (
         <SfxProvider playOneShot={playOneShot} play={play} stop={stop}>
             {children}
@@ -22,10 +39,6 @@ export function SoundRoot({ children }: { children: ReactNode }) {
     );
 }
 ```
-
-`useAudioEngine(orbState, connected, heartbeatEnabled?, options?)` also returns `isMuted` and
-`toggleMute`. The mute state is stored in `localStorage`, so it survives reloads. Try the **SFX**
-switch in the header of this site.
 
 > Browsers only start audio after a user gesture. The first sounds play after the first click or key
 > press on the page.

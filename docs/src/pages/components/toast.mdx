@@ -1,0 +1,80 @@
+# Toast
+
+<Lead>
+    Toasts are short, non-blocking notifications that appear in a corner and close themselves. Call
+    `useToast()` anywhere below a `JarvisProvider` (or `ToastProvider`) to show one.
+</Lead>
+
+<ComponentMeta component="Toast" />
+
+## Show a toast
+
+`toast(options)` shows a notification and returns its id. The four variants change the color, the
+icon and the sound: `success` plays `confirm`, `error` plays `error`.
+
+<Demo name="toast/Variants" />
+
+```tsx
+import { useToast } from 'jarvis-react-ui';
+
+const { toast } = useToast();
+toast({ variant: 'success', title: 'Diagnostics passed' });
+```
+
+## Title and description
+
+Keep the title to a few words and put details in `description`.
+
+<Demo name="toast/WithDescription" />
+
+## Action
+
+An `action` adds a button, typically **Undo**. Clicking it runs the handler and closes the toast.
+
+<Demo name="toast/WithAction" />
+
+## Duration
+
+Toasts close after 5 seconds by default; the bar at the bottom shows the remaining time. The timer
+pauses while the pointer is over the toast or focus is inside it. Pass `duration: Infinity` for
+messages that must be dismissed by hand, and `dismiss(id)` to close one from code.
+
+<Demo name="toast/Duration" />
+
+Reusing an `id` replaces the visible toast instead of stacking a new one, which suits repeated
+events such as "Copied". This site does exactly that when you copy a code block.
+
+## The Toast element
+
+`Toast` is the presentational element the provider renders. Use it directly to build your own
+notification area or to show a toast inline. It does not close itself; `duration` only draws the
+countdown bar.
+
+<Demo name="toast/Static" />
+
+## Options
+
+| Option        | Type                                          | Default  | Description                               |
+| ------------- | --------------------------------------------- | -------- | ----------------------------------------- |
+| `title`       | `ReactNode`                                   | —        | Bold first line.                          |
+| `description` | `ReactNode`                                   | —        | Message text below the title.             |
+| `variant`     | `'info' \| 'success' \| 'warning' \| 'error'` | `'info'` | Color, icon, sound and ARIA role.         |
+| `duration`    | `number`                                      | `5000`   | Lifetime in ms; `Infinity` keeps it open. |
+| `action`      | `{ label: string; onClick: () => void }`      | —        | Action button; also closes the toast.     |
+| `id`          | `string`                                      | auto     | Reuse to replace an existing toast.       |
+
+`useToast()` returns `{ toast, dismiss, dismissAll }` and throws when no provider is mounted.
+Placement, the number of visible toasts and the default duration are set on
+[ToastProvider](/components/toast-provider) or [JarvisProvider](/components/jarvis-provider).
+
+## Accessibility
+
+- Toasts render inside a labelled `aria-live="polite"` region, so screen readers announce them
+  without moving focus.
+- Toasts use `role="status"`; `error` toasts use `role="alert"` and are announced immediately.
+- The timer pauses on hover and keyboard focus, and **Escape** closes the focused toast.
+- Do not put information only in a toast that the user cannot find again elsewhere.
+
+## API
+
+<ApiTable component="Toast" />

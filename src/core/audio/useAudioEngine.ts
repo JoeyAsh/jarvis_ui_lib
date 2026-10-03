@@ -17,11 +17,13 @@ const DISCONNECT_SFX_GATE_MS = 5_000;
 const OFFLINE_DELAY_MS = 3_000;
 const WAKE_GUARD_MS = 500;
 
-function readStoredMute(): boolean {
+/** Stored mute preference, or null when the user never toggled (or storage is unavailable). */
+function readStoredMute(): boolean | null {
     try {
-        return localStorage.getItem(STORAGE_KEY) === 'true';
+        const value = localStorage.getItem(STORAGE_KEY);
+        return value === null ? null : value === 'true';
     } catch {
-        return false;
+        return null;
     }
 }
 
@@ -49,13 +51,13 @@ export function useAudioEngine(
     options: UseAudioEngineOptions = {},
 ): UseAudioEngineReturn {
     const [engine] = useState<AudioEngine>(getAudioEngine);
-    const { soundBaseUrl } = options;
+    const { soundBaseUrl, initialMuted = false } = options;
 
     useEffect(() => {
         if (soundBaseUrl !== undefined) engine.setSoundBaseUrl(soundBaseUrl);
     }, [engine, soundBaseUrl]);
 
-    const [isMuted, setIsMuted] = useState<boolean>(readStoredMute);
+    const [isMuted, setIsMuted] = useState<boolean>(() => readStoredMute() ?? initialMuted);
 
     useEffect(() => {
         engine.setMuted(isMuted);

@@ -9,6 +9,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- `JarvisProvider`: root provider that mounts the audio engine (UI sounds, on by default, `sfx={false}`
+  starts muted), the toast system and `useJarvis()` (`isMuted`, `toggleMute`).
+- Toast notifications: `Toast` element, `ToastProvider` and `useToast()` (`toast`, `dismiss`,
+  `dismissAll`) with four variants, actions, auto-dismiss that pauses on hover/focus, a queue
+  (`max`), four placements, id-based replacement and variant sounds.
+- `useAudioEngine`: new `initialMuted` option, used when the user has no stored mute preference.
+- `CodeBlock`: new `onCopy` callback, called after the code was copied.
+
 - New primitives: `Input` (text field with start/end adornments, sizes, invalid state), `IconButton`
   (square icon-only button with accessible label and pressed state), `Tooltip` (hover/focus bubble
   with placements), `Switch` (accessible on/off toggle, controlled or uncontrolled), `Divider`

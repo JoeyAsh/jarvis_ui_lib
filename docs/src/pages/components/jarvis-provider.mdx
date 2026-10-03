@@ -1,0 +1,67 @@
+# JarvisProvider
+
+<Lead>
+    The root provider of a JARVIS app. It starts the audio engine for UI sounds, provides toasts and
+    exposes app-level controls through `useJarvis()`. Wrap your app in it once.
+</Lead>
+
+<ComponentMeta component="JarvisProvider" />
+
+## Setup
+
+```tsx
+import 'jarvis-react-ui/style.css';
+import { createRoot } from 'react-dom/client';
+import { JarvisProvider } from 'jarvis-react-ui';
+import { App } from './App';
+
+createRoot(document.getElementById('root') as HTMLElement).render(
+    <JarvisProvider>
+        <App />
+    </JarvisProvider>,
+);
+```
+
+Everything below it can use [useToast](/components/toast), `useJarvis()` and the sound hooks, and
+all interactive components play their sounds.
+
+<Demo name="jarvis-provider/Everything" />
+
+## Sound
+
+Sound is **on by default**. Browsers only start audio after the first click or key press.
+
+- `sfx={false}` starts muted. Users can still switch sound on, e.g. with a toggle bound to
+  `useJarvis()`.
+- `useJarvis()` returns `{ isMuted, toggleMute }`. The user's choice is stored in `localStorage` and
+  wins over the `sfx` prop on the next visit.
+- `soundBaseUrl` points the engine at your copy of the sound files or a CDN, see
+  [Sound effects](/getting-started/sound).
+
+<Demo name="jarvis-provider/MuteToggle" />
+
+```tsx
+<JarvisProvider sfx={false} soundBaseUrl="/assets/sounds/">
+    <App />
+</JarvisProvider>
+```
+
+## Assistant state
+
+`orbState`, `connected` and `heartbeat` feed the audio engine's state sounds (ambient loop, scan
+while listening, offline alerts). Pass your assistant's current state to keep the soundscape in sync
+with the orb.
+
+## Toasts
+
+`toastPlacement`, `toastMax` and `toastDuration` configure the built-in
+[ToastProvider](/components/toast-provider).
+
+## Without JarvisProvider
+
+The building blocks stay available on their own: `SfxProvider` with `useAudioEngine` for sound and
+`ToastProvider` for toasts.
+
+## API
+
+<ApiTable component="JarvisProvider" />

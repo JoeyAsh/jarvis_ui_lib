@@ -1,0 +1,45 @@
+# ToastProvider
+
+<Lead>
+    The provider behind `useToast()`. It keeps the list of toasts, handles their timers and renders
+    the notification stack. `JarvisProvider` already includes it.
+</Lead>
+
+<ComponentMeta component="ToastProvider" />
+
+## Setup
+
+Most apps get it through [JarvisProvider](/components/jarvis-provider). Use `ToastProvider` on its
+own when you manage sound yourself or need a separate toast area for part of the app.
+
+```tsx
+import { ToastProvider } from 'jarvis-react-ui';
+
+export function Root({ children }: { children: React.ReactNode }) {
+    return <ToastProvider placement="top-right">{children}</ToastProvider>;
+}
+```
+
+## Placement
+
+The stack is fixed to a corner or edge of the viewport: `bottom-right` (default), `top-right`,
+`bottom-center` or `top-center`. Inside an element with a `transform`, such as the demo frame below,
+it stays within that element.
+
+<Demo name="toast-provider/Placement" height="tall" />
+
+## Queue
+
+At most `max` toasts (default 3) are visible. Further toasts wait in a queue and appear as soon as a
+visible one closes.
+
+<Demo name="toast-provider/Queue" height="tall" />
+
+## Accessibility
+
+The stack is a `<section>` with `aria-live="polite"` and an accessible name (`label`, default
+"Notifications"). See [Toast](/components/toast) for keyboard and screen reader behavior.
+
+## API
+
+<ApiTable component="ToastProvider" />

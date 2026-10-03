@@ -1,15 +1,14 @@
 import type { ReactElement } from 'react';
 import { useNavigate } from 'react-router';
 import { Menu, X } from 'lucide-react';
-import { BrandMark, IconButton, Link, Pill, Switch, TopBar } from '@ui';
+import { BrandMark, IconButton, Link, Pill, Switch, TopBar, useJarvis } from '@ui';
 import pkg from '../../../package.json';
-import { useDocsSfx } from './docsSfxContext';
 import { hrefFor, REPO_URL } from '../utils/paths';
 import type { DocsHeaderProps } from './DocsHeader.types';
 
 export function DocsHeader({ menuOpen, onMenuToggle }: DocsHeaderProps): ReactElement {
     const navigate = useNavigate();
-    const { isMuted, toggleMute } = useDocsSfx();
+    const { isMuted, toggleMute } = useJarvis();
 
     return (
         <div className="sticky top-0 z-[30] px-[10px] pt-[10px] bg-[linear-gradient(var(--bg)_70%,transparent)]">

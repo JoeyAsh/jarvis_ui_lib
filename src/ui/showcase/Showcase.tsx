@@ -12,7 +12,7 @@ import { CompositionsSection } from './sections/CompositionsSection';
 import { CompositionsLayoutSection } from './sections/CompositionsLayoutSection';
 import { WindowsSection } from './sections/WindowsSection';
 import { DevOverlaysSection } from './sections/DevOverlaysSection';
-import { useShowcaseSfx } from './ShowcaseSfxRoot';
+import { useJarvis } from '../compositions/JarvisProvider';
 import type { NavItem } from './Showcase.types';
 import { buildNavItems } from './navItems';
 
@@ -34,7 +34,7 @@ const NAV: NavItem[] = [
 
 export function Showcase(): ReactElement {
     const [activeSection, setActiveSection] = useState<string>('overview');
-    const { isMuted, toggleMute } = useShowcaseSfx();
+    const { isMuted, toggleMute } = useJarvis();
 
     function handleNavClick(id: string): void {
         setActiveSection(id);

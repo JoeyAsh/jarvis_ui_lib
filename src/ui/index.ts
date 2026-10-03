@@ -123,6 +123,9 @@ export type { DividerProps, DividerOrientation, DividerVariant } from './primiti
 export { Link } from './primitives/Link';
 export type { LinkProps, LinkVariant } from './primitives/Link';
 
+export { Toast } from './primitives/Toast';
+export type { ToastProps, ToastVariant, ToastAction } from './primitives/Toast';
+
 // ── Orb ───────────────────────────────────────────────────────────────────────
 // Only CssOrb is included here — it is a tiny, synchronous CSS-only primitive
 // safe for the main bundle. ThreeOrb, createOrb, and OrbEngine are intentionally
@@ -198,3 +201,14 @@ export type { CodeBlockProps } from './compositions/CodeBlock';
 
 export { Callout } from './compositions/Callout';
 export type { CalloutProps, CalloutVariant } from './compositions/Callout';
+
+export { ToastProvider, useToast } from './compositions/ToastProvider';
+export type {
+    ToastProviderProps,
+    ToastOptions,
+    ToastApi,
+    ToastPlacement,
+} from './compositions/ToastProvider';
+
+export { JarvisProvider, useJarvis } from './compositions/JarvisProvider';
+export type { JarvisProviderProps, JarvisContextValue } from './compositions/JarvisProvider';

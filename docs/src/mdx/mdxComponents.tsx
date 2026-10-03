@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef, ReactElement } from 'react';
 import type { MDXComponents } from 'mdx/types';
-import { Callout, CodeBlock, Divider } from '@ui';
+import { Callout, Divider } from '@ui';
+import { DocsCodeBlock } from '../components/DocsCodeBlock';
 import { ApiTable } from '../components/ApiTable';
 import { ComponentMeta } from '../components/ComponentMeta';
 import { Demo } from '../components/Demo';
@@ -111,7 +112,7 @@ export const mdxComponents: MDXComponents = {
     td: Td,
     ApiTable,
     Callout,
-    CodeBlock,
+    CodeBlock: DocsCodeBlock,
     ComponentMeta,
     Demo,
     Lead,

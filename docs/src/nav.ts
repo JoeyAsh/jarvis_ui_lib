@@ -23,6 +23,7 @@ export const PAGES: DocsPage[] = [
     { slug: 'getting-started/installation', title: 'Installation', group: 'Getting started' },
     { slug: 'getting-started/usage', title: 'Usage', group: 'Getting started' },
     { slug: 'getting-started/sound', title: 'Sound effects', group: 'Getting started' },
+    { slug: 'components/jarvis-provider', title: 'JarvisProvider', group: 'Getting started' },
 
     { slug: 'customization/theming', title: 'Theming', group: 'Customization' },
     { slug: 'customization/tokens', title: 'Design tokens', group: 'Customization' },
@@ -36,6 +37,7 @@ export const PAGES: DocsPage[] = [
     { slug: 'components/tooltip', title: 'Tooltip', group: 'Primitives' },
     { slug: 'components/divider', title: 'Divider', group: 'Primitives' },
     { slug: 'components/panel', title: 'Panel', group: 'Primitives' },
+    { slug: 'components/toast', title: 'Toast', group: 'Primitives' },
     { slug: 'components/top-bar', title: 'TopBar', group: 'Primitives' },
 
     { slug: 'components/callout', title: 'Callout', group: 'Compositions' },
@@ -43,6 +45,7 @@ export const PAGES: DocsPage[] = [
     { slug: 'components/nav-list', title: 'NavList', group: 'Compositions' },
     { slug: 'components/table', title: 'Table', group: 'Compositions' },
     { slug: 'components/tabs', title: 'Tabs', group: 'Compositions' },
+    { slug: 'components/toast-provider', title: 'ToastProvider', group: 'Compositions' },
     { slug: 'components/window-manager', title: 'WindowManager', group: 'Compositions' },
 
     { slug: 'changelog', title: 'Changelog', group: 'Reference' },
