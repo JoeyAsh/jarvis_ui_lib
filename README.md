@@ -1,188 +1,187 @@
 # jarvis-react-ui
 
-Sharp, dark, HUD-style React components: primitives, compositions, a window/slot-grid system and a
-CSS / Three.js orb. JetBrains Mono, glow instead of shadows, built-in UI sound effects.
+Sharp, dark, HUD-style React components: primitives, inputs, dialogs, toasts, tables, charts, a
+window/slot-grid system and a CSS / Three.js orb. JetBrains Mono, glow instead of shadows, built-in
+UI sound effects.
 
-**Documentation: https://joeyash.github.io/jarvis_ui_lib/** (guides, theming, live demos and API
-tables for every component).
+### 📖 Documentation: **https://joeyash.github.io/jarvis_ui_lib/**
+
+Guides, theming playground, design tokens, live demos with copy-pasteable source and generated API
+tables for every component. Press <kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>K</kbd> to search.
 
 [![CI](https://github.com/JoeyAsh/jarvis_ui_lib/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeyAsh/jarvis_ui_lib/actions/workflows/ci.yml)
+[![Docs](https://github.com/JoeyAsh/jarvis_ui_lib/actions/workflows/docs.yml/badge.svg)](https://joeyash.github.io/jarvis_ui_lib/)
 [![npm](https://img.shields.io/npm/v/jarvis-react-ui)](https://www.npmjs.com/package/jarvis-react-ui)
 [![license](https://img.shields.io/npm/l/jarvis-react-ui)](LICENSE)
 
-<!-- TODO: add a screenshot of the showcase here -->
-
 ## Features
 
-- 30+ primitives and compositions (panels, buttons, pills, metrics, sparklines, HUD shell, status dock, ...)
+- 60 documented components: buttons, inputs, switches, tooltips, tabs, tables, dialogs, toasts,
+  code blocks, line/area/bar charts, panels, HUD shell, status dock and decorative HUD layers
+- `JarvisProvider`: one root provider for UI sounds, toasts and app controls
 - Drag, resize and snap window system on a 9-slot grid (`WindowManager`)
 - CSS orb (`CssOrb`) and a Three.js orb (`ThreeOrb`, separate entry so `three` stays optional)
-- Optional UI sound effects (click, hover, drag, boot, ...) through a small React context
-- Fully typed (TypeScript declarations included), ESM only, tree-shakeable
+- UI sound effects (click, hover, drag, boot, ...), on by default, silent without a provider
+- Accessible: keyboard support, ARIA roles, focus management, reduced-motion support
+- Fully typed (TypeScript declarations with JSDoc), ESM only, tree-shakeable
 - Ships one compiled stylesheet. Tailwind is **not** required in your project
 
 ## Install
 
 ```bash
-npm i jarvis-react-ui
+npm i jarvis-react-ui react react-dom lucide-react
 ```
 
-Peer dependencies: `react` and `react-dom` (^19) and `lucide-react`. `three` is only needed if you
-use `ThreeOrb` from `jarvis-react-ui/orb`.
-
-```bash
-npm i react react-dom lucide-react   # plus three, for the Three.js orb
-```
+Peer dependencies: `react` and `react-dom` (^19) and `lucide-react`. `three` is only needed for
+`ThreeOrb` from `jarvis-react-ui/orb`.
 
 ## Quick start
 
 ```tsx
-import 'jarvis-react-ui/style.css'; // once, e.g. in your app entry
-import { Panel, Button, Pill, Metric } from 'jarvis-react-ui';
+// main.tsx
+import 'jarvis-react-ui/style.css';
+import { createRoot } from 'react-dom/client';
+import { JarvisProvider } from 'jarvis-react-ui';
+import { App } from './App';
+
+createRoot(document.getElementById('root') as HTMLElement).render(
+    <JarvisProvider>
+        <App />
+    </JarvisProvider>,
+);
+```
+
+```tsx
+// App.tsx
+import { Button, Metric, Panel, Pill, useToast } from 'jarvis-react-ui';
 
 export function App() {
+    const { toast } = useToast();
     return (
         <Panel title="System">
             <Metric value={42} unit="%" />
             <Pill variant="ok">online</Pill>
-            <Button>Run diagnostics</Button>
+            <Button onClick={() => toast({ variant: 'success', title: 'Diagnostics passed' })}>
+                Run diagnostics
+            </Button>
         </Panel>
     );
 }
 ```
 
-The stylesheet contains the design tokens (CSS custom properties), a compiled utility layer used by
-the components, keyframes and all component styles. It also includes Tailwind's preflight reset, so
-import it once at the root of your app. It loads JetBrains Mono from Google Fonts.
+The stylesheet contains the design tokens, the compiled utility layer, keyframes and all component
+styles (including Tailwind's preflight reset), and loads JetBrains Mono from Google Fonts. Import it
+once at the root of your app. See
+[Installation](https://joeyash.github.io/jarvis_ui_lib/getting-started/installation) and
+[Usage](https://joeyash.github.io/jarvis_ui_lib/getting-started/usage).
 
-The [documentation site](https://joeyash.github.io/jarvis_ui_lib/) has live demos and the full API
-of every component.
+## Sound effects
 
-### Sound effects
+`JarvisProvider` starts the audio engine; sound is on by default. `<JarvisProvider sfx={false}>`
+starts muted, and `useJarvis()` returns `{ isMuted, toggleMute }` for a mute switch (the choice is
+stored in `localStorage`).
 
-Interactive components play sounds through a React context. Without a provider they are silent
-no-ops. To enable audio, mount the engine once and pass it to `SfxProvider`:
-
-```tsx
-import { SfxProvider, useAudioEngine } from 'jarvis-react-ui';
-
-export function Root({ children }: { children: React.ReactNode }) {
-    const { playOneShot, play, stop } = useAudioEngine('idle', true);
-    return (
-        <SfxProvider playOneShot={playOneShot} play={play} stop={stop}>
-            {children}
-        </SfxProvider>
-    );
-}
-```
-
-#### Sounds
-
-The sound files ship inside the package under `public/sounds`. The audio engine loads them from a
-**base URL** that defaults to `/sounds/` of your site. There are two ways to provide them:
-
-**1. Copy them to your static directory (default, no configuration):**
+The sound files ship in the package under `public/sounds` and are loaded from `/sounds/` by default.
+Either copy them into your static folder, or point the engine at your own path or a CDN:
 
 ```bash
 cp -r node_modules/jarvis-react-ui/public/sounds public/sounds
 ```
 
-**2. Point `soundBaseUrl` at your own path or a CDN** (pin the package version in the URL):
-
 ```tsx
-const { playOneShot, play, stop } = useAudioEngine('idle', true, false, {
-    soundBaseUrl: 'https://unpkg.com/jarvis-react-ui@0.1.0/public/sounds/',
-});
+<JarvisProvider soundBaseUrl="https://cdn.jsdelivr.net/npm/jarvis-react-ui@0.1.0/public/sounds/">
 ```
 
-Alternative base URLs:
+Browsers only start audio after a user gesture; missing files are logged and skipped. Details,
+manual setup without the provider and the sound hooks for your own components:
+[Sound effects](https://joeyash.github.io/jarvis_ui_lib/getting-started/sound).
 
-- own path: `/assets/sfx/`
-- unpkg: `https://unpkg.com/jarvis-react-ui@0.1.0/public/sounds/`
-- jsDelivr: `https://cdn.jsdelivr.net/npm/jarvis-react-ui@0.1.0/public/sounds/`
-
-The value may be a relative path or an absolute URL; a trailing slash is added if missing. Query
-strings and hashes are rejected (an `Error` is thrown). The audio engine is a process-wide
-singleton: the last applied URL wins, and omitting the option does not reset a previously set URL.
-The URL is applied in an effect, so set it high in the tree (or call
-`getAudioEngine().setSoundBaseUrl()` before render) if child components play sounds on mount.
-Outside React you can call `getAudioEngine().setSoundBaseUrl(url)` directly. Changing the base URL
-drops the cached sounds so they reload from the new location. A CDN must send CORS headers (unpkg
-and jsDelivr do).
-
-The files are also addressable as `jarvis-react-ui/sounds/*` through the package `exports` map for
-bundlers that handle assets. Browsers only start audio after a user gesture. Missing files are
-logged and skipped; nothing throws.
-
-### Three.js orb
+## Three.js orb
 
 ```tsx
-import { ThreeOrb } from 'jarvis-react-ui/orb'; // requires the `three` peer dependency
+import { lazy, Suspense } from 'react';
 
-export const Orb = () => <ThreeOrb state="idle" />;
+const ThreeOrb = lazy(() => import('jarvis-react-ui/orb').then((m) => ({ default: m.ThreeOrb })));
+
+export const Orb = () => (
+    <Suspense fallback={null}>
+        <ThreeOrb state="idle" />
+    </Suspense>
+);
 ```
 
 `CssOrb` is exported from the main entry and has no extra dependency.
 
 ## Components
 
-**Primitives** - `Button`, `Pill`, `Label`, `Metric`, `Mono`, `ProgressBar`, `Sparkline`, `Panel`,
-`TopBar`, `StatusLabel`, `Icon`, `BrandMark`, `Hint`, `PushToTalkButton`, `WaveformMeter`,
-`WaveStrip`, and decorative layers: `CornerBrackets`, `Scanlines`, `GridBackground`, `GlowFrame`,
-`Reticle`, `LightTrace`, `PanelBloom`, `PanelRails`, `ViewportCorners`, `StarField`, `Reactor`.
+Every component has a page with live demos and an API table in the
+[documentation](https://joeyash.github.io/jarvis_ui_lib/).
 
-**Compositions** - `HUDShell`, `GlassCard`, `StatusBadge`, `StatusDock`, `WindowManager`.
-
-**Window system** - `Window`, `SnapOverlay`, `SwapOverlay`, `SlotGhost`, slot-grid helpers
-(`computeSlot`, `computeAllSlots`, `slotAtPoint`, ...) and the hooks `useDraggable`, `useResizable`
-and `useSlotDrag`.
-
-**Orb** - `CssOrb` (main entry), `ThreeOrb` and `createOrb` (`jarvis-react-ui/orb`).
-
-**Audio** - `SfxProvider`, `useSfx`, `useClickSfx`, `useHoverSfx`, `useAudioEngine`.
-
-**Utilities** - `cx`, `formatDuration`, `formatAge`, `formatTime`, `relativeTime`.
+- **Primitives**: `Button`, `IconButton`, `Input`, `Switch`, `Link`, `Tooltip`, `Divider`, `Pill`,
+  `Label`, `Mono`, `Metric`, `ProgressBar`, `Sparkline`, `Icon`, `Hint`, `Kbd`, `Toast`, `Panel`,
+  `TopBar`, `BrandMark`
+- **HUD decoration**: `CornerBrackets`, `Scanlines`, `GridBackground`, `GlowFrame`, `Reticle`,
+  `LightTrace`, `PanelBloom`, `PanelRails`, `ViewportCorners`, `StarField`, `Reactor`, `Scene`
+- **Voice & status**: `PushToTalkButton`, `WaveformMeter`, `WaveStrip`, `StatusLabel`
+- **Compositions**: `JarvisProvider`, `ToastProvider`, `Dialog`, `Callout`, `CodeBlock`, `NavList`,
+  `Table`, `Tabs`, `GlassCard`, `HUDShell`, `StatusBadge`, `StatusDock`, `WindowManager`
+- **Charts**: `LineChart`, `AreaChart`, `BarChart`
+- **Window system**: `Window`, `SnapOverlay`, `SwapOverlay`, `SlotGhost`, slot-grid helpers
+  (`computeSlot`, `computeAllSlots`, `slotAtPoint`, ...)
+- **Orb**: `CssOrb` (main entry), `ThreeOrb` and `createOrb` (`jarvis-react-ui/orb`)
+- **Hooks**: `useToast`, `useJarvis`, `useSfx`, `useClickSfx`, `useHoverSfx`, `useAudioEngine`,
+  `useDraggable`, `useResizable`, `useSlotDrag`
+- **Utilities**: `cx`, `formatTime`, `relativeTime`, `formatAge`, `formatDuration`
+- **Dev tools**: `StateSimulator`, `Tweaks`
 
 ## Theming
 
-All colors, spacing, z-indices, glow and motion values are CSS custom properties on `:root`
-(`--bg`, `--surface`, `--accent`, `--text`, `--glow`, `--r-1`, `--s-*`, `--z-*`, `--dur-*`, ...).
-Override them after importing the stylesheet:
+All colors, glows, radii, spacing, z-indices and timings are CSS custom properties. Override them
+on `:root` after importing the stylesheet:
 
 ```css
 :root {
     --accent: #e8a84c;
-    --accent-bright: #ffc870;
+    --accent-bright: #ffc76e;
+    --accent-dim: #a1702d;
+    --glow: 0 0 8px #e8a84caa;
+    --shadow-glow: 0 0 8px #e8a84caa; /* glow utilities read --shadow-glow* */
 }
 ```
 
-Components use the tokens only, so one override re-themes everything. Design rules: sharp edges
-(max 4px radius), glow instead of drop shadows, JetBrains Mono only.
+To re-theme only part of the page, also set the `--color-*` aliases on that element (e.g.
+`--color-accent`). The [Theming](https://joeyash.github.io/jarvis_ui_lib/customization/theming)
+page has a live playground, and the full list is under
+[Design tokens](https://joeyash.github.io/jarvis_ui_lib/customization/tokens). Design rules: sharp
+edges (max 4px radius), glow instead of drop shadows, JetBrains Mono only, dark only.
 
-## Showcase and development
+## Development
 
 ```bash
 git clone https://github.com/JoeyAsh/jarvis_ui_lib.git
 cd jarvis_ui_lib
 npm ci
-npm run dev              # live showcase at http://localhost:5173
+npm run docs:dev         # documentation site at http://localhost:5174/jarvis_ui_lib/
+npm run dev              # internal showcase at http://localhost:5173
 ```
 
-| Script                   | Purpose                                         |
-| ------------------------ | ----------------------------------------------- |
-| `npm run dev`            | Showcase dev server                             |
-| `npm run build`          | Build the library into `dist/` (JS, .d.ts, CSS) |
-| `npm run build:showcase` | Type-check and build the showcase app           |
-| `npm test`               | Vitest (single run)                             |
-| `npm run typecheck`      | `tsc --noEmit`                                  |
-| `npm run lint`           | ESLint (0 errors and 0 warnings required)       |
-| `npm run format:check`   | Prettier check (`npm run format` writes)        |
-| `npm run docs:dev`       | Documentation site dev server                   |
-| `npm run build:docs`     | Build the documentation site into `dist-docs/`  |
+| Script                   | Purpose                                                   |
+| ------------------------ | --------------------------------------------------------- |
+| `npm run docs:dev`       | Documentation site dev server                             |
+| `npm run build:docs`     | Build the documentation site into `dist-docs/`            |
+| `npm run docs:check`     | Docs coverage per component (page, demo, nav, prop JSDoc) |
+| `npm run dev`            | Showcase dev server                                       |
+| `npm run build`          | Build the library into `dist/` (JS, .d.ts, CSS)           |
+| `npm run build:showcase` | Type-check and build the showcase app                     |
+| `npm test`               | Vitest (single run)                                       |
+| `npm run typecheck`      | Type-check the library, docs and scripts                  |
+| `npm run lint`           | ESLint (0 errors and 0 warnings required)                 |
+| `npm run format:check`   | Prettier check (`npm run format` writes)                  |
 
 ## Contributing
 
-Contributions are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md). Releases are described in
+Contributions are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md). Every new or changed component
+ships with tests, a showcase demo and a documentation page. Releases are described in
 [RELEASING.md](RELEASING.md).
 
 ## License

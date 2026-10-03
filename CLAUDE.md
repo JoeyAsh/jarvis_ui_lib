@@ -62,7 +62,7 @@ src/ui/                 THE LIBRARY
   compositions/<Name>/  multi-primitive components (HUDShell, WindowManager, StatusDock, ...)
   window/               Window, SnapOverlay, SwapOverlay, SlotGhost, slotGrid, hooks/
   orb/                  CssOrb (in barrel), ThreeOrb + orbEngine (NOT in barrel, lazy)
-  showcase/             component gallery (Showcase.tsx, ShowcaseCard, sections/*, navItems.tsx)
+  showcase/             internal gallery (Showcase.tsx, ShowcaseCard, SectionHeader, sections/*)
 src/common/             shared types (OrbState, PanelId, SlotId, ...) and utils (cx, time)
 src/core/audio/         SFX subset: SfxContext/SfxProvider, useClickSfx, useHoverSfx, audioEngine, config
 src/styles/tokens.css   design tokens (CSS custom properties, font import)

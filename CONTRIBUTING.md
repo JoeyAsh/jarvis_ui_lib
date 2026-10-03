@@ -17,7 +17,8 @@ Node 22 is used in CI. `.npmrc` sets `legacy-peer-deps=true`; keep it.
 ## Workflow
 
 1. Branch from `main`: `feat/<topic>`, `fix/<topic>`, `chore/<topic>`, `docs/<topic>`.
-2. Make your change. New or changed components need tests and a showcase demo.
+2. Make your change. New or changed components need tests, a showcase demo and a documentation
+   page with demos and prop JSDoc (`/docs-page`, checked by `npm run docs:check`).
 3. Run all checks locally (see below).
 4. Open a pull request into `main` and fill in the template.
 
@@ -35,6 +36,8 @@ npm run format:check    # npm run format to fix
 npm test
 npm run build           # library
 npm run build:showcase
+npm run build:docs      # documentation site
+npm run docs:check -- --strict
 ```
 
 The `ci` workflow runs exactly these. See `CLAUDE.md` and `.claude/rules/` for the code rules
