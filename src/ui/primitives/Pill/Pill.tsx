@@ -10,9 +10,15 @@ const VARIANT_CLASSES = {
     info: 'text-accent-bright border-[rgba(126,200,255,0.4)]',
 } as const;
 
-export function Pill({ children, variant = 'default', className }: PillProps): ReactElement {
+export function Pill({
+    children,
+    variant = 'default',
+    className,
+    ...rest
+}: PillProps): ReactElement {
     return (
         <span
+            {...rest}
             className={cx(
                 'inline-flex items-center px-[6px] py-[2px]',
                 'text-[9px] uppercase tracking-[1px] font-mono',

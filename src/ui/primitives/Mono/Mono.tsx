@@ -16,10 +16,15 @@ export function Mono({
     as: Tag = 'span',
     muted = false,
     secondary = false,
+    ...rest
 }: MonoProps): ReactElement {
     const color = muted ? 'text-text-muted' : secondary ? 'text-text-secondary' : 'text-text';
 
-    return <Tag className={cx('font-mono', SIZE_CLASS[size], color, className)}>{children}</Tag>;
+    return (
+        <Tag {...rest} className={cx('font-mono', SIZE_CLASS[size], color, className)}>
+            {children}
+        </Tag>
+    );
 }
 
 export default Mono;

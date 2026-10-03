@@ -40,7 +40,8 @@ so it works well for hover, selection or an active state you keep in your own st
   assistive technology.
 - The wrapper is a plain `<div>` without a role. `focused` is purely visual and does not move
   keyboard focus.
-- The only motion is a 200ms color and opacity transition when `focused` changes.
+- The only motion is a 200ms color and opacity transition when `focused` changes; with
+  `prefers-reduced-motion: reduce` the change is instant.
 
 ## API
 

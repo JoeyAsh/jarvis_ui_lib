@@ -9,8 +9,8 @@
 
 ## States
 
-`state` takes an `AppOrbState` and maps it to a fixed text. Every state except `idle` is shown in the
-bright accent color.
+`state` takes an `AppOrbState` and maps it to a built-in text. Every state except `idle` is shown
+in the bright accent color.
 
 | `state`     | Text           |
 | ----------- | -------------- |
@@ -18,12 +18,17 @@ bright accent color.
 | `listening` | `listening...` |
 | `thinking`  | `thinking...`  |
 | `speaking`  | `speaking...`  |
-| `follow_up` | `listening...` |
+| `follow_up` | `follow-up...` |
 | `working`   | `working...`   |
 
 <Demo name="status-label/States" />
 
-The texts are built in and cannot be changed or localized through props.
+## Custom texts and localization
+
+`labels` overrides the text per state, for example to translate it. It is a partial map: states you
+leave out keep their built-in text.
+
+<Demo name="status-label/Localized" />
 
 ## Custom brand
 
@@ -36,15 +41,29 @@ the component only adds letter spacing.
 
 Feed StatusLabel the same state as your orb and pair it with
 [WaveformMeter](/components/waveform-meter)s that run while audio flows. This demo cycles through
-the states on a timer; in an app the state comes from your voice pipeline. To switch states by hand
-while developing, use [StateSimulator](/components/state-simulator).
+the states on a timer; in an app the state comes from your voice pipeline. To switch states by
+hand while developing, use [StateSimulator](/components/state-simulator).
 
 <Demo name="status-label/OrbStateCycle" />
 
+## Announce state changes
+
+Set `live` on the one StatusLabel that represents the assistant state. The status text becomes a
+polite live region, so screen readers announce each new state after the current speech:
+
+```tsx
+<StatusLabel state={state} live />
+```
+
+The demos on this page leave `live` off, because the cycling demo would announce a change every
+couple of seconds.
+
 ## Accessibility
 
-- The label is plain text and not a live region, so state changes are not announced. If screen
-  reader users need them, mirror the state into your own `aria-live="polite"` element.
+- By default the label is plain text and state changes are not announced. Set `live` to make the
+  status text a polite live region (`role="status"`, `aria-live="polite"`), so screen readers
+  announce each new state without interrupting. Render only one live StatusLabel per screen, or
+  every copy is announced.
 - It ignores pointer events (`pointer-events: none`), so it never blocks clicks on the orb behind
   it.
 

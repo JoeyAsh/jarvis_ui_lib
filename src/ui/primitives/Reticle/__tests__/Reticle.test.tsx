@@ -20,11 +20,19 @@ describe('Reticle', () => {
         expect(inner.length).toBe(2);
     });
 
-    it('applies given size via style', () => {
+    it('injects the size as a CSS variable', () => {
         const { container } = render(<Reticle size={20} />);
-        const el = container.querySelector('[role="presentation"]') as HTMLElement;
-        expect(el.style.width).toBe('20px');
-        expect(el.style.height).toBe('20px');
+        const el = container.querySelector<HTMLElement>('[role="presentation"]');
+        expect(el?.style.getPropertyValue('--reticle-size')).toBe('20px');
+        expect(el?.className).toContain('size-[var(--reticle-size)]');
+        expect(el?.style.width).toBe('');
+        expect(el?.style.height).toBe('');
+    });
+
+    it('defaults the size variable to 12px', () => {
+        const { container } = render(<Reticle />);
+        const el = container.querySelector<HTMLElement>('[role="presentation"]');
+        expect(el?.style.getPropertyValue('--reticle-size')).toBe('12px');
     });
 
     it('className merges', () => {

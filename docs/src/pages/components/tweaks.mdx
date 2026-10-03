@@ -25,17 +25,18 @@ picking a swatch recolors **this whole page**.
 
 <Demo name="tweaks/Panel" height="tall" />
 
-<Callout variant="info" title="No automatic reset">
-    `useTweakApply` does not remove its variables when the component unmounts. The demo does that in
-    its own cleanup effect so the rest of the site gets its default colors back; in an app where the
-    panel lives as long as the page you do not need it.
+<Callout variant="info" title="Automatic reset">
+    When the component that calls `useTweakApply` unmounts, the hook removes every variable it set,
+    so the stylesheet tokens apply again. Leaving this page therefore restores the default colors.
 </Callout>
 
 ## Feature flags
 
-`scan`, `grid`, `rings`, `particles` and `idleDim` are plain booleans: neither the panel nor
-`useTweakApply` applies them. Read them in your app and pass them on, for example to the `rings` and
-`particles` props of `CssOrb`. This demo flips two of them with switches.
+`scan`, `grid`, `rings`, `particles` and `idleDim` are plain booleans that only live in your
+`tweaks` state. **No library code reads them**: neither the panel nor `useTweakApply` turns on
+scanlines, a grid, orb rings, particles or idle dimming by itself. Your app decides what each flag
+means and passes it on, for example to the `rings` and `particles` props of `CssOrb`, or to whether
+you render scanline and grid layers at all. This demo flips two of them with switches.
 
 <Demo name="tweaks/FeatureFlags" />
 
@@ -66,8 +67,8 @@ The hue swatches in the panel select 215, 28, 150, 280 and 0.
 
 ## useTweakApply
 
-`useTweakApply(tweaks: TweaksState): void` runs an effect whenever `tweaks` changes and sets these
-inline styles on `document.documentElement`:
+`useTweakApply(tweaks: TweaksState): void` runs an effect whenever `tweaks.hue` or `tweaks.glow`
+changes and sets these inline styles on `document.documentElement`:
 
 | Variable          | Value                                                            |
 | ----------------- | ---------------------------------------------------------------- |
@@ -80,8 +81,10 @@ inline styles on `document.documentElement`:
 | `--glow-strong`   | two stacked accent glows whose blur and opacity grow with `glow` |
 
 Every component that uses these tokens, including Tailwind classes such as `text-accent`, follows
-the new color immediately. Inline styles on `:root` win over the token stylesheet, so the values stay
-until you change them or remove the properties.
+the new color immediately. Inline styles on `:root` win over the token stylesheet. When the calling
+component unmounts, the hook removes all seven properties again, so the stylesheet values apply.
+Call the hook in one place only; two mounted callers overwrite each other, and the first one to
+unmount removes the variables for both. The flags are not touched by the hook.
 
 ## Sound
 
@@ -93,8 +96,9 @@ sliders are silent. See [Sound effects](/getting-started/sound).
 - The hue and glow sliders are native `<input type="range">` elements with visible labels, so arrow
   keys adjust them.
 - Each flag is a `<button>` with `aria-pressed` and an `aria-label` equal to its caption.
-- Hue swatches are buttons named `Hue <degrees>`; the selected swatch is marked visually only.
-- The slider ids are fixed (`lib-tweaks-hue`, `lib-tweaks-glow`), so render only one panel per page.
+- Hue swatches are buttons named `Hue <degrees>`; the selected swatch has `aria-pressed="true"`.
+- The slider ids are generated with `useId`, so the labels stay linked even with several panels on
+  one page.
 
 ## API
 

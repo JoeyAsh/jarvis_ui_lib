@@ -13,7 +13,8 @@
 While `active`, every slot in `slotRects` is drawn as an outlined zone, and `hoveredSlot` gets a
 stronger fill and a pulse. The overlay is a `position: fixed` layer over its containing block (the
 viewport, or the nearest ancestor with a `transform`) and ignores the pointer, so it never blocks
-the drag below it. Move the pointer over the stage.
+the drag below it. Each zone gets its rect as the CSS variables `--lib-snap-zone-x`, `-y`, `-w`
+and `-h`. Move the pointer over the stage.
 
 <Demo name="snap-overlay/HoverSlots" height="tall" align="stretch" />
 

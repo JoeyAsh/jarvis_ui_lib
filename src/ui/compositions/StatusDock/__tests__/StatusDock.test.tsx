@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { StatusDock } from '../StatusDock';
 
 describe('StatusDock', () => {
@@ -78,5 +78,24 @@ describe('StatusDock', () => {
     it('merges className', () => {
         const { container } = render(<StatusDock state="idle" className="extra" />);
         expect(container.querySelector('.lib-dock')?.classList.contains('extra')).toBe(true);
+    });
+
+    it('names the push-to-talk button "Push to talk" by default', () => {
+        render(<StatusDock state="idle" />);
+        expect(screen.getByRole('button', { name: 'Push to talk' })).toBeDefined();
+    });
+
+    it('pttLabel sets the accessible name of the push-to-talk button', () => {
+        render(<StatusDock state="idle" pttLabel="Sprechen" />);
+        expect(screen.getByRole('button', { name: 'Sprechen' })).toBeDefined();
+    });
+
+    it('announces the state text through a polite live region', () => {
+        const { rerender } = render(<StatusDock state="idle" />);
+        const status = screen.getByRole('status');
+        expect(status.getAttribute('aria-live')).toBe('polite');
+        expect(status.textContent).toBe('READY');
+        rerender(<StatusDock state="thinking" />);
+        expect(screen.getByRole('status').textContent).toBe('thinking...');
     });
 });

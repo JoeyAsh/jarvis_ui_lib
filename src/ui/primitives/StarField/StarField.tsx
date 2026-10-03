@@ -1,4 +1,5 @@
-import { useMemo, type ReactElement } from 'react';
+import { useMemo, type CSSProperties, type ReactElement } from 'react';
+import { cx } from '@common/utils/cx';
 import type { StarFieldProps, StarData } from './StarField.types';
 
 export function StarField({ count = 60, className }: StarFieldProps): ReactElement {
@@ -15,16 +16,18 @@ export function StarField({ count = 60, className }: StarFieldProps): ReactEleme
     }, [count]);
 
     return (
-        <div className={['lib-starfield', className].filter(Boolean).join(' ')} aria-hidden="true">
+        <div className={cx('lib-starfield', className)} aria-hidden="true">
             {stars.map((star) => (
                 <i
                     key={star.id}
                     className="lib-starfield__star"
-                    style={{
-                        left: star.left,
-                        top: star.top,
-                        animationDelay: star.delay,
-                    }}
+                    style={
+                        {
+                            '--star-x': star.left,
+                            '--star-y': star.top,
+                            '--star-delay': star.delay,
+                        } as CSSProperties
+                    }
                 />
             ))}
         </div>

@@ -1,14 +1,22 @@
 /* ================================================================
    LightTrace — standalone 4-strip circumnavigating trace.
-   Keyframes (pTraceTop/Bot/Left/Right) live in lib.css.
+   Keyframes (pTraceTop/Bot/Left/Right) live in ui.css.
+   --lt-color tints the tails; --lt-center is the bright center and
+   glow. Without a custom color the center is --accent-bright; with
+   one (.lib-lighttrace--custom) it is a lightened mix of that color.
    ================================================================ */
 
 .lib-lighttrace {
+    --lt-center: var(--accent-bright);
     position: absolute;
     inset: -1px;
     pointer-events: none;
     overflow: hidden;
     border-radius: 2px;
+}
+
+.lib-lighttrace--custom {
+    --lt-center: color-mix(in srgb, var(--lt-color) 70%, var(--text));
 }
 
 .lib-lighttrace::before,
@@ -19,11 +27,11 @@
         90deg,
         transparent 0%,
         var(--lt-color, var(--accent)) 40%,
-        var(--accent-bright) 50%,
+        var(--lt-center) 50%,
         var(--lt-color, var(--accent)) 60%,
         transparent 100%
     );
-    box-shadow: 0 0 8px var(--accent-bright);
+    box-shadow: 0 0 8px var(--lt-center);
     opacity: 0.55;
 }
 
@@ -52,11 +60,11 @@
         180deg,
         transparent 0%,
         var(--lt-color, var(--accent)) 40%,
-        var(--accent-bright) 50%,
+        var(--lt-center) 50%,
         var(--lt-color, var(--accent)) 60%,
         transparent 100%
     );
-    box-shadow: 0 0 6px var(--accent-bright);
+    box-shadow: 0 0 6px var(--lt-center);
     opacity: 0.55;
 }
 
@@ -74,4 +82,15 @@
     height: 40%;
     animation: pTraceRight 6s linear infinite;
     animation-delay: -1.5s;
+}
+
+/* Reduced motion: the strips would only sit parked outside the box, so hide them. */
+@media (prefers-reduced-motion: reduce) {
+    .lib-lighttrace::before,
+    .lib-lighttrace::after,
+    .lib-lighttrace__l,
+    .lib-lighttrace__r {
+        animation: none;
+        display: none;
+    }
 }

@@ -41,7 +41,7 @@ export interface ContainerGeometry extends ViewportSize {
 export interface ManagedWindow {
     /** Unique window id; used as the key in `assignments`, `modes` and `focusedId`. */
     id: string;
-    /** Header title. A string title also becomes the window's accessible name. */
+    /** Header title. It also names the window region (`aria-labelledby`). */
     title?: ReactNode;
     /** Index glyph shown before the title, e.g. `◈`. */
     ix?: ReactNode;
@@ -73,8 +73,8 @@ export interface WindowManagerProps {
      */
     onAssignmentsChange: (next: Record<string, SlotId>) => void;
     /**
-     * Home slots restored by a window's Reset button. Read once on mount; defaults to the
-     * `assignments` of the first render.
+     * Home slots restored by a window's Reset button. Changes to this prop are picked up by the
+     * next reset. Without it, the `assignments` of the first render are used.
      */
     homeAssignments?: Record<string, SlotId>;
     /** Id of the focused window (controlled); `null` for none. @default null */
@@ -100,10 +100,16 @@ export interface WindowManagerProps {
 
     /**
      * Window id → free-floating rect (controlled). When set, WindowManager no longer stores
-     * positions itself, so moving and resizing expanded windows has no effect. Omit it to let
-     * WindowManager track them.
+     * positions itself: apply the maps passed to `onExpandedRectsChange` to move and resize
+     * expanded windows. Omit it to let WindowManager track them.
      */
     expandedRects?: Record<string, ExpandedRect>;
+    /**
+     * Called with the full next rect map when a window is undocked, an expanded window is moved
+     * (on drag end) or resized (on every resize move), or a window is reset. Fires in both
+     * controlled and uncontrolled mode.
+     */
+    onExpandedRectsChange?: (next: Record<string, ExpandedRect>) => void;
 
     /** Additional class names for the root element. */
     className?: string;

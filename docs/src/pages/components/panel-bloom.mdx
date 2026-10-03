@@ -22,7 +22,8 @@ chrome layers, see the custom card on [LightTrace](/components/light-trace).
 
 - The bloom is `aria-hidden` and ignores pointer events. It is a purely visual cue, so pair it with
   a state that is exposed otherwise, e.g. `aria-selected` or a text label.
-- The pulse runs while `active` is true and does not respond to `prefers-reduced-motion`.
+- The pulse runs while `active` is true. With `prefers-reduced-motion: reduce` the bloom appears
+  and disappears without fade or pulse and stays at a constant brightness.
 
 ## API
 

@@ -1,6 +1,7 @@
 /* ================================================================
-   StarField — 60 twinkling star dots.
-   Keyframes (twinkle) live in lib.css.
+   StarField — twinkling star dots.
+   Positions and twinkle phase arrive per star as CSS variables
+   (--star-x, --star-y, --star-delay). Keyframes (twinkle) live in ui.css.
    ================================================================ */
 
 .lib-starfield {
@@ -12,10 +13,21 @@
 
 .lib-starfield__star {
     position: absolute;
+    left: var(--star-x, 0);
+    top: var(--star-y, 0);
     width: 1px;
     height: 1px;
     background: var(--text);
     border-radius: 50%;
     box-shadow: 0 0 4px var(--accent-bright);
     animation: twinkle 4s ease-in-out infinite;
+    animation-delay: var(--star-delay, 0s);
+}
+
+/* Reduced motion: no twinkle; stars stay at a mid brightness. */
+@media (prefers-reduced-motion: reduce) {
+    .lib-starfield__star {
+        animation: none;
+        opacity: 0.6;
+    }
 }

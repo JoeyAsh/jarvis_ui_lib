@@ -22,24 +22,50 @@ describe('CornerBrackets', () => {
         expect(spans.length).toBe(4);
     });
 
-    it('default opacity on unfocused corners is 0.7', () => {
+    it('unfocused corners use the accent color at 70% opacity', () => {
         const { container } = render(
             <CornerBrackets>
                 <div>x</div>
             </CornerBrackets>,
         );
-        const span = container.querySelector('span[aria-hidden]') as HTMLElement;
-        expect(span.style.opacity).toBe('0.7');
+        container.querySelectorAll('span[aria-hidden]').forEach((span: Element) => {
+            expect(span.classList.contains('opacity-70')).toBe(true);
+            expect(span.classList.contains('border-accent')).toBe(true);
+        });
     });
 
-    it('focused opacity is 1', () => {
+    it('focused corners use the bright accent at full opacity', () => {
         const { container } = render(
             <CornerBrackets focused>
                 <div>x</div>
             </CornerBrackets>,
         );
-        const span = container.querySelector('span[aria-hidden]') as HTMLElement;
-        expect(span.style.opacity).toBe('1');
+        const span = container.querySelector('span[aria-hidden]');
+        expect(span?.classList.contains('opacity-100')).toBe(true);
+        expect(span?.classList.contains('border-accent-bright')).toBe(true);
+    });
+
+    it('injects the bracket size as a CSS variable instead of inline geometry', () => {
+        const { container } = render(
+            <CornerBrackets size={20}>
+                <div>x</div>
+            </CornerBrackets>,
+        );
+        const wrapper = container.firstElementChild as HTMLElement;
+        expect(wrapper.style.getPropertyValue('--cb-size')).toBe('20px');
+        container.querySelectorAll('span[aria-hidden]').forEach((span: Element) => {
+            expect(span.getAttribute('style')).toBeNull();
+        });
+    });
+
+    it('defaults the bracket size to 12px', () => {
+        const { container } = render(
+            <CornerBrackets>
+                <div>x</div>
+            </CornerBrackets>,
+        );
+        const wrapper = container.firstElementChild as HTMLElement;
+        expect(wrapper.style.getPropertyValue('--cb-size')).toBe('12px');
     });
 
     it('className merges on wrapper', () => {

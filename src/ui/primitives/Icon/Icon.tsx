@@ -11,13 +11,14 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(function Icon(
     {
         icon: LucideIconComponent,
         size = 'md',
-        className = '',
+        className,
         'aria-label': ariaLabel,
         'aria-hidden': ariaHidden,
     },
     ref,
 ) {
     const px = SIZE_MAP[size];
+    const labelled = ariaLabel !== undefined && ariaLabel !== '';
     return (
         <LucideIconComponent
             ref={ref}
@@ -25,8 +26,9 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(function Icon(
             height={px}
             strokeWidth={1.75}
             className={className}
-            aria-label={ariaLabel}
-            aria-hidden={ariaHidden}
+            role={labelled ? 'img' : undefined}
+            aria-label={labelled ? ariaLabel : undefined}
+            aria-hidden={ariaHidden ?? (labelled ? undefined : true)}
         />
     );
 });

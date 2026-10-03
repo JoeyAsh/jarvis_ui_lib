@@ -5,7 +5,7 @@ export interface WaveformMeterProps {
      */
     active?: boolean;
     /**
-     * Number of bars to render; the first 12 bars have staggered animation delays.
+     * Number of bars to render; every bar gets its own staggered animation delay.
      * @default 12
      */
     barCount?: number;

@@ -74,9 +74,10 @@ The engine renders at window size and listens for window resizes, like ThreeOrb.
 
 ## Accessibility
 
-The orb is decorative: the canvas has no content or label for assistive technology and takes no
-pointer events. Show the assistant's state as text too, for example with a
-[StatusLabel](/components/status-label). The engine does not check `prefers-reduced-motion`; render
+By default the orb is decorative: the canvas is `aria-hidden="true"` and takes no pointer events.
+Show the assistant's state as text too, for example with a
+[StatusLabel](/components/status-label). Pass `aria-label` when the orb itself should be announced;
+the canvas then gets `role="img"` and that label. The engine does not check `prefers-reduced-motion`; render
 a static alternative such as `<CssOrb>` (whose CSS animations stop under reduced motion) when the
 user asks for less motion.
 

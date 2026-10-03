@@ -1,7 +1,10 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { render, fireEvent, renderHook } from '@testing-library/react';
 import React from 'react';
-import { Tweaks, TWEAKS_DEFAULTS } from '../Tweaks';
+import { Tweaks } from '../Tweaks';
+import { TWEAKS_DEFAULTS, TWEAK_CSS_VARS } from '../constants';
+import { useTweakApply } from '../useTweakApply';
+import * as folderIndex from '../index';
 import { SfxContext } from '@core/audio';
 import type { SfxContextValue } from '@core/audio';
 import type { SfxEvent } from '@core/audio';
@@ -46,33 +49,48 @@ describe('Tweaks — visual', () => {
     });
 
     it('renders hue slider with current value', () => {
-        const { container } = render(
+        const { getByLabelText } = render(
             <Tweaks open tweaks={{ ...TWEAKS_DEFAULTS, hue: 180 }} onChange={() => undefined} />,
         );
-        const slider = container.querySelector<HTMLInputElement>(
-            'input[type="range"]#lib-tweaks-hue',
-        );
-        expect(slider?.value).toBe('180');
+        expect(getByLabelText(/Accent Hue/).getAttribute('value')).toBe('180');
     });
 
     it('calls onChange when hue slider changes', () => {
         const handler = vi.fn();
-        const { container } = render(<Tweaks open tweaks={TWEAKS_DEFAULTS} onChange={handler} />);
-        const slider = container.querySelector(
-            'input[type="range"]#lib-tweaks-hue',
-        ) as HTMLInputElement;
-        fireEvent.change(slider, { target: { value: '100' } });
+        const { getByLabelText } = render(
+            <Tweaks open tweaks={TWEAKS_DEFAULTS} onChange={handler} />,
+        );
+        fireEvent.change(getByLabelText(/Accent Hue/), { target: { value: '100' } });
         expect(handler).toHaveBeenCalledWith({ ...TWEAKS_DEFAULTS, hue: 100 });
     });
 
     it('calls onChange when glow slider changes', () => {
         const handler = vi.fn();
-        const { container } = render(<Tweaks open tweaks={TWEAKS_DEFAULTS} onChange={handler} />);
-        const slider = container.querySelector(
-            'input[type="range"]#lib-tweaks-glow',
-        ) as HTMLInputElement;
-        fireEvent.change(slider, { target: { value: '50' } });
+        const { getByLabelText } = render(
+            <Tweaks open tweaks={TWEAKS_DEFAULTS} onChange={handler} />,
+        );
+        fireEvent.change(getByLabelText(/Glow intensity/), { target: { value: '50' } });
         expect(handler).toHaveBeenCalledWith({ ...TWEAKS_DEFAULTS, glow: 50 });
+    });
+
+    it('generates unique slider ids across two panels', () => {
+        const { container } = render(
+            <>
+                <Tweaks open tweaks={TWEAKS_DEFAULTS} onChange={() => undefined} />
+                <Tweaks open tweaks={TWEAKS_DEFAULTS} onChange={() => undefined} />
+            </>,
+        );
+        const sliders = Array.from(
+            container.querySelectorAll<HTMLInputElement>('input[type="range"]'),
+        );
+        expect(sliders).toHaveLength(4);
+        const ids = sliders.map((s) => s.id);
+        expect(ids.every((id) => id.length > 0)).toBe(true);
+        expect(new Set(ids).size).toBe(4);
+        expect(ids).not.toContain('lib-tweaks-hue');
+        for (const slider of sliders) {
+            expect(container.querySelector(`label[for="${slider.id}"]`)).not.toBeNull();
+        }
     });
 
     it('calls onChange when Scanlines toggle clicked', () => {
@@ -107,6 +125,23 @@ describe('Tweaks — visual', () => {
             <Tweaks open tweaks={{ ...TWEAKS_DEFAULTS, hue: 215 }} onChange={() => undefined} />,
         );
         expect(getByLabelText('Hue 215').classList.contains('active')).toBe(true);
+    });
+
+    it('marks the selected swatch aria-pressed', () => {
+        const { getByLabelText } = render(
+            <Tweaks open tweaks={{ ...TWEAKS_DEFAULTS, hue: 28 }} onChange={() => undefined} />,
+        );
+        expect(getByLabelText('Hue 28').getAttribute('aria-pressed')).toBe('true');
+        expect(getByLabelText('Hue 215').getAttribute('aria-pressed')).toBe('false');
+    });
+
+    it('colors swatches through a CSS variable instead of an inline background', () => {
+        const { getByLabelText } = render(
+            <Tweaks open tweaks={TWEAKS_DEFAULTS} onChange={() => undefined} />,
+        );
+        const swatch = getByLabelText('Hue 150');
+        expect(swatch.style.getPropertyValue('--lib-tweaks-swatch-hue')).toBe('150');
+        expect(swatch.style.background).toBe('');
     });
 
     it('merges className', () => {
@@ -146,5 +181,44 @@ describe('Tweaks — SFX', () => {
         );
         fireEvent.mouseEnter(getByLabelText('Scanlines'));
         expect(sfx.playOneShot).toHaveBeenCalledWith('hover_button');
+    });
+});
+
+describe('useTweakApply', () => {
+    afterEach(() => {
+        TWEAK_CSS_VARS.forEach((name) => document.documentElement.style.removeProperty(name));
+    });
+
+    it('writes the accent and glow variables to :root', () => {
+        renderHook(() => useTweakApply({ ...TWEAKS_DEFAULTS, hue: 120 }));
+        const style = document.documentElement.style;
+        expect(style.getPropertyValue('--tweak-hue')).toBe('120');
+        expect(style.getPropertyValue('--accent')).toBe('oklch(0.72 0.14 120)');
+        for (const name of TWEAK_CSS_VARS) {
+            expect(style.getPropertyValue(name)).not.toBe('');
+        }
+    });
+
+    it('updates the variables when the hue changes', () => {
+        const { rerender } = renderHook(
+            (props: { hue: number }) => useTweakApply({ ...TWEAKS_DEFAULTS, hue: props.hue }),
+            { initialProps: { hue: 10 } },
+        );
+        rerender({ hue: 300 });
+        expect(document.documentElement.style.getPropertyValue('--tweak-hue')).toBe('300');
+    });
+
+    it('removes every variable it set on unmount', () => {
+        const { unmount } = renderHook(() => useTweakApply(TWEAKS_DEFAULTS));
+        expect(document.documentElement.style.getPropertyValue('--accent')).not.toBe('');
+        unmount();
+        for (const name of TWEAK_CSS_VARS) {
+            expect(document.documentElement.style.getPropertyValue(name)).toBe('');
+        }
+    });
+
+    it('is exported from the folder index together with TWEAKS_DEFAULTS', () => {
+        expect(folderIndex.useTweakApply).toBe(useTweakApply);
+        expect(folderIndex.TWEAKS_DEFAULTS).toBe(TWEAKS_DEFAULTS);
     });
 });

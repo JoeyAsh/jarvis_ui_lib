@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Icon } from '../Icon';
 import { Mic } from 'lucide-react';
 
@@ -36,5 +36,28 @@ describe('Icon', () => {
     it('className merges', () => {
         const { container } = render(<Icon icon={Mic} className="text-accent" />);
         expect(container.querySelector('svg')?.getAttribute('class')).toContain('text-accent');
+    });
+
+    it('is decorative by default (aria-hidden, no role)', () => {
+        const { container } = render(<Icon icon={Mic} />);
+        const svg = container.querySelector('svg');
+        expect(svg?.getAttribute('aria-hidden')).toBe('true');
+        expect(svg?.getAttribute('role')).toBeNull();
+    });
+
+    it('with aria-label gets role img and is not hidden', () => {
+        render(<Icon icon={Mic} aria-label="microphone" />);
+        const svg = screen.getByRole('img', { name: 'microphone' });
+        expect(svg.getAttribute('aria-hidden')).toBeNull();
+    });
+
+    it('explicit aria-hidden wins over the default', () => {
+        const { container } = render(<Icon icon={Mic} aria-hidden={false} />);
+        expect(container.querySelector('svg')?.getAttribute('aria-hidden')).toBe('false');
+    });
+
+    it('does not add an empty class attribute value by default', () => {
+        const { container } = render(<Icon icon={Mic} />);
+        expect(container.querySelector('svg')?.getAttribute('class') ?? '').not.toMatch(/\s$/);
     });
 });

@@ -1,6 +1,8 @@
 /* ================================================================
    lib-snap — slot preview overlay during drag.
    Class prefix: .lib-snap
+   Per-component CSS for the pulse keyframes and layered glows.
+   Zone geometry arrives as CSS variables (--lib-snap-zone-x/y/w/h).
    ================================================================ */
 
 .lib-snap {
@@ -13,6 +15,10 @@
 /* Individual slot zone rectangle */
 .lib-snap__zone {
     position: absolute;
+    left: var(--lib-snap-zone-x, 0);
+    top: var(--lib-snap-zone-y, 0);
+    width: var(--lib-snap-zone-w, 0);
+    height: var(--lib-snap-zone-h, 0);
     box-sizing: border-box;
     border: 1px solid var(--accent);
     background: color-mix(in srgb, var(--accent) 8%, transparent);

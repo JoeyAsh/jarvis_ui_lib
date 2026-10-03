@@ -1,6 +1,10 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export interface MetricProps {
+/**
+ * Props of `Metric`. Native attributes (`id`, `title`, `aria-*`, `data-*`, event handlers, ...) are
+ * forwarded to the root `<span>`; its content comes from `value` and `unit`, not `children`.
+ */
+export interface MetricProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
     /** The reading itself, rendered in tabular figures so changing digits do not shift the layout. */
     value: ReactNode;
     /** Unit shown after the value in a small muted `<small>`, e.g. `'%'`, `'ms'` or `'°C'`. */

@@ -27,9 +27,8 @@ or `time`, so the text keeps its meaning in the document.
 
 <Demo name="mono/AsElement" />
 
-`Mono` only forwards `children` and `className` to the element; other attributes (for example
-`dateTime` on a `<time>`) are not passed through. Wrap the text in your own element when you need
-them.
+Native attributes (`id`, `title`, `aria-*`, `data-*`, event handlers) are forwarded to the rendered
+element, including `dateTime` for `as="time"`.
 
 ## Accessibility
 

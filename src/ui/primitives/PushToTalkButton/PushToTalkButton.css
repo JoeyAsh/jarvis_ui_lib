@@ -1,7 +1,8 @@
 /* ================================================================
    PushToTalkButton — 72×72 circular PTT chrome.
    Ported verbatim from handoff lines 439-458 (CSS) + 944-985 (JSX).
-   Keyframes: ppulse, spin — defined in lib.css.
+   Keyframes: ppulse, spin — defined in ui.css. Custom CSS because the pulse rings and
+   rotating rim are pseudo-element / multi-layer chrome Tailwind cannot express.
    ================================================================ */
 
 .lib-ptt {
@@ -11,7 +12,7 @@
     border: 1px solid var(--accent);
     background: radial-gradient(
         circle at 50% 35%,
-        rgba(110, 196, 255, 0.3),
+        color-mix(in srgb, var(--accent-bright) 30%, transparent),
         rgba(13, 13, 20, 0.85)
     );
     display: flex;
@@ -35,6 +36,11 @@
     color: var(--text);
 }
 
+.lib-ptt:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
 .lib-ptt:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
@@ -55,8 +61,8 @@
 .lib-ptt.active {
     color: var(--text);
     box-shadow:
-        0 0 40px #6ec4ffcc,
-        0 0 90px #6ec4ff77;
+        0 0 40px color-mix(in srgb, var(--accent-bright) 80%, transparent),
+        0 0 90px color-mix(in srgb, var(--accent-bright) 47%, transparent);
 }
 
 .lib-ptt.active::before {

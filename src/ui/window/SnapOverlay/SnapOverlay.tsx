@@ -1,6 +1,8 @@
-import type { CSSProperties, ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import { cx } from '@common/utils/cx';
 import type { SlotId } from '../slotGrid';
 import { SLOT_IDS } from '../slotGrid';
+import { rectVars } from '../rectVars';
 import type { SnapOverlayProps } from './SnapOverlay.types';
 
 export function SnapOverlay({
@@ -9,7 +11,7 @@ export function SnapOverlay({
     hoveredSlot,
     className,
 }: SnapOverlayProps): ReactElement {
-    const rootCls = ['lib-snap', className].filter(Boolean).join(' ');
+    const rootCls = cx('lib-snap', className);
 
     if (!active) {
         return <div className={rootCls} aria-hidden />;
@@ -17,20 +19,17 @@ export function SnapOverlay({
 
     return (
         <div className={rootCls} aria-hidden>
-            {SLOT_IDS.map((slotId: SlotId) => {
-                const rect = slotRects[slotId];
-                const isHovered = hoveredSlot === slotId;
-                const style: CSSProperties = {
-                    left: rect.x,
-                    top: rect.y,
-                    width: rect.w,
-                    height: rect.h,
-                };
-                const cls = ['lib-snap__zone', isHovered ? 'lib-snap__zone--hovered' : '']
-                    .filter(Boolean)
-                    .join(' ');
-                return <div key={slotId} className={cls} style={style} data-slot={slotId} />;
-            })}
+            {SLOT_IDS.map((slotId: SlotId) => (
+                <div
+                    key={slotId}
+                    className={cx(
+                        'lib-snap__zone',
+                        hoveredSlot === slotId && 'lib-snap__zone--hovered',
+                    )}
+                    style={rectVars('lib-snap-zone', slotRects[slotId])}
+                    data-slot={slotId}
+                />
+            ))}
         </div>
     );
 }

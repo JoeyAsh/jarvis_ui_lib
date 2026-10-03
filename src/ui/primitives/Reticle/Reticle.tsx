@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 import { cx } from '@common/utils/cx';
 import type { ReticleProps } from './Reticle.types';
 
@@ -11,8 +11,11 @@ export function Reticle({
         <span
             role="presentation"
             aria-hidden={ariaHidden}
-            className={cx('relative inline-block text-accent', className)}
-            style={{ width: size, height: size }}
+            className={cx(
+                'relative inline-block size-[var(--reticle-size)] text-accent',
+                className,
+            )}
+            style={{ '--reticle-size': `${size}px` } as CSSProperties}
         >
             {/* vertical line */}
             <span className="absolute bg-current left-1/2 top-0 bottom-0 w-px -translate-x-1/2" />

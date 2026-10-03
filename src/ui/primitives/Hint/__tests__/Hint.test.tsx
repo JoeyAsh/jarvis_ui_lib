@@ -8,15 +8,24 @@ describe('Hint', () => {
         expect(container.querySelector('.lib-hint')).toBeDefined();
     });
 
-    it('defaults to fixed-br position class', () => {
+    it('defaults to the lib-hint--fixed-br modifier class', () => {
         const { container } = render(<Hint>hint</Hint>);
-        expect(container.querySelector('.lib-hint')?.classList.contains('fixed-br')).toBe(true);
+        const root = container.querySelector('.lib-hint');
+        expect(root?.classList.contains('lib-hint--fixed-br')).toBe(true);
+        expect(root?.classList.contains('fixed-br')).toBe(false);
+    });
+
+    it('position="fixed-br" maps to the BEM modifier', () => {
+        const { container } = render(<Hint position="fixed-br">hint</Hint>);
+        expect(container.querySelector('.lib-hint')?.className).toBe('lib-hint lib-hint--fixed-br');
     });
 
     it('applies inline class when position=inline', () => {
         const { container } = render(<Hint position="inline">hint</Hint>);
         expect(container.querySelector('.lib-hint')?.classList.contains('inline')).toBe(true);
-        expect(container.querySelector('.lib-hint')?.classList.contains('fixed-br')).toBe(false);
+        expect(container.querySelector('.lib-hint')?.classList.contains('lib-hint--fixed-br')).toBe(
+            false,
+        );
     });
 
     it('renders children text', () => {
@@ -36,7 +45,16 @@ describe('Hint', () => {
                     <Hint.Key>SPACE</Hint.Key>
                 </Hint>,
             );
-            expect(container.querySelector('kbd.lib-hint__kbd')).toBeDefined();
+            expect(container.querySelector('kbd.lib-hint__kbd')).not.toBeNull();
+        });
+
+        it('renders the Kbd primitive chip', () => {
+            const { getByText } = render(<Hint.Key>SPACE</Hint.Key>);
+            const kbd = getByText('SPACE');
+            expect(kbd.tagName).toBe('KBD');
+            expect(kbd.className).toContain('text-accent');
+            expect(kbd.className).toContain('border-border');
+            expect(kbd.className).toContain('lib-hint__kbd');
         });
 
         it('renders key text', () => {

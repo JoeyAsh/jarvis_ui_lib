@@ -23,6 +23,13 @@ background, vignette, grain and horizon glow are always drawn.
 
 <Demo name="scene/Layers" height="tall" />
 
+## Star count
+
+`starCount` sets the number of stars in the built-in [StarField](/components/star-field); the
+default is 60. Use fewer for a calmer backdrop or more for a denser sky.
+
+<Demo name="scene/StarCount" height="tall" />
+
 ## Backdrop
 
 Combine Scene with a [Reactor](/components/reactor) and [ViewportCorners](/components/viewport-corners)
@@ -34,8 +41,8 @@ renders exactly this stack for you, with props to toggle each piece.
 ## Accessibility
 
 - The whole backdrop is `aria-hidden`. Its layers ignore pointer events.
-- The grid drift and the star twinkle run continuously and do not respond to
-  `prefers-reduced-motion`. Pass `grid={false}` and `stars={false}` for a static backdrop.
+- With `prefers-reduced-motion: reduce` the grid drift and the star twinkle stop, so the backdrop
+  is static. The grid and stars stay visible.
 
 ## API
 

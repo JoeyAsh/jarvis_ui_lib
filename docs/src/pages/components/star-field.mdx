@@ -22,12 +22,13 @@ from their index, so the same count always produces the same sky, on the server 
 
 <Demo name="star-field/Count" />
 
-[Scene](/components/scene) includes a StarField with the default count.
+[Scene](/components/scene) includes a StarField; its `starCount` prop sets the count.
 
 ## Accessibility
 
 - The star layer is `aria-hidden` and ignores pointer events.
-- The twinkle animation runs continuously and does not respond to `prefers-reduced-motion`.
+- With `prefers-reduced-motion: reduce` the twinkle stops and every star stays at a constant,
+  medium brightness.
 
 ## API
 

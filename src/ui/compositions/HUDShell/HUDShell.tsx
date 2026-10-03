@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react';
+import { cx } from '@common/utils/cx';
 import { Scene } from '../../primitives/Scene';
 import { Reactor } from '../../primitives/Reactor';
 import { ViewportCorners } from '../../primitives/ViewportCorners';
@@ -17,12 +18,11 @@ export function HUDShell({
     className,
     style,
 }: HUDShellProps): ReactElement {
-    const classes = ['hud-shell', idle && 'idle', working && 'is-working', className]
-        .filter(Boolean)
-        .join(' ');
-
     return (
-        <div className={classes} style={style}>
+        <div
+            className={cx('hud-shell', idle && 'idle', working && 'is-working', className)}
+            style={style}
+        >
             {/* Background scene layer */}
             <Scene grid={scene?.grid} stars={scene?.stars} scanlines={scene?.scanlines} />
 
@@ -38,8 +38,12 @@ export function HUDShell({
             {/* Orb slot */}
             {orb && <div className="hud-shell__orb">{orb}</div>}
 
-            {/* Panel / window slot */}
-            {children && <div className="hud-shell__children">{children}</div>}
+            {/* Panel / window slot; inert while idle so the dimmed panels cannot be focused */}
+            {children && (
+                <div className="hud-shell__children" inert={idle}>
+                    {children}
+                </div>
+            )}
 
             {/* Dock slot (rendered at natural fixed position) */}
             {dock}

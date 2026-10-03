@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { ProgressBar } from '../ProgressBar';
 
 describe('ProgressBar', () => {
@@ -32,17 +32,24 @@ describe('ProgressBar', () => {
         expect(fill?.className).toContain('bg-warning');
     });
 
-    it('fill width matches value', () => {
-        const { container } = render(<ProgressBar value={0.75} />);
-        const fill = container.querySelector('[role="progressbar"] > div') as HTMLElement;
-        // jsdom may normalize "75.0%" to "75%" — check the numeric part
-        expect(parseFloat(fill?.style.width ?? '0')).toBeCloseTo(75, 1);
+    it('injects the fill width as the --progress variable', () => {
+        render(<ProgressBar value={0.75} aria-label="P" />);
+        const bar = screen.getByRole('progressbar');
+        expect(bar.style.getPropertyValue('--progress')).toBe('75.0%');
+    });
+
+    it('fill uses the --progress variable instead of an inline width', () => {
+        render(<ProgressBar value={0.75} aria-label="P" />);
+        const fill = screen.getByRole('progressbar').firstElementChild;
+        expect(fill?.className).toContain('w-[var(--progress)]');
+        expect(fill?.getAttribute('style')).toBeNull();
     });
 
     it('value clamps to 0–1', () => {
-        const { container } = render(<ProgressBar value={2} />);
-        const fill = container.querySelector('[role="progressbar"] > div') as HTMLElement;
-        expect(parseFloat(fill?.style.width ?? '0')).toBeCloseTo(100, 1);
+        render(<ProgressBar value={2} aria-label="P" />);
+        const bar = screen.getByRole('progressbar');
+        expect(bar.style.getPropertyValue('--progress')).toBe('100.0%');
+        expect(bar.getAttribute('aria-valuenow')).toBe('100');
     });
 
     it('height normal gives h-[4px]', () => {

@@ -16,16 +16,35 @@ describe('Sparkline', () => {
         expect(paths.length).toBeGreaterThan(0);
     });
 
-    it('accent variant uses accent stroke color', () => {
+    it('accent variant uses accent token classes', () => {
         const { container } = render(<Sparkline data={DATA} variant="accent" />);
-        const line = container.querySelector('path[stroke]');
-        expect(line?.getAttribute('stroke')).toBe('#6ec4ff');
+        const [fill, line] = Array.from(container.querySelectorAll('path'));
+        expect(fill?.getAttribute('class')).toContain('fill-accent-bright');
+        expect(line?.getAttribute('class')).toContain('stroke-accent-bright');
+        expect(line?.getAttribute('fill')).toBe('none');
     });
 
-    it('warn variant uses warn stroke color', () => {
+    it('warn variant uses warning token classes', () => {
         const { container } = render(<Sparkline data={DATA} variant="warn" />);
-        const line = container.querySelector('path[stroke]');
-        expect(line?.getAttribute('stroke')).toBe('#e8b24c');
+        const [fill, line] = Array.from(container.querySelectorAll('path'));
+        expect(fill?.getAttribute('class')).toContain('fill-warning');
+        expect(line?.getAttribute('class')).toContain('stroke-warning');
+    });
+
+    it('uses no hardcoded color attributes', () => {
+        const { container } = render(<Sparkline data={DATA} />);
+        for (const path of Array.from(container.querySelectorAll('path'))) {
+            expect(path.getAttribute('stroke')).toBeNull();
+            expect(path.getAttribute('fill') ?? 'none').toBe('none');
+        }
+    });
+
+    it('injects the height as a CSS variable', () => {
+        const { container } = render(<Sparkline data={DATA} height={40} />);
+        const svg = container.querySelector('svg');
+        expect(svg?.style.getPropertyValue('--sparkline-height')).toBe('40px');
+        expect(svg?.getAttribute('class')).toContain('h-[var(--sparkline-height)]');
+        expect(svg?.style.height).toBe('');
     });
 
     it('aria-label is set when provided', () => {

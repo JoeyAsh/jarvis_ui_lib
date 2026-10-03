@@ -1,0 +1,31 @@
+/* ================================================================
+   GridBackground — faint blueprint grid with a radial edge fade.
+   Tailwind cannot express the two-layer line gradient, the radial
+   mask and the keyframe animation cleanly. Cell size and drift
+   duration arrive as CSS variables (--jlib-grid-size,
+   --jlib-grid-duration). Keyframes (jlib-grid-drift) live in ui.css.
+   ================================================================ */
+
+.lib-grid-bg {
+    background-image:
+        linear-gradient(color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px),
+        linear-gradient(
+            90deg,
+            color-mix(in srgb, var(--accent) 4%, transparent) 1px,
+            transparent 1px
+        );
+    background-size: var(--jlib-grid-size, 44px) var(--jlib-grid-size, 44px);
+    background-position: -1px -1px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+}
+
+.lib-grid-bg--drift {
+    animation: jlib-grid-drift var(--jlib-grid-duration, 4.4s) linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lib-grid-bg--drift {
+        animation: none;
+    }
+}

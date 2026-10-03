@@ -60,17 +60,24 @@ always stay. `reactor` and `viewportCorners` remove the glow and the corner mark
 
 ## Idle mode
 
-`idle` dims and blurs every [Panel](/components/panel) inside `children`, makes them click-through
-and fades the top bar, so only the orb remains in focus. Use it when the assistant has been
-inactive for a while. The top bar stays clickable, which is where this demo puts the toggle.
+`idle` dims and blurs every [Panel](/components/panel) inside `children` and fades the top bar, so
+only the orb remains in focus. The `children` layer becomes `inert` while idle: it is
+click-through, its controls leave the tab order and it is hidden from assistive technology. Entering
+and leaving idle both crossfade (instantly under `prefers-reduced-motion`). Use it when the
+assistant has been inactive for a while. The top bar stays interactive, which is where this demo
+puts the toggle.
 
 <Demo name="hud-shell/Idle" height="tall" />
 
 ## Working state
 
-`working` adds an `is-working` class to the root element as a hook for your own styles while a tool
-call runs. The library ships no styles for it; the amber working look of the orb comes from passing
-`state="working"` to the orb itself.
+Set `working` while a tool call runs. HUDShell adds the `is-working` class to its root, which draws
+an accent light trace sweeping along the top edge and a soft accent vignette breathing at the
+screen edges. Under `prefers-reduced-motion` both stay still: the trace becomes a static hairline
+across the top. The amber working look of the orb still comes from passing `state="working"` to
+the orb itself; you can target `.hud-shell.is-working` for further styles of your own.
+
+<Demo name="hud-shell/Working" height="tall" />
 
 ## Accessibility
 
@@ -78,8 +85,11 @@ call runs. The library ships no styles for it; the amber working look of the orb
   example a `<main>` around the panels and a `<nav>` in the top bar.
 - The Scene, Reactor and ViewportCorners layers are `aria-hidden` and ignore pointer events; the
   orb layer ignores pointer events as well.
-- Idle mode makes panels click-through but does not hide them from assistive technology or remove
-  them from the tab order.
+- Idle mode sets `inert` on the `children` layer, so the dimmed panels cannot be clicked or
+  focused and are hidden from assistive technology until `idle` is `false` again. The top bar,
+  orb and dock slots stay interactive.
+- The working effect is decorative pseudo-element chrome and is not announced; pair it with a
+  visible or live status (for example [StatusDock](/components/status-dock)).
 
 ## API
 

@@ -1,13 +1,15 @@
 import { type ReactElement } from 'react';
-import type { HintKeyProps, HintProps } from './Hint.types';
+import { cx } from '@common/utils/cx';
+import { HintKey } from './HintKey';
+import type { HintProps } from './Hint.types';
 
-function HintKey({ children, className }: HintKeyProps): ReactElement {
-    return <kbd className={['lib-hint__kbd', className].filter(Boolean).join(' ')}>{children}</kbd>;
-}
+const POSITION_CLASSES = {
+    'fixed-br': 'lib-hint--fixed-br',
+    inline: 'inline',
+} as const;
 
 function HintRoot({ children, position = 'fixed-br', className }: HintProps): ReactElement {
-    const classes = ['lib-hint', position, className].filter(Boolean).join(' ');
-    return <div className={classes}>{children}</div>;
+    return <div className={cx('lib-hint', POSITION_CLASSES[position], className)}>{children}</div>;
 }
 
 export const Hint = Object.assign(HintRoot, { Key: HintKey });

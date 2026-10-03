@@ -9,7 +9,7 @@ export default function CustomContent() {
         <PushToTalkButton
             active={open}
             onClick={() => setOpen((v) => !v)}
-            ariaLabel="Open radio channel"
+            aria-label="Open radio channel"
         >
             <Radio size={24} strokeWidth={1.8} aria-hidden="true" />
         </PushToTalkButton>

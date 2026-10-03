@@ -21,7 +21,9 @@ root of your app. In this demo the frame contains them; in an app they sit in th
 
 - All four corners are `aria-hidden` and ignore pointer events, so they never block clicks on
   content underneath.
-- `className` is applied to each of the four corner elements.
+- There is no wrapper element: `className` is applied to **each** of the four corner `<span>`s, so
+  a utility such as `opacity-30` affects all corners alike. Every corner also carries a position
+  class (`tl`, `tr`, `bl`, `br`) for corner-specific styling in your own CSS.
 
 ## API
 

@@ -43,12 +43,19 @@ over the surrounding layout.
 
 ## Accessibility
 
-- The core, pulses, ticks and particles are `aria-hidden`. The root carries
-  `aria-label="Orb: <state>"`, but as a plain `<div>` without a role it is not reliably announced.
-  Treat the orb as decorative and show the state as text as well, for example with a
+- By default the orb is decorative: the root is `aria-hidden="true"`, so assistive technology
+  skips it. Show the state as text as well, for example with a
   [StatusLabel](/components/status-label).
-- With `prefers-reduced-motion: reduce`, the CSS animations of the core, rings and pulses stop. The
-  particles keep orbiting, because they are moved by script; pass `particles={false}` to stop them.
+- Pass `aria-label` when the orb itself should be announced. The root then gets `role="img"` and
+  that label, and is no longer hidden:
+
+```tsx
+<CssOrb state={state} aria-label={`Assistant ${state}`} />
+```
+
+- With `prefers-reduced-motion: reduce`, the CSS animations of the core, rings and pulses stop, and
+  the particles' `requestAnimationFrame` loop does not run: they stay parked at their start
+  positions. CssOrb follows changes of the preference while it is mounted.
 
 ## API
 

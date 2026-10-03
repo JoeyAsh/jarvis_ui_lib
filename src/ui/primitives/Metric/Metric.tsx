@@ -8,12 +8,14 @@ export function Metric({
     warn = false,
     small = false,
     className,
+    ...rest
 }: MetricProps): ReactElement {
     const valueColor = warn ? 'text-warning' : 'text-accent-bright';
     const sizeClass = small ? 'text-[12px]' : 'text-[14px]';
 
     return (
         <span
+            {...rest}
             className={cx('font-mono font-medium tabular-nums', sizeClass, valueColor, className)}
         >
             {value}

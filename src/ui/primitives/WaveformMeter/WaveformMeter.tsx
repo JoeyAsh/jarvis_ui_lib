@@ -1,4 +1,6 @@
-import { type ReactElement } from 'react';
+import { type CSSProperties, type ReactElement } from 'react';
+import { cx } from '@common/utils/cx';
+import { meterBarDelay } from './utils';
 import type { WaveformMeterProps } from './WaveformMeter.types';
 
 export function WaveformMeter({
@@ -7,14 +9,17 @@ export function WaveformMeter({
     mirrored = false,
     className,
 }: WaveformMeterProps): ReactElement {
-    const classes = ['lib-meter', !active && 'inactive', mirrored && 'mirrored', className]
-        .filter(Boolean)
-        .join(' ');
-
     return (
-        <div className={classes} aria-hidden="true">
+        <div
+            className={cx('lib-meter', !active && 'inactive', mirrored && 'mirrored', className)}
+            aria-hidden="true"
+        >
             {Array.from({ length: barCount }, (_, i) => (
-                <i key={i} className="lib-meter__bar" />
+                <i
+                    key={i}
+                    className="lib-meter__bar"
+                    style={{ '--lib-meter-delay': `${meterBarDelay(i)}s` } as CSSProperties}
+                />
             ))}
         </div>
     );

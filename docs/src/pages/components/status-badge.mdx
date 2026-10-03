@@ -22,7 +22,8 @@
 ## Pulse
 
 While `state` is `online`, the dot pulses by default: it fades and shrinks slightly about once a
-second. Set `pulse={false}` for a steady dot. `warn` and `offline` never pulse.
+second. Set `pulse={false}` for a steady dot. `warn` and `offline` never pulse, and the pulse stops
+for users who prefer reduced motion.
 
 <Demo name="status-badge/Pulse" />
 
@@ -39,8 +40,7 @@ timer.
   `label` say it too (`Link · lost`, not just `Link`).
 - It is not a live region, so changes are not announced. If screen reader users need to know when
   the connection drops, also announce it, for example with a [Toast](/components/toast).
-- The pulse animation does not respond to `prefers-reduced-motion`; pass `pulse={false}` to turn it
-  off.
+- The pulse animation is switched off under `prefers-reduced-motion`.
 
 ## API
 

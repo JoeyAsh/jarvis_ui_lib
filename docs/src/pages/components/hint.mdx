@@ -16,7 +16,7 @@
 ## Fixed in the corner
 
 The default `position="fixed-br"` pins the hint 16px from the bottom-right corner of the viewport,
-above the page content. Render it once per screen for the most important shortcut.
+above the page content, via the `lib-hint--fixed-br` modifier class. Render it once per screen for the most important shortcut.
 
 <Demo name="hint/Fixed" height="tall" />
 
@@ -25,8 +25,9 @@ A fixed hint escapes to the viewport. To keep it inside a preview container, giv
 
 ## Key chips
 
-`Hint.Key` renders a `<kbd>` in a hairline frame with the accent color. Use it anywhere a shortcut
-is mentioned, such as the end adornment of an input.
+`Hint.Key` renders a small [Kbd](/components/kbd) chip (a `<kbd>` in a hairline frame with the
+accent color) with spacing for running text. Use it anywhere a shortcut is mentioned, such as the end
+adornment of an input; for other sizes use `Kbd` directly.
 
 <Demo name="hint/KeyChip" />
 
@@ -36,6 +37,8 @@ is mentioned, such as the end adornment of an input.
 | ----------- | ----------- | ------- | ----------------------------------------------- |
 | `children`  | `ReactNode` | —       | Key or key combination to show, e.g. `SPACE`.   |
 | `className` | `string`    | —       | Additional class names for the `<kbd>` element. |
+
+The position union is exported as the `HintPosition` type.
 
 ## Accessibility
 

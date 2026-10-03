@@ -9,12 +9,18 @@ export interface CssOrbProps {
      */
     rings?: boolean;
     /**
-     * Draws six particles orbiting the core, animated with `requestAnimationFrame`.
+     * Draws six particles orbiting the core, animated with `requestAnimationFrame`. Under
+     * `prefers-reduced-motion: reduce` the frame loop does not run and the particles stay still.
      * @default true
      */
     particles?: boolean;
     /** Extra classes for the root `<div>` element (the centred anchor of the orb). */
     className?: string;
+    /**
+     * Accessible name for the orb. When set, the root gets `role="img"` and this label; when
+     * omitted, the whole orb is decorative (`aria-hidden="true"`).
+     */
+    'aria-label'?: string;
 }
 
 /** Orbit settings of one CssOrb particle. */

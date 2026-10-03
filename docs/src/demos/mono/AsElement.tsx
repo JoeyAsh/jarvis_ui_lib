@@ -3,7 +3,7 @@ import { Mono } from 'jarvis-react-ui';
 export default function AsElement() {
     return (
         <div className="flex flex-col gap-2">
-            <Mono as="time" size="lg">
+            <Mono as="time" dateTime="2026-10-03T09:04:17Z" size="lg">
                 09:04:17Z
             </Mono>
             <Mono as="code" secondary>

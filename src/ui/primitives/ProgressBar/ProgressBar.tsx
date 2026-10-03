@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 import { cx } from '@common/utils/cx';
 import type { ProgressBarProps } from './ProgressBar.types';
 
@@ -35,13 +35,13 @@ export function ProgressBar({
                 HEIGHT_CLASSES[height],
                 className,
             )}
+            style={{ '--progress': pct } as CSSProperties}
         >
             <div
                 className={cx(
-                    'h-full transition-[width] duration-[120ms] linear',
+                    'h-full w-[var(--progress)] transition-[width] duration-[120ms] linear',
                     FILL_CLASSES[variant],
                 )}
-                style={{ width: pct }}
             />
         </div>
     );

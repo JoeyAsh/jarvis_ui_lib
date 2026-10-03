@@ -1,7 +1,10 @@
 import type { AppOrbState } from '@common/types';
 
 export interface StateSimulatorProps {
-    /** Currently selected orb state; its button is highlighted (amber for `working`). */
+    /**
+     * Currently selected orb state; its button is highlighted (amber for `working`) and marked
+     * `aria-pressed`.
+     */
     state: AppOrbState;
     /** Called with the state of the button that was clicked. */
     onChange: (state: AppOrbState) => void;
@@ -26,14 +29,4 @@ export interface SimOption {
     key: AppOrbState;
     /** Text shown on the button. */
     label: string;
-}
-
-/** Props of the internal state button. */
-export interface SimButtonProps {
-    /** The state and label of this button. */
-    option: SimOption;
-    /** Whether this button's state is the current one. */
-    active: boolean;
-    /** Called with `option.key` when the button is clicked. */
-    onChange: (state: AppOrbState) => void;
 }

@@ -31,16 +31,25 @@ describe('StatusBadge', () => {
         expect(dot?.className).toContain('bg-text-muted');
     });
 
-    it('pulse=true sets animation style on dot', () => {
+    it('pulse=true animates the dot via a class, not an inline style', () => {
         const { container } = render(<StatusBadge state="online" pulse />);
         const dot = container.querySelector('span.rounded-full') as HTMLElement;
-        expect(dot.style.animation).toContain('jlib-status-pulse');
+        expect(dot.className).toContain('animate-[jlib-status-pulse_0.9s_ease-in-out_infinite]');
+        expect(dot.className).toContain('motion-reduce:animate-none');
+        expect(dot.getAttribute('style')).toBeNull();
     });
 
     it('pulse=false no animation', () => {
         const { container } = render(<StatusBadge state="online" pulse={false} />);
         const dot = container.querySelector('span.rounded-full') as HTMLElement;
-        expect(dot.style.animation).toBeFalsy();
+        expect(dot.className).not.toContain('jlib-status-pulse');
+        expect(dot.getAttribute('style')).toBeNull();
+    });
+
+    it('does not pulse outside the online state', () => {
+        const { container } = render(<StatusBadge state="warn" pulse />);
+        const dot = container.querySelector('span.rounded-full') as HTMLElement;
+        expect(dot.className).not.toContain('jlib-status-pulse');
     });
 
     it('className merges', () => {

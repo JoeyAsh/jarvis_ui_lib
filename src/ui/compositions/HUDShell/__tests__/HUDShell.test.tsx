@@ -1,5 +1,9 @@
+/// <reference types="node" />
+// Node types are referenced for reading the stylesheet (Vitest stubs CSS imports).
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { HUDShell } from '../HUDShell';
 
 // Mock requestAnimationFrame for any RAF-driven components inside
@@ -90,5 +94,58 @@ describe('HUDShell', () => {
     it('merges className', () => {
         const { container } = render(<HUDShell className="extra" />);
         expect(container.querySelector('.hud-shell')?.classList.contains('extra')).toBe(true);
+    });
+
+    it('makes the children layer inert while idle', () => {
+        const { container } = render(
+            <HUDShell idle>
+                <button type="button">Panel action</button>
+            </HUDShell>,
+        );
+        const layer = container.querySelector('.hud-shell__children');
+        expect(layer?.hasAttribute('inert')).toBe(true);
+    });
+
+    it('keeps the children layer interactive when not idle', () => {
+        const { container, rerender } = render(
+            <HUDShell idle>
+                <button type="button">Panel action</button>
+            </HUDShell>,
+        );
+        rerender(
+            <HUDShell idle={false}>
+                <button type="button">Panel action</button>
+            </HUDShell>,
+        );
+        expect(container.querySelector('.hud-shell__children')?.hasAttribute('inert')).toBe(false);
+        expect(screen.getByRole('button', { name: 'Panel action' })).toBeDefined();
+    });
+
+    it('does not add is-working by default', () => {
+        const { container } = render(<HUDShell />);
+        expect(container.querySelector('.hud-shell')?.classList.contains('is-working')).toBe(false);
+    });
+});
+
+describe('HUDShell stylesheet', () => {
+    const css = readFileSync(
+        join(process.cwd(), 'src/ui/compositions/HUDShell/HUDShell.css'),
+        'utf8',
+    );
+
+    it('gives is-working a visible, animated effect', () => {
+        expect(css).toMatch(/\.hud-shell\.is-working::before\s*\{[^}]*animation:\s*jlib-sweep-x/);
+        expect(css).toMatch(/\.hud-shell\.is-working::after\s*\{[^}]*box-shadow:/);
+    });
+
+    it('turns the working animation off under prefers-reduced-motion', () => {
+        const reduced = css.slice(css.indexOf('prefers-reduced-motion'));
+        expect(reduced).toMatch(/\.hud-shell\.is-working::before\s*\{[^}]*animation:\s*none/);
+    });
+
+    it('transitions panels in both directions (transition on the non-idle selector)', () => {
+        expect(css).toMatch(
+            /\.hud-shell > \.hud-shell__children \.lib-panel\s*\{[^}]*opacity 0\.35s/,
+        );
     });
 });

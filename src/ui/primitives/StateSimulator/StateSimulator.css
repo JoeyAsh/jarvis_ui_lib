@@ -1,10 +1,14 @@
 /* ================================================================
    StateSimulator — dev toolbar for orb state switching.
-   Ported from handoff lines 479-498.
+   Ported from handoff lines 479-498. Custom CSS for the corner-bracket
+   pseudo-elements and backdrop-filter chrome.
    ================================================================ */
 
 .lib-sim {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    max-width: 100%;
     gap: 6px;
     padding: 6px;
     background: rgba(13, 13, 20, 0.72);
@@ -19,6 +23,7 @@
     position: fixed;
     left: 50%;
     top: 60px;
+    max-width: calc(100vw - 32px);
     transform: translateX(-50%);
     z-index: 28;
 }
@@ -95,8 +100,8 @@
     background: var(--warning);
     border-color: var(--warning);
     box-shadow:
-        0 0 8px #e8a84caa,
-        0 0 20px #e8a84c66;
+        0 0 8px color-mix(in srgb, var(--warning) 67%, transparent),
+        0 0 20px color-mix(in srgb, var(--warning) 40%, transparent);
 }
 
 .lib-sim__dot {

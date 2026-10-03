@@ -21,22 +21,24 @@ element.
 
 ## Decorative icons
 
-When the text next to the icon already says everything, mark the icon `aria-hidden` so screen
-readers skip it.
+Icons are decorative by default: without an `aria-label` the `<svg>` gets `aria-hidden="true"`, so
+screen readers skip it. Use this when the text next to the icon already says everything.
 
 <Demo name="icon/Decorative" />
 
 ## Meaningful icons
 
-An icon that stands on its own and carries information needs an `aria-label`. For a clickable icon
-use [IconButton](/components/icon-button) instead.
+An icon that stands on its own and carries information needs an `aria-label`; the `<svg>` then gets
+`role="img"` and that label as its accessible name. For a clickable icon use
+[IconButton](/components/icon-button) instead.
 
 <Demo name="icon/Standalone" />
 
 ## Accessibility
 
-- Renders the lucide `<svg>`; `aria-label` and `aria-hidden` are forwarded to it.
-- Use either `aria-hidden` (decorative) or `aria-label` (meaningful), never neither.
+- Renders the lucide `<svg>`. Without `aria-label` it is `aria-hidden="true"` (decorative); with
+  `aria-label` it gets `role="img"` and that name.
+- An explicit `aria-hidden` always wins over the default.
 - The ref points at the `<svg>` element.
 
 ## API

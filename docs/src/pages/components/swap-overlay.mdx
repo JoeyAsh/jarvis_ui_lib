@@ -12,7 +12,8 @@
 
 When `active` is on and `ghostRect` is set, a dashed outline covers that rect; `hovered` gives it a
 stronger fill and glow. Like [SnapOverlay](/components/snap-overlay), the overlay is a
-`position: fixed` layer over its containing block and ignores the pointer.
+`position: fixed` layer over its containing block and ignores the pointer. The ghost gets its rect
+as the CSS variables `--lib-swap-ghost-x`, `-y`, `-w` and `-h`.
 
 <Demo name="swap-overlay/Basic" />
 

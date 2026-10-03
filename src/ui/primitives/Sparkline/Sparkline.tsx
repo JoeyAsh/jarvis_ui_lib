@@ -1,11 +1,16 @@
-import { ReactElement } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 import { cx } from '@common/utils/cx';
 import type { SparklineProps } from './Sparkline.types';
 import { buildPath } from './utils';
 
-const STROKE_COLOR = {
-    accent: '#6ec4ff',
-    warn: '#e8b24c',
+const STROKE_CLASS = {
+    accent: 'stroke-accent-bright',
+    warn: 'stroke-warning',
+} as const;
+
+const FILL_CLASS = {
+    accent: 'fill-accent-bright',
+    warn: 'fill-warning',
 } as const;
 
 const FILL_OPACITY = {
@@ -21,8 +26,6 @@ export function Sparkline({
     className,
     'aria-label': ariaLabel,
 }: SparklineProps): ReactElement {
-    const stroke = STROKE_COLOR[variant];
-    const fillOpacity = FILL_OPACITY[variant];
     const linePath = buildPath(data, width, height);
 
     // Close the fill path at the bottom
@@ -35,15 +38,24 @@ export function Sparkline({
         <svg
             viewBox={`0 0 ${width} ${height}`}
             preserveAspectRatio="none"
-            className={cx('block w-full', className)}
-            style={{ height: `${height}px` }}
+            className={cx('block w-full h-[var(--sparkline-height)]', className)}
+            style={{ '--sparkline-height': `${height}px` } as CSSProperties}
             aria-label={ariaLabel}
             role={ariaLabel ? 'img' : undefined}
         >
             {linePath && (
                 <>
-                    <path d={fillPath} fill={stroke} opacity={fillOpacity} />
-                    <path d={linePath} stroke={stroke} strokeWidth="1.2" fill="none" />
+                    <path
+                        d={fillPath}
+                        className={FILL_CLASS[variant]}
+                        opacity={FILL_OPACITY[variant]}
+                    />
+                    <path
+                        d={linePath}
+                        className={STROKE_CLASS[variant]}
+                        strokeWidth="1.2"
+                        fill="none"
+                    />
                 </>
             )}
         </svg>
