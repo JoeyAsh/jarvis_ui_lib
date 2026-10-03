@@ -6,6 +6,12 @@ declare module '*?highlight' {
     export default source;
 }
 
+declare module 'virtual:search-index' {
+    import type { SearchDoc } from '@docs/search.types';
+    const docs: SearchDoc[];
+    export default docs;
+}
+
 declare module '*.md' {
     import type { ComponentType } from 'react';
     import type { MDXComponents } from 'mdx/types';

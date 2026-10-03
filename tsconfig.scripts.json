@@ -14,5 +14,13 @@
         "allowImportingTsExtensions": true,
         "noEmit": true
     },
-    "include": ["scripts", "docs/plugins", "docs/src/api.types.ts", "vite.config.docs.ts"]
+    "include": [
+        "scripts",
+        "docs/plugins",
+        "docs/src/api.types.ts",
+        "docs/src/search.types.ts",
+        "docs/src/nav.ts",
+        "docs/src/nav.types.ts",
+        "vite.config.docs.ts"
+    ]
 }

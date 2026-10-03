@@ -47,6 +47,7 @@ export const PAGES: DocsPage[] = [
     { slug: 'components/sparkline', title: 'Sparkline', group: 'Primitives' },
     { slug: 'components/icon', title: 'Icon', group: 'Primitives' },
     { slug: 'components/hint', title: 'Hint', group: 'Primitives' },
+    { slug: 'components/kbd', title: 'Kbd', group: 'Primitives' },
     { slug: 'components/toast', title: 'Toast', group: 'Primitives' },
     { slug: 'components/panel', title: 'Panel', group: 'Primitives' },
     { slug: 'components/top-bar', title: 'TopBar', group: 'Primitives' },
@@ -72,6 +73,7 @@ export const PAGES: DocsPage[] = [
 
     { slug: 'components/callout', title: 'Callout', group: 'Compositions' },
     { slug: 'components/code-block', title: 'CodeBlock', group: 'Compositions' },
+    { slug: 'components/dialog', title: 'Dialog', group: 'Compositions' },
     { slug: 'components/glass-card', title: 'GlassCard', group: 'Compositions' },
     { slug: 'components/hud-shell', title: 'HUDShell', group: 'Compositions' },
     { slug: 'components/nav-list', title: 'NavList', group: 'Compositions' },

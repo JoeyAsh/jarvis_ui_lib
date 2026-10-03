@@ -7,6 +7,7 @@ import { resolve } from 'node:path';
 import { demoSource } from './docs/plugins/demoSource.ts';
 import { rehypeCodeBlock } from './docs/plugins/rehypeCodeBlock.ts';
 import { spaFallback } from './docs/plugins/spaFallback.ts';
+import { searchIndex } from './docs/plugins/searchIndex.ts';
 
 /**
  * Documentation site (docs/). Built to dist-docs/ and deployed to GitHub Pages under
@@ -18,6 +19,7 @@ export default defineConfig({
     publicDir: resolve(import.meta.dirname, 'public'),
     plugins: [
         demoSource(),
+        searchIndex(),
         {
             enforce: 'pre',
             ...mdx({ remarkPlugins: [remarkGfm], rehypePlugins: [rehypeCodeBlock] }),
