@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import '../../styles/tokens.css';
 import '../../index.css';
 import '../ui.css';
+import '../components.css';
 import { Showcase } from './Showcase';
 import { ShowcaseSfxRoot } from './ShowcaseSfxRoot';
 

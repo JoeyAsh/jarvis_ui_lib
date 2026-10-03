@@ -29,7 +29,7 @@ export function OverviewSection(): ReactElement {
 
             {/* Full HUDShell preview at 1280×720 */}
             <div className="border border-border overflow-hidden relative w-full max-w-[1280px] h-[720px]">
-                <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute inset-0 overflow-hidden transform-gpu">
                     <OverviewHUDPreview state={state} />
                 </div>
             </div>

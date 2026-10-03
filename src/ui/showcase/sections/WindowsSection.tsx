@@ -96,7 +96,7 @@ export function WindowsSection(): ReactElement {
             </div>
 
             {/* Scoped stage */}
-            <div className="relative h-[860px] w-full border border-border bg-[rgba(5,5,8,0.9)] overflow-hidden">
+            <div className="relative h-[860px] w-full border border-border bg-[rgba(5,5,8,0.9)] overflow-hidden transform-gpu">
                 <WindowManager
                     windows={MANAGED_WINDOWS}
                     assignments={assignments}

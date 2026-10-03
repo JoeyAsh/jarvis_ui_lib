@@ -35,7 +35,7 @@ export function HUDShellSection(): ReactElement {
                   The shell itself uses position:fixed/inset:0 — to preview it
                   inside the showcase we wrap in a scoped div that clips it.
                 */}
-                <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute inset-0 overflow-hidden transform-gpu">
                     {/* We render the shell sub-elements manually scoped here */}
                     <ScopedHUDShellPreview idle={idle} onIdleToggle={() => setIdle((v) => !v)} />
                 </div>
