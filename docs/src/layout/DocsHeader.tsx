@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { Menu, X } from 'lucide-react';
 import { BrandMark, IconButton, Link, Pill, Switch, TopBar, useJarvis } from '@ui';
 import pkg from '../../../package.json';
+import { DocsSearch } from '../components/DocsSearch';
 import { hrefFor, REPO_URL } from '../utils/paths';
 import type { DocsHeaderProps } from './DocsHeader.types';
 
@@ -47,6 +48,7 @@ export function DocsHeader({ menuOpen, onMenuToggle }: DocsHeaderProps): ReactEl
                 }
                 right={
                     <div className="flex items-center gap-4">
+                        <DocsSearch />
                         <span className="hidden sm:flex items-center gap-4">
                             <Link href={REPO_URL} external variant="nav">
                                 GitHub
