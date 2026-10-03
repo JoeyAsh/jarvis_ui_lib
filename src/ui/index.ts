@@ -105,6 +105,24 @@ export type { StateSimulatorProps } from './primitives/StateSimulator';
 export { Tweaks, TWEAKS_DEFAULTS, useTweakApply } from './primitives/Tweaks';
 export type { TweaksProps, TweaksState } from './primitives/Tweaks';
 
+export { Input } from './primitives/Input';
+export type { InputProps, InputSize } from './primitives/Input';
+
+export { IconButton } from './primitives/IconButton';
+export type { IconButtonProps, IconButtonVariant, IconButtonSize } from './primitives/IconButton';
+
+export { Tooltip } from './primitives/Tooltip';
+export type { TooltipProps, TooltipPlacement, TooltipTriggerProps } from './primitives/Tooltip';
+
+export { Switch } from './primitives/Switch';
+export type { SwitchProps, SwitchSize } from './primitives/Switch';
+
+export { Divider } from './primitives/Divider';
+export type { DividerProps, DividerOrientation, DividerVariant } from './primitives/Divider';
+
+export { Link } from './primitives/Link';
+export type { LinkProps, LinkVariant } from './primitives/Link';
+
 // ── Orb ───────────────────────────────────────────────────────────────────────
 // Only CssOrb is included here — it is a tiny, synchronous CSS-only primitive
 // safe for the main bundle. ThreeOrb, createOrb, and OrbEngine are intentionally
