@@ -1,7 +1,7 @@
 # Contributing
 
 Thanks for helping out. `main` is protected: every change goes through a feature branch and a pull
-request, and CI must be green before merging.
+request, and CI must be green before merging. PRs are merged with **Rebase and merge**.
 
 ## Setup
 

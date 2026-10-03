@@ -13,6 +13,8 @@ exception. If a rule conflicts with a request or cannot be met, stop and ask ins
 - `audio.md` — SFX hooks, events and sound assets
 - `protected.md` — protected files (orbEngine, sounds, aliases, ESLint config)
 - `changelog.md` — every user-facing change adds a `CHANGELOG.md` entry under `[Unreleased]`
+- `release.md` — releases only via release PR + GitHub release; never publish locally, never merge yourself
+- `identity.md` — public repo: author as `JoeyAsh` noreply, no personal names or private emails
 
 ## What this is
 
@@ -97,6 +99,7 @@ See the list under "Rules are mandatory" above (loaded automatically; `changelog
 - `/add-sound` — add an SFX event (file, config entry, hook usage)
 - `/verify` — run all checks, then visually check the showcase with Playwright
 - `/changelog` — add a CHANGELOG entry or cut a release
+- `/release` — cut and publish a version end to end (user-invoked only)
 - `/review-ui` — review a change against the rules; PASS / NEEDS_CHANGES
 
 ## Working notes
