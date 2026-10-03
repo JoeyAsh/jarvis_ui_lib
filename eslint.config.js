@@ -1,0 +1,161 @@
+import js from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import pluginReact from 'eslint-plugin-react';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
+import prettierConfig from 'eslint-config-prettier';
+import globals from 'globals';
+
+export default tseslint.config(
+    // ── Ignore patterns ────────────────────────────────────────────────────
+    {
+        ignores: [
+            'dist/**',
+            'node_modules/**',
+            '**/*.config.js',
+            '**/*.config.ts',
+            'coverage/**',
+            'public/sounds/**',
+        ],
+    },
+
+    // ── Base JS recommended (all files) ────────────────────────────────────
+    js.configs.recommended,
+
+    // ── TypeScript recommended (type-checked) — TS/TSX only ────────────────
+    ...tseslint.configs.recommendedTypeChecked.map((cfg) => ({
+        ...cfg,
+        files: ['**/*.{ts,tsx}'],
+    })),
+
+    // ── React flat/recommended — TS/TSX/JS/JSX ─────────────────────────────
+    {
+        ...pluginReact.configs.flat.recommended,
+        files: ['**/*.{ts,tsx,js,jsx}'],
+    },
+
+    // ── React Hooks ─────────────────────────────────────────────────────────
+    {
+        ...pluginReactHooks.configs.flat['recommended-latest'],
+        files: ['**/*.{ts,tsx,js,jsx}'],
+    },
+
+    // ── JSX A11y ────────────────────────────────────────────────────────────
+    {
+        ...pluginJsxA11y.flatConfigs.recommended,
+        files: ['**/*.{ts,tsx,js,jsx}'],
+    },
+
+    // ── Language options & settings for TS/TSX ──────────────────────────────
+    {
+        files: ['**/*.{ts,tsx}'],
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+                ...globals.node,
+            },
+            parserOptions: {
+                project: ['./tsconfig.json', './tsconfig.node.json'],
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+        settings: {
+            react: {
+                version: '19.2.4',
+            },
+        },
+        rules: {
+            // React 19 — no need to import React in scope
+            'react/react-in-jsx-scope': 'off',
+
+            // Allow _-prefixed vars as intentionally unused
+            '@typescript-eslint/no-unused-vars': [
+                'warn',
+                {
+                    argsIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                    caughtErrorsIgnorePattern: '^_',
+                },
+            ],
+        },
+    },
+
+    // ── Language options for plain JS/JSX ───────────────────────────────────
+    {
+        files: ['**/*.{js,jsx,mjs,cjs}'],
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+                ...globals.node,
+            },
+        },
+        settings: {
+            react: {
+                version: '19.2.4',
+            },
+        },
+        rules: {
+            // Disable TS-only rules for plain JS files
+            '@typescript-eslint/no-unsafe-assignment': 'off',
+            '@typescript-eslint/no-unsafe-call': 'off',
+            '@typescript-eslint/no-unsafe-member-access': 'off',
+            '@typescript-eslint/no-unsafe-return': 'off',
+            '@typescript-eslint/no-unsafe-argument': 'off',
+            '@typescript-eslint/no-require-imports': 'off',
+        },
+    },
+
+    // ── Relax unused-vars rule in test files ────────────────────────────────
+    {
+        files: ['**/__tests__/**/*.{ts,tsx}', '**/*.test.{ts,tsx}'],
+        rules: {
+            '@typescript-eslint/no-unused-vars': 'off',
+        },
+    },
+
+    // ── Rules downgraded to warnings ────────────────────────────────────────
+    // These violations pre-date the extraction from the JARVIS monorepo (where
+    // the lint run was not clean either). Kept visible as warnings instead of
+    // modifying component code during extraction. Fix incrementally.
+    {
+        files: ['**/*.{ts,tsx}'],
+        rules: {
+            '@typescript-eslint/require-await': 'warn',
+            '@typescript-eslint/no-unnecessary-type-assertion': 'warn',
+            '@typescript-eslint/no-unsafe-return': 'warn',
+            '@typescript-eslint/no-unsafe-argument': 'warn',
+            '@typescript-eslint/no-unsafe-call': 'warn',
+            '@typescript-eslint/no-unsafe-member-access': 'warn',
+            '@typescript-eslint/no-unsafe-assignment': 'warn',
+            '@typescript-eslint/unbound-method': 'warn',
+            '@typescript-eslint/prefer-as-const': 'warn',
+            '@typescript-eslint/no-empty-object-type': 'warn',
+            'react-hooks/refs': 'warn',
+            'jsx-a11y/no-static-element-interactions': 'warn',
+            'jsx-a11y/click-events-have-key-events': 'warn',
+        },
+    },
+
+    // ── Layer boundary rules ────────────────────────────────────────────────
+    {
+        files: ['**/*.{ts,tsx}'],
+        rules: {
+            'no-restricted-imports': [
+                'warn',
+                {
+                    patterns: [
+                        {
+                            group: ['@ui/**', '!@ui/orb/**'],
+                            message:
+                                'Deep @ui imports are not allowed. ' +
+                                'Use the @ui barrel or @ui/orb/* only.',
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+
+    // ── Prettier LAST — disables conflicting formatting rules ───────────────
+    prettierConfig,
+);

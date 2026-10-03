@@ -1,0 +1,143 @@
+@import 'tailwindcss';
+
+/* =====================================================================
+   JARVIS Tailwind v4 theme — maps design tokens to utility classes.
+   All color values reference the CSS custom properties set by tokens.css
+   (loaded before this file in main.tsx). The raw hex fallbacks are only
+   used by Tailwind at build time for internal computations (e.g. opacity
+   modifier arithmetic). Runtime colour always comes from var(--*).
+   ===================================================================== */
+
+@theme {
+    /* ------------------------------------------------------------------
+     Colors → bg-*, text-*, border-*, etc.
+     Reference the :root vars so runtime hue-tweak overrides via
+     useTweakApply keep working.
+  ------------------------------------------------------------------ */
+    --color-bg: var(--bg, #050508);
+    --color-surface: var(--surface, #0d0d14);
+    --color-surface-raised: var(--surface-raised, #12121c);
+    --color-border: var(--border, #1a1a2e);
+    --color-border-bright: var(--border-bright, #2a3d4f);
+    --color-accent: var(--accent, #4ca8e8);
+    --color-accent-bright: var(--accent-bright, #6ec4ff);
+    --color-accent-speak: var(--accent-speak, #5ab8f0);
+    --color-accent-dim: var(--accent-dim, #2d6aa1);
+    --color-text: var(--text, #e8f4ff);
+    --color-text-secondary: var(--text-secondary, #6b8fa8);
+    --color-text-muted: var(--text-muted, #2a3d4f);
+    --color-warning: var(--warning, #e8b24c);
+    --color-error: var(--error, #e85a5a);
+    --color-success: var(--success, #4ce8a8);
+
+    /* ------------------------------------------------------------------
+     Font families
+     Set both --font-mono and --font-sans to JetBrains Mono so that
+     font-mono and font-sans (and the default prose font) all resolve
+     to the JARVIS typeface. The UI is entirely monospace.
+  ------------------------------------------------------------------ */
+    --font-sans: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+    /* ------------------------------------------------------------------
+     Border radius — capped at 4 px.
+     Wipe the full built-in scale first with `initial` then define only
+     the three allowed values so devs cannot accidentally use rounded-lg.
+  ------------------------------------------------------------------ */
+    --radius-none: initial;
+    --radius-sm: initial;
+    --radius-md: initial;
+    --radius-lg: initial;
+    --radius-xl: initial;
+    --radius-2xl: initial;
+    --radius-3xl: initial;
+    /* Keep `full` (9999px) — used for circles (orb) and pill badges. */
+
+    --radius-0: 0px;
+    --radius-r-1: 2px;
+    --radius-r-2: 4px;
+
+    /* ------------------------------------------------------------------
+     Spacing — 4 px base grid (matches --s-* tokens).
+     Keep the default --spacing: 0.25rem so p-1=4px, p-2=8px, etc.
+     Also expose the named tokens as explicit spacing values.
+  ------------------------------------------------------------------ */
+    --spacing-s-1: 4px;
+    --spacing-s-2: 8px;
+    --spacing-s-3: 12px;
+    --spacing-s-4: 16px;
+    --spacing-s-5: 24px;
+    --spacing-s-6: 32px;
+    --spacing-s-7: 48px;
+
+    /* ------------------------------------------------------------------
+     Z-index layers — mirrors --z-* tokens.
+  ------------------------------------------------------------------ */
+    --z-index-orb: 0;
+    --z-index-panel: 10;
+    --z-index-status: 20;
+    --z-index-topbar: 30;
+    --z-index-dev: 40;
+    --z-index-modal: 50;
+
+    /* ------------------------------------------------------------------
+     Transition timing
+  ------------------------------------------------------------------ */
+    --ease-hud: cubic-bezier(0.4, 0, 0.2, 1);
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+    --duration-fast: 120ms;
+    --duration-base: 200ms;
+    --duration-slow: 300ms;
+    --duration-ambient: 1400ms;
+
+    /* ------------------------------------------------------------------
+     Box shadows / glow — raw hex values used here because
+     multi-stop box-shadow cannot compose via var() reliably in
+     Tailwind's theme output at build time.
+  ------------------------------------------------------------------ */
+    --shadow-glow: 0 0 8px #4ca8e8aa;
+    --shadow-glow-strong: 0 0 20px #4ca8e8cc, 0 0 40px #4ca8e844;
+    --shadow-glow-inner: inset 0 0 12px #4ca8e822;
+    --shadow-glow-warn: 0 0 8px #e8b24caa;
+    --shadow-glow-error: 0 0 8px #e85a5aaa;
+}
+
+/* Design tokens are imported in main.tsx before this file. */
+
+/* =====================================================================
+   Scrollbar — JARVIS-themed; webkit + Firefox fallback.
+   ===================================================================== */
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-dim) var(--surface);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-dim);
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+    box-shadow: var(--shadow-glow-inner);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: var(--accent-bright);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--surface);
+}
