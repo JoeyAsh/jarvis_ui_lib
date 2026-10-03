@@ -638,6 +638,23 @@ describe('useAudioEngine soundBaseUrl option', () => {
         expect(spies.setSoundBaseUrl).not.toHaveBeenCalled();
     });
 
+    it('does not reset a previously set URL when the option is later omitted', () => {
+        const initialProps: { url?: string } = { url: '/a/' };
+        const { rerender } = renderHook(
+            ({ url }: { url?: string }) =>
+                useAudioEngine(
+                    'idle',
+                    true,
+                    false,
+                    url === undefined ? undefined : { soundBaseUrl: url },
+                ),
+            { initialProps },
+        );
+        rerender({});
+        expect(spies.setSoundBaseUrl).toHaveBeenCalledTimes(1);
+        expect(spies.setSoundBaseUrl).toHaveBeenCalledWith('/a/');
+    });
+
     it('applies soundBaseUrl to the engine', () => {
         renderHook(() =>
             useAudioEngine('idle', true, false, { soundBaseUrl: 'https://cdn.example.com/s/' }),
