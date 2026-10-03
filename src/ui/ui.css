@@ -357,3 +357,47 @@
         transform: scaleX(0);
     }
 }
+
+/* ── decorative primitive animations (GlowFrame, GridBackground, Scanlines, StatusBadge) ── */
+@keyframes jlib-glow-breathe {
+    0%,
+    100% {
+        box-shadow: var(--glow);
+    }
+    50% {
+        box-shadow: var(--glow-strong);
+    }
+}
+
+/* Moves the grid by exactly one cell (--jlib-grid-size), so the loop is seamless. */
+@keyframes jlib-grid-drift {
+    from {
+        background-position: -1px -1px;
+    }
+    to {
+        background-position: calc(var(--jlib-grid-size, 44px) - 1px)
+            calc(var(--jlib-grid-size, 44px) - 1px);
+    }
+}
+
+/* The sweep strip is 40% wide: -100% → 250% of its own width crosses the whole container. */
+@keyframes jlib-sweep-x {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(250%);
+    }
+}
+
+@keyframes jlib-status-pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.45;
+        transform: scale(0.8);
+    }
+}
