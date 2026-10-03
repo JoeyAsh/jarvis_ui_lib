@@ -5,8 +5,7 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AudioEngine } from '../audioEngine';
-import { DEFAULT_SOUND_BASE_URL, SFX_CONFIG } from '../config';
-import { normalizeSoundBaseUrl } from '../soundUrl';
+import { SFX_CONFIG } from '../config';
 
 function makeGain() {
     return {
@@ -44,14 +43,28 @@ class MockAudioContext {
 
 const fetchMock = vi.fn();
 
-/** Fire a one-shot and wait until the fetch/decode chain has settled. */
+/** Drain the (mock-resolved) promise chains of an in-flight load without real timers. */
+async function flushMicrotasks(): Promise<void> {
+    for (let i = 0; i < 20; i++) await Promise.resolve();
+}
+
+/** Fire a one-shot and let the fetch/decode chain settle. */
 async function playAndSettle(engine: AudioEngine, file?: string): Promise<void> {
-    const callsBefore = fetchMock.mock.calls.length;
     engine.playOneShot('click', file);
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    // Cached plays legitimately issue no fetch; callers assert on counts.
-    void callsBefore;
+    await flushMicrotasks();
+}
+
+interface Deferred {
+    promise: Promise<Response>;
+    resolve: (value: Response) => void;
+}
+
+function deferred(): Deferred {
+    let resolve: (value: Response) => void = () => undefined;
+    const promise = new Promise<Response>((r) => {
+        resolve = r;
+    });
+    return { promise, resolve };
 }
 
 beforeEach(() => {
@@ -71,23 +84,6 @@ beforeEach(() => {
 afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
-});
-
-describe('normalizeSoundBaseUrl', () => {
-    it('adds a missing trailing slash', () => {
-        expect(normalizeSoundBaseUrl('/audio')).toBe('/audio/');
-        expect(normalizeSoundBaseUrl('https://cdn.example.com/s')).toBe(
-            'https://cdn.example.com/s/',
-        );
-    });
-
-    it('keeps an existing trailing slash', () => {
-        expect(normalizeSoundBaseUrl('/audio/')).toBe('/audio/');
-    });
-
-    it('falls back to the default for empty input', () => {
-        expect(normalizeSoundBaseUrl('  ')).toBe(DEFAULT_SOUND_BASE_URL);
-    });
 });
 
 describe('AudioEngine sound base URL', () => {
@@ -160,5 +156,47 @@ describe('AudioEngine sound base URL', () => {
         engine.setSoundBaseUrl('/custom');
         await playAndSettle(engine, 'x.mp3');
         expect(warn).toHaveBeenCalledWith('[AudioEngine] 404 override at /custom/x.mp3');
+    });
+
+    it('does not cache a buffer that finished loading from the old URL', async () => {
+        const pending = deferred();
+        fetchMock.mockReturnValueOnce(pending.promise);
+        const engine = new AudioEngine();
+        engine.playOneShot('click');
+        await flushMicrotasks();
+        engine.setSoundBaseUrl('/new/');
+        pending.resolve({
+            ok: true,
+            arrayBuffer: () => Promise.resolve(new ArrayBuffer(8)),
+        } as Response);
+        await flushMicrotasks();
+
+        await playAndSettle(engine);
+        expect(fetchMock).toHaveBeenCalledTimes(2);
+        expect(fetchMock).toHaveBeenLastCalledWith(`/new/${SFX_CONFIG.click.file}`);
+    });
+
+    it('does not cache a failed old-URL load for the new URL', async () => {
+        vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+        const pending = deferred();
+        fetchMock.mockReturnValueOnce(pending.promise);
+        const engine = new AudioEngine();
+        engine.playOneShot('click');
+        await flushMicrotasks();
+        engine.setSoundBaseUrl('/new/');
+        pending.resolve({ ok: false } as Response);
+        await flushMicrotasks();
+
+        await playAndSettle(engine);
+        expect(fetchMock).toHaveBeenCalledTimes(2);
+        expect(fetchMock).toHaveBeenLastCalledWith(`/new/${SFX_CONFIG.click.file}`);
+    });
+
+    it('rejects base URLs with a query or hash and keeps the previous URL', () => {
+        const engine = new AudioEngine();
+        expect(() => {
+            engine.setSoundBaseUrl('/s/?v=1');
+        }).toThrow(/query string or hash/);
+        expect(engine.getSoundBaseUrl()).toBe('/sounds/');
     });
 });

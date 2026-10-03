@@ -6,6 +6,5 @@ export type { HoverSfxTarget, UseHoverSfxOptions } from './hooks';
 export { useAudioEngine } from './useAudioEngine';
 export type { UseAudioEngineReturn } from './useAudioEngine';
 export type { UseAudioEngineOptions } from './useAudioEngine.types';
-export { normalizeSoundBaseUrl } from './soundUrl';
 export type { SfxEvent, SfxEntry } from './config';
 export { SFX_CONFIG, DUCK_VOLUME, DUCK_RAMP_MS, DEFAULT_SOUND_BASE_URL } from './config';

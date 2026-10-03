@@ -87,17 +87,24 @@ cp -r node_modules/jarvis-react-ui/public/sounds public/sounds
 
 ```tsx
 const { playOneShot, play, stop } = useAudioEngine('idle', true, false, {
-    // own path:  soundBaseUrl: '/assets/sfx/',
-    // unpkg:     https://unpkg.com/jarvis-react-ui@0.1.0/public/sounds/
-    // jsDelivr:  https://cdn.jsdelivr.net/npm/jarvis-react-ui@0.1.0/public/sounds/
     soundBaseUrl: 'https://unpkg.com/jarvis-react-ui@0.1.0/public/sounds/',
 });
 ```
 
-The value may be a relative path or an absolute URL; a trailing slash is added if missing. Outside
-React you can call `getAudioEngine().setSoundBaseUrl(url)` directly. Changing the base URL drops
-the cached sounds so they reload from the new location. A CDN must send CORS headers (unpkg and
-jsDelivr do).
+Alternative base URLs:
+
+- own path: `/assets/sfx/`
+- unpkg: `https://unpkg.com/jarvis-react-ui@0.1.0/public/sounds/`
+- jsDelivr: `https://cdn.jsdelivr.net/npm/jarvis-react-ui@0.1.0/public/sounds/`
+
+The value may be a relative path or an absolute URL; a trailing slash is added if missing. Query
+strings and hashes are rejected (an `Error` is thrown). The audio engine is a process-wide
+singleton: the last applied URL wins, and omitting the option does not reset a previously set URL.
+The URL is applied in an effect, so set it high in the tree (or call
+`getAudioEngine().setSoundBaseUrl()` before render) if child components play sounds on mount.
+Outside React you can call `getAudioEngine().setSoundBaseUrl(url)` directly. Changing the base URL
+drops the cached sounds so they reload from the new location. A CDN must send CORS headers (unpkg
+and jsDelivr do).
 
 The files are also addressable as `jarvis-react-ui/sounds/*` through the package `exports` map for
 bundlers that handle assets. Browsers only start audio after a user gesture. Missing files are
