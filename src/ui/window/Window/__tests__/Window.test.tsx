@@ -106,7 +106,12 @@ describe('Window — SFX', () => {
         const onClose = vi.fn();
         const onReset = vi.fn();
         const onModeToggle = vi.fn();
-        const { container } = renderWindow(sfx, { onClose, onReset, onModeToggle, mode: 'compact' });
+        const { container } = renderWindow(sfx, {
+            onClose,
+            onReset,
+            onModeToggle,
+            mode: 'compact',
+        });
         const sfxButtons = container.querySelectorAll('.lib-window__btn[data-sfx-hover="button"]');
         expect(sfxButtons.length).toBeGreaterThanOrEqual(3);
     });

@@ -5,7 +5,12 @@ import { WindowManager } from '../WindowManager';
 import type { ManagedWindow } from '../WindowManager';
 import { SfxProvider } from '@core/audio';
 import type { SlotId } from '../../../window/slotGrid';
-import { computeAllSlots, SLOT_MARGIN, TOP_BAR_HEIGHT, COLUMN_WIDTH } from '../../../window/slotGrid';
+import {
+    computeAllSlots,
+    SLOT_MARGIN,
+    TOP_BAR_HEIGHT,
+    COLUMN_WIDTH,
+} from '../../../window/slotGrid';
 
 // ── Viewport used in all tests ─────────────────────────────────────────────────
 
@@ -249,9 +254,7 @@ describe('WindowManager — compact drag: move to empty slot', () => {
         const dropX = l2.x + l2.w / 2;
         const dropY = l2.y + l2.h / 2;
 
-        const handle = container.querySelector(
-            '[data-testid="window-drag-handle"]',
-        ) as HTMLElement;
+        const handle = container.querySelector('[data-testid="window-drag-handle"]') as HTMLElement;
         fireEvent.pointerDown(handle, { button: 0, clientX: 50, clientY: 80 });
 
         act(() => {
@@ -281,9 +284,7 @@ describe('WindowManager — compact drag: move to empty slot', () => {
         const dropX = l1.x + l1.w / 2;
         const dropY = l1.y + l1.h / 2;
 
-        const handle = container.querySelector(
-            '[data-testid="window-drag-handle"]',
-        ) as HTMLElement;
+        const handle = container.querySelector('[data-testid="window-drag-handle"]') as HTMLElement;
         fireEvent.pointerDown(handle, { button: 0, clientX: dropX, clientY: dropY });
 
         act(() => {
@@ -303,9 +304,7 @@ describe('WindowManager — compact drag: move to empty slot', () => {
             />,
         );
 
-        const handle = container.querySelector(
-            '[data-testid="window-drag-handle"]',
-        ) as HTMLElement;
+        const handle = container.querySelector('[data-testid="window-drag-handle"]') as HTMLElement;
         fireEvent.pointerDown(handle, { button: 0, clientX: 50, clientY: 80 });
 
         act(() => {
@@ -468,16 +467,16 @@ describe('WindowManager — ModeToggle button', () => {
         act(() => {
             fireEvent.click(getBtn());
         });
-        expect(
-            container.querySelector('[data-window-id="win-a"]')?.getAttribute('data-mode'),
-        ).toBe('expanded');
+        expect(container.querySelector('[data-window-id="win-a"]')?.getAttribute('data-mode')).toBe(
+            'expanded',
+        );
 
         act(() => {
             fireEvent.click(getBtn());
         });
-        expect(
-            container.querySelector('[data-window-id="win-a"]')?.getAttribute('data-mode'),
-        ).toBe('compact');
+        expect(container.querySelector('[data-window-id="win-a"]')?.getAttribute('data-mode')).toBe(
+            'compact',
+        );
     });
 
     it('onModesChange is called (uncontrolled) when ModeToggle is clicked', () => {
@@ -532,9 +531,7 @@ describe('WindowManager — expanded mode: free drag', () => {
             />,
         );
         // Drag the expanded window — SnapOverlay data-active should remain false/absent.
-        const handle = container.querySelector(
-            '[data-testid="window-drag-handle"]',
-        ) as HTMLElement;
+        const handle = container.querySelector('[data-testid="window-drag-handle"]') as HTMLElement;
         fireEvent.pointerDown(handle, { button: 0, clientX: 200, clientY: 150 });
 
         act(() => {

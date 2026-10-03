@@ -8,11 +8,18 @@ import { Button } from '../../primitives/Button';
 import type { AppOrbState } from '@common/types';
 import type { ScopedHUDShellPreviewProps } from './ScopedHUDShellPreview.types';
 
-export function ScopedHUDShellPreview({ idle, onIdleToggle }: ScopedHUDShellPreviewProps): ReactElement {
+export function ScopedHUDShellPreview({
+    idle,
+    onIdleToggle,
+}: ScopedHUDShellPreviewProps): ReactElement {
     const state: AppOrbState = 'idle';
 
     return (
-        <div className={['hud-shell', idle && 'idle'].filter(Boolean).join(' ') + ' absolute inset-0'}>
+        <div
+            className={
+                ['hud-shell', idle && 'idle'].filter(Boolean).join(' ') + ' absolute inset-0'
+            }
+        >
             {/* Scene (non-fixed so it fills the preview box) */}
             <div className="lib-scene absolute inset-0" aria-hidden="true">
                 <div className="lib-scene__grid" />

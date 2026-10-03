@@ -32,9 +32,7 @@ export function OrbSection(): ReactElement {
                 <div className="flex gap-3 flex-wrap">
                     {ALL_STATES.map((s) => (
                         <div key={s} className="flex flex-col items-center gap-2">
-                            <div
-                                className="border border-border overflow-hidden relative w-[300px] h-[300px] bg-[#050508]"
-                            >
+                            <div className="border border-border overflow-hidden relative w-[300px] h-[300px] bg-[#050508]">
                                 <CssOrb state={s} particles />
                             </div>
                             <span className="text-[9px] uppercase tracking-[2px] font-mono text-text-secondary">

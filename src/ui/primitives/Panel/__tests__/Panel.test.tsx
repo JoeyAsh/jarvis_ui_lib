@@ -162,7 +162,9 @@ describe('Panel — SFX', () => {
         const { container } = renderWithSfx(
             sfx,
             <Panel>
-                <button data-sfx-hover="button" data-testid="inner-btn">btn</button>
+                <button data-sfx-hover="button" data-testid="inner-btn">
+                    btn
+                </button>
             </Panel>,
         );
         // mouseEnter on inner button (doesn't bubble to panel's onMouseEnter in RTL)

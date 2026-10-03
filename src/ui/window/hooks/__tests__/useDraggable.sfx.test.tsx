@@ -28,7 +28,11 @@ function makeSfx(): { playOneShot: MockFn; play: MockFn; stop: MockFn } & SfxCon
 
 function DragHandle(): ReactElement {
     const { onPointerDown } = useDraggable({});
-    return <div data-testid="handle" onPointerDown={onPointerDown}>drag</div>;
+    return (
+        <div data-testid="handle" onPointerDown={onPointerDown}>
+            drag
+        </div>
+    );
 }
 
 function windowPointerEvent(type: string, init?: PointerEventInit): void {
@@ -99,7 +103,11 @@ describe('useDraggable — SFX', () => {
         const sfx = makeSfx();
         function DisabledHandle(): ReactElement {
             const { onPointerDown } = useDraggable({ disabled: true });
-            return <div data-testid="handle" onPointerDown={onPointerDown}>drag</div>;
+            return (
+                <div data-testid="handle" onPointerDown={onPointerDown}>
+                    drag
+                </div>
+            );
         }
         render(
             <SfxContext.Provider value={sfx}>

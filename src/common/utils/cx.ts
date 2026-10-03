@@ -1,11 +1,5 @@
 export type ClassValue =
-    | string
-    | number
-    | false
-    | null
-    | undefined
-    | Record<string, boolean>
-    | ClassValue[];
+    string | number | false | null | undefined | Record<string, boolean> | ClassValue[];
 
 /**
  * Lightweight classnames helper. Accepts strings, numbers, objects, arrays,

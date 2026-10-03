@@ -13,7 +13,12 @@ const PARTICLE_CONFIGS: ParticleConfig[] = [
     { radius: 330, dir: -1, period: 28, phase: 5.25, size: 3, colorVar: '--accent-bright' },
 ];
 
-export function CssOrb({ state, rings = true, particles = true, className }: CssOrbProps): ReactElement {
+export function CssOrb({
+    state,
+    rings = true,
+    particles = true,
+    className,
+}: CssOrbProps): ReactElement {
     const particleRefs = useRef<(HTMLDivElement | null)[]>([]);
     const rafRef = useRef<number>(0);
 

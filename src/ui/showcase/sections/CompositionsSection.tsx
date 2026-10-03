@@ -122,18 +122,13 @@ export function CompositionsSection(): ReactElement {
                         >
                             <div className="grid grid-cols-2 gap-2">
                                 {['CPU', 'RAM', 'GPU', 'TEMP'].map((label) => (
-                                    <div
-                                        key={label}
-                                        className="border border-border px-2 py-1"
-                                    >
+                                    <div key={label} className="border border-border px-2 py-1">
                                         <div className="text-[9px] text-text-secondary font-mono uppercase tracking-[1px]">
                                             {label}
                                         </div>
                                         <div className="text-[13px] text-accent-bright font-mono tabular-nums">
                                             42
-                                            <small className="text-[9px] text-text-muted">
-                                                %
-                                            </small>
+                                            <small className="text-[9px] text-text-muted">%</small>
                                         </div>
                                     </div>
                                 ))}
@@ -159,9 +154,7 @@ export function CompositionsSection(): ReactElement {
                     center={
                         <span className="text-[9px] tracking-[8px] text-text-muted font-mono uppercase">
                             J&nbsp;A&nbsp;R&nbsp;V&nbsp;I&nbsp;S&nbsp;/&nbsp;
-                            <b className="text-accent-bright font-medium">
-                                MK XLII
-                            </b>
+                            <b className="text-accent-bright font-medium">MK XLII</b>
                         </span>
                     }
                     right={<BrandMark />}
@@ -195,8 +188,8 @@ export function CompositionsSection(): ReactElement {
                 />
                 <p className="text-[9px] font-mono text-text-muted">
                     Dock renders at{' '}
-                    <span className="text-accent">position: fixed; bottom: 24px</span> —
-                    visible at page bottom.
+                    <span className="text-accent">position: fixed; bottom: 24px</span> — visible at
+                    page bottom.
                 </p>
             </div>
         </section>

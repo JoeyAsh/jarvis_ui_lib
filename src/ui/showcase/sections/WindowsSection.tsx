@@ -60,10 +60,10 @@ export function WindowsSection(): ReactElement {
             <div>
                 <h2 className="text-[12px] text-text font-mono mb-1">WINDOWS</h2>
                 <p className="text-[10px] text-text-secondary font-mono">
-                    Dual-mode windows — compact (docked in slot) and expanded (free-floating).
-                    Drag headers to swap slots in compact mode. Click the dock/undock button (⊞/⊟)
-                    or double-click the header to toggle mode. In expanded mode: drag to move,
-                    drag edges to resize.
+                    Dual-mode windows — compact (docked in slot) and expanded (free-floating). Drag
+                    headers to swap slots in compact mode. Click the dock/undock button (⊞/⊟) or
+                    double-click the header to toggle mode. In expanded mode: drag to move, drag
+                    edges to resize.
                 </p>
             </div>
 

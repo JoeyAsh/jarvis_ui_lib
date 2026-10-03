@@ -483,10 +483,8 @@ export function WindowManager({
                 if (mode === 'expanded') {
                     const expRect = expandedRects[win.id];
                     if (expRect) {
-                        const liveX =
-                            isExpandedDragging && freeDragPos ? freeDragPos.x : expRect.x;
-                        const liveY =
-                            isExpandedDragging && freeDragPos ? freeDragPos.y : expRect.y;
+                        const liveX = isExpandedDragging && freeDragPos ? freeDragPos.x : expRect.x;
+                        const liveY = isExpandedDragging && freeDragPos ? freeDragPos.y : expRect.y;
                         position = { x: liveX, y: liveY, w: expRect.w, h: expRect.h };
                     } else {
                         // Expanded rect not yet computed — fall back to slot rect.
@@ -535,9 +533,7 @@ export function WindowManager({
                         onDragStart={
                             mode === 'expanded' ? handleExpandedDragStart : handleDragStart
                         }
-                        onDragMove={
-                            mode === 'expanded' ? handleExpandedDragMove : handleDragMove
-                        }
+                        onDragMove={mode === 'expanded' ? handleExpandedDragMove : handleDragMove}
                         onDragEnd={mode === 'expanded' ? handleExpandedDragEnd : handleDragEnd}
                         onResizeStart={handleResizeStart}
                         onResizeMove={handleResizeMove}

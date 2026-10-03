@@ -10,13 +10,7 @@ export interface PanelContentRenderProps {
 }
 
 export type WindowState =
-    | 'idle'
-    | 'dragging'
-    | 'snap-preview'
-    | 'swap-preview'
-    | 'settling'
-    | 'focused'
-    | 'resizing';
+    'idle' | 'dragging' | 'snap-preview' | 'swap-preview' | 'settling' | 'focused' | 'resizing';
 
 export interface WindowProps {
     id: string;

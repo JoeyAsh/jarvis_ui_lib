@@ -1,10 +1,4 @@
-import type {
-    CSSProperties,
-    ReactNode,
-    MouseEvent,
-    Ref,
-    PointerEventHandler,
-} from 'react';
+import type { CSSProperties, ReactNode, MouseEvent, Ref, PointerEventHandler } from 'react';
 
 export interface PanelProps {
     ix?: ReactNode;

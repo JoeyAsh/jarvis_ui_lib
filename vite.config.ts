@@ -10,7 +10,10 @@ export default defineConfig({
             { find: /^@ui$/, replacement: resolve(import.meta.dirname, 'src/ui/index.ts') },
             { find: /^@ui\/(.*)/, replacement: resolve(import.meta.dirname, 'src/ui') + '/$1' },
             { find: /^@core\/(.*)/, replacement: resolve(import.meta.dirname, 'src/core') + '/$1' },
-            { find: /^@common\/(.*)/, replacement: resolve(import.meta.dirname, 'src/common') + '/$1' },
+            {
+                find: /^@common\/(.*)/,
+                replacement: resolve(import.meta.dirname, 'src/common') + '/$1',
+            },
             { find: /^@test\/(.*)/, replacement: resolve(import.meta.dirname, 'src/test') + '/$1' },
         ],
     },

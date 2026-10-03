@@ -26,11 +26,7 @@ export function useShowcaseSfx(): ShowcaseSfxContextValue {
 /* ---- Provider ---- */
 
 export function ShowcaseSfxRoot({ children }: ShowcaseSfxRootProps): ReactElement {
-    const { isMuted, toggleMute, playOneShot, play, stop } = useAudioEngine(
-        'idle',
-        true,
-        false,
-    );
+    const { isMuted, toggleMute, playOneShot, play, stop } = useAudioEngine('idle', true, false);
 
     return (
         <ShowcaseSfxContext.Provider value={{ isMuted, toggleMute }}>

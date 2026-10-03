@@ -48,7 +48,12 @@ export function StateSimulator({
         <div className={classes}>
             <span className="lib-sim__label">{label}</span>
             {SIM_OPTIONS.map((opt) => (
-                <SimButton key={opt.key} option={opt} active={state === opt.key} onChange={onChange} />
+                <SimButton
+                    key={opt.key}
+                    option={opt}
+                    active={state === opt.key}
+                    onChange={onChange}
+                />
             ))}
         </div>
     );

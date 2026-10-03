@@ -17,12 +17,7 @@ const defaultValue: SfxContextValue = {
 
 export const SfxContext = createContext<SfxContextValue>(defaultValue);
 
-export function SfxProvider({
-    playOneShot,
-    play,
-    stop,
-    children,
-}: SfxProviderProps): ReactElement {
+export function SfxProvider({ playOneShot, play, stop, children }: SfxProviderProps): ReactElement {
     const value: SfxContextValue = { playOneShot, play, stop };
     return <SfxContext.Provider value={value}>{children}</SfxContext.Provider>;
 }

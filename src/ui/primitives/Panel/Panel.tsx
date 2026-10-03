@@ -1,7 +1,4 @@
-import {
-    type MouseEvent,
-    type ReactElement,
-} from 'react';
+import { type MouseEvent, type ReactElement } from 'react';
 import { cx } from '@common/utils/cx';
 import { useHoverSfx } from '@core/audio';
 import type { PanelProps } from './Panel.types';

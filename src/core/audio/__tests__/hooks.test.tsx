@@ -158,7 +158,9 @@ describe('useHoverSfx — panel target', () => {
             const handler = useHoverSfx('panel');
             return (
                 <div data-testid="panel" onMouseEnter={handler}>
-                    <button data-sfx-hover="button" data-testid="inner-btn">click</button>
+                    <button data-sfx-hover="button" data-testid="inner-btn">
+                        click
+                    </button>
                 </div>
             );
         }

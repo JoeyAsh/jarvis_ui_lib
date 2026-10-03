@@ -28,9 +28,7 @@ export function HUDShellSection(): ReactElement {
             </div>
 
             {/* Scoped 1280×760 preview container */}
-            <div
-                className="border border-border rounded-[2px] overflow-hidden relative w-full max-w-[1280px] h-[760px]"
-            >
+            <div className="border border-border rounded-[2px] overflow-hidden relative w-full max-w-[1280px] h-[760px]">
                 {/*
                   HUDShell is normally position:fixed so we render it inside a
                   relative container and override with a wrapper div to scope it.

@@ -27,7 +27,11 @@ export { Mono } from './primitives/Mono';
 export type { MonoProps, MonoSize } from './primitives/Mono';
 
 export { ProgressBar } from './primitives/ProgressBar';
-export type { ProgressBarProps, ProgressBarVariant, ProgressBarHeight } from './primitives/ProgressBar';
+export type {
+    ProgressBarProps,
+    ProgressBarVariant,
+    ProgressBarHeight,
+} from './primitives/ProgressBar';
 
 export { Sparkline } from './primitives/Sparkline';
 export type { SparklineProps, SparklineVariant } from './primitives/Sparkline';

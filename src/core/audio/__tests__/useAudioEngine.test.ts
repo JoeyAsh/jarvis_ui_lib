@@ -74,7 +74,9 @@ vi.mock('@core/audio/audioEngine', () => {
             if (__singleton !== null) {
                 try {
                     __singleton.destroy();
-                } catch { /* ignore */ }
+                } catch {
+                    /* ignore */
+                }
                 __singleton = null;
             }
         },
@@ -367,10 +369,9 @@ describe('useAudioEngine — state_change on every non-wake-guarded transition',
     });
 
     it('same-state update does NOT fire state_change', async () => {
-        const { rerender } = renderHook(
-            ({ orb }: { orb: 'idle' }) => useAudioEngine(orb, true),
-            { initialProps: { orb: 'idle' as 'idle' } },
-        );
+        const { rerender } = renderHook(({ orb }: { orb: 'idle' }) => useAudioEngine(orb, true), {
+            initialProps: { orb: 'idle' as 'idle' },
+        });
 
         spies.playOneShot.mockClear();
 
