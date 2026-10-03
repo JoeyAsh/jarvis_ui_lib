@@ -1,5 +1,5 @@
 import { Copy, Download, Power, Trash2 } from 'lucide-react';
-import { IconButton } from '@ui';
+import { IconButton } from 'jarvis-react-ui';
 
 export default function Variants() {
     return (

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { RefreshCw } from 'lucide-react';
-import { IconButton, Tabs } from '@ui';
+import { IconButton, Tabs } from 'jarvis-react-ui';
 
 export default function WithActions() {
     const [refreshed, setRefreshed] = useState(0);

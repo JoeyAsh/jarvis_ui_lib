@@ -1,4 +1,4 @@
-import { Callout } from '@ui';
+import { Callout } from 'jarvis-react-ui';
 
 export default function WithTitle() {
     return (

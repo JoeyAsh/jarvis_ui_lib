@@ -1,0 +1,29 @@
+# PanelBloom
+
+<Lead>
+    PanelBloom is a soft accent glow that fills a surface from its top and bottom edges. Use it to
+    show that a surface is focused or active.
+</Lead>
+
+<ComponentMeta component="PanelBloom" />
+
+## Active
+
+PanelBloom covers its parent (`position: absolute; inset: 0`), so the parent needs `relative`.
+When `active` is false the bloom is invisible; turning it on fades it in over 300ms and starts a
+slow brightness pulse. Put content after the bloom and give it `relative` so it paints on top.
+
+<Demo name="panel-bloom/Basic" />
+
+[Panel](/components/panel) has its own bloom tied to `focused`. To combine PanelBloom with the other
+chrome layers, see the custom card on [LightTrace](/components/light-trace).
+
+## Accessibility
+
+- The bloom is `aria-hidden` and ignores pointer events. It is a purely visual cue, so pair it with
+  a state that is exposed otherwise, e.g. `aria-selected` or a text label.
+- The pulse runs while `active` is true and does not respond to `prefers-reduced-motion`.
+
+## API
+
+<ApiTable component="PanelBloom" />

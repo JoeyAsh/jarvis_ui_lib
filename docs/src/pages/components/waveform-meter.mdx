@@ -1,0 +1,49 @@
+# WaveformMeter
+
+<Lead>
+    A row of animated accent bars that signals live audio, such as the user speaking or JARVIS
+    answering. It is purely decorative and does not measure a real signal.
+</Lead>
+
+<ComponentMeta component="WaveformMeter" />
+
+## Active and inactive
+
+The meter animates by default. Set `active={false}` when no audio flows: the bars shrink to dim 3px
+stubs and the animation pauses, so the layout does not jump.
+
+<Demo name="waveform-meter/ActiveInactive" />
+
+## Bar count
+
+`barCount` sets the number of bars (12 by default). The first 12 bars have staggered delays; any
+bars beyond that move in sync, so very long meters look more uniform.
+
+<Demo name="waveform-meter/BarCount" />
+
+## Mirrored
+
+`mirrored` flips the meter horizontally. Use a normal and a mirrored meter on both sides of a label
+or a [PushToTalkButton](/components/push-to-talk-button) for a symmetric layout.
+
+<Demo name="waveform-meter/Mirrored" />
+
+## With the orb state
+
+Drive `active` from the orb state: the meter usually runs while the state is `listening` or
+`speaking` and rests otherwise. This demo cycles through the states on a timer; the
+[PushToTalkButton](/components/push-to-talk-button) page shows a full voice turn.
+
+<Demo name="status-label/OrbStateCycle" />
+
+For a smaller meter that sits inline with text, use [WaveStrip](/components/wave-strip).
+
+## Accessibility
+
+- The meter is `aria-hidden`: it carries no information a screen reader user needs. Announce the
+  voice state in text, for example with [StatusLabel](/components/status-label).
+- The bars animate continuously while `active`; turn the meter off when audio stops.
+
+## API
+
+<ApiTable component="WaveformMeter" />

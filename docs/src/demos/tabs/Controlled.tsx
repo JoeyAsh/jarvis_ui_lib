@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Tabs } from '@ui';
+import { Button, Tabs } from 'jarvis-react-ui';
 
 export default function Controlled() {
     const [tab, setTab] = useState('status');

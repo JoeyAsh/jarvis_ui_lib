@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { NavList } from '@ui';
-import type { NavListGroup } from '@ui';
+import { NavList } from 'jarvis-react-ui';
+import type { NavListGroup } from 'jarvis-react-ui';
 
 const GROUPS: NavListGroup[] = [
     {

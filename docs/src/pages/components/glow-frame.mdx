@@ -1,0 +1,30 @@
+# GlowFrame
+
+<Lead>
+    GlowFrame is a hairline frame with an accent glow around its content. Use it to highlight a
+    single element, such as the current voice state or an active readout.
+</Lead>
+
+<ComponentMeta component="GlowFrame" />
+
+## Static glow
+
+By default the frame shows the `--glow` halo; `strong` switches to the larger `--glow-strong`. The
+frame is a `<div>` with a 1px `--accent-dim` border and 2px radius; add padding with `className`.
+
+<Demo name="glow-frame/Static" />
+
+## Breathe
+
+`breathe` replaces the static glow with a slow pulse.
+
+<Demo name="glow-frame/Breathe" />
+
+## Accessibility
+
+- GlowFrame is a plain `<div>` without a role; the glow is purely visual. Do not rely on it alone
+  to convey state, also put the state into text.
+
+## API
+
+<ApiTable component="GlowFrame" />

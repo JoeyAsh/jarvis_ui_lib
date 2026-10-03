@@ -1,5 +1,5 @@
 import { RefreshCw, Settings } from 'lucide-react';
-import { IconButton, Metric, Panel } from '@ui';
+import { IconButton, Metric, Panel } from 'jarvis-react-ui';
 
 export default function Header() {
     return (

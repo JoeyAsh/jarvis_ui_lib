@@ -1,4 +1,4 @@
-import { BrandMark, TopBar } from '@ui';
+import { BrandMark, TopBar } from 'jarvis-react-ui';
 
 export default function Static() {
     return (

@@ -1,4 +1,4 @@
-import { Divider } from '@ui';
+import { Divider } from 'jarvis-react-ui';
 
 export default function WithLabel() {
     return (

@@ -1,5 +1,5 @@
-import { NavList, Pill } from '@ui';
-import type { NavListGroup } from '@ui';
+import { NavList, Pill } from 'jarvis-react-ui';
+import type { NavListGroup } from 'jarvis-react-ui';
 
 const GROUPS: NavListGroup[] = [
     { items: [{ id: 'overview', label: 'Overview', href: '#overview' }] },

@@ -1,4 +1,4 @@
-import { CodeBlock, Tabs } from '@ui';
+import { CodeBlock, Tabs } from 'jarvis-react-ui';
 
 export default function Basic() {
     return (

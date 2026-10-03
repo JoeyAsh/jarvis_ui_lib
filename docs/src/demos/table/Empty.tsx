@@ -1,5 +1,5 @@
-import { Table } from '@ui';
-import type { TableColumn } from '@ui';
+import { Table } from 'jarvis-react-ui';
+import type { TableColumn } from 'jarvis-react-ui';
 
 interface Alert {
     id: string;

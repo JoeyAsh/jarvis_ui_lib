@@ -1,0 +1,41 @@
+# Metric
+
+<Lead>
+    A numeric reading in the bright accent color with an optional unit. Its digits use tabular
+    figures, so values that update live do not make the layout jump.
+</Lead>
+
+<ComponentMeta component="Metric" />
+
+## Value and unit
+
+`value` accepts a number or any node; format it yourself (thousands separators, durations).
+`unit` is shown after it in a small muted font. Pair it with a [Label](/components/label) that names
+the reading.
+
+<Demo name="metric/Units" />
+
+## Warning
+
+`warn` switches the value to the warning color. Derive it from a threshold so the reading flags
+itself when it leaves the safe range.
+
+<Demo name="metric/Warn" />
+
+## Small
+
+`small` renders the value at 12px instead of 14px. Use it in dense lists and table-like rows.
+
+<Demo name="metric/Small" />
+
+## Accessibility
+
+- Renders a `<span>` with the value and a `<small>` for the unit; it has no role.
+- Screen readers read value and unit as one string. Prefer units that read well (`ms`, `%`) or name
+  the unit in the label.
+- `warn` is shown by color only. When the warning matters, also say it in text, for example with a
+  [Pill](/components/pill).
+
+## API
+
+<ApiTable component="Metric" />

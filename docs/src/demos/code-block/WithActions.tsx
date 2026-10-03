@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { WrapText } from 'lucide-react';
-import { CodeBlock, IconButton } from '@ui';
+import { CodeBlock, IconButton } from 'jarvis-react-ui';
 
 const SOURCE = `const status = await fetch('/api/reactor/status').then((res) => res.json()); // a deliberately long line`;
 

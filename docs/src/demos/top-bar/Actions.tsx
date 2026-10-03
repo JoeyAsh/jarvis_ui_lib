@@ -1,5 +1,5 @@
 import { Bell, Settings } from 'lucide-react';
-import { BrandMark, IconButton, StatusBadge, TopBar } from '@ui';
+import { BrandMark, IconButton, StatusBadge, TopBar } from 'jarvis-react-ui';
 
 export default function Actions() {
     return (

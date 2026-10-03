@@ -1,4 +1,4 @@
-import { Toast } from '@ui';
+import { Toast } from 'jarvis-react-ui';
 
 export default function Static() {
     return (

@@ -1,0 +1,53 @@
+# StatusLabel
+
+<Lead>
+    A two-line caption for the orb: the current voice state on top and a spaced-out brand mark
+    below. Place it under the orb or the [PushToTalkButton](/components/push-to-talk-button).
+</Lead>
+
+<ComponentMeta component="StatusLabel" />
+
+## States
+
+`state` takes an `AppOrbState` and maps it to a fixed text. Every state except `idle` is shown in the
+bright accent color.
+
+| `state`     | Text           |
+| ----------- | -------------- |
+| `idle`      | `READY`        |
+| `listening` | `listening...` |
+| `thinking`  | `thinking...`  |
+| `speaking`  | `speaking...`  |
+| `follow_up` | `listening...` |
+| `working`   | `working...`   |
+
+<Demo name="status-label/States" />
+
+The texts are built in and cannot be changed or localized through props.
+
+## Custom brand
+
+`brand` replaces the default `J A R V I S` mark. Spaces between the letters are part of the string;
+the component only adds letter spacing.
+
+<Demo name="status-label/CustomBrand" />
+
+## With the orb state
+
+Feed StatusLabel the same state as your orb and pair it with
+[WaveformMeter](/components/waveform-meter)s that run while audio flows. This demo cycles through
+the states on a timer; in an app the state comes from your voice pipeline. To switch states by hand
+while developing, use [StateSimulator](/components/state-simulator).
+
+<Demo name="status-label/OrbStateCycle" />
+
+## Accessibility
+
+- The label is plain text and not a live region, so state changes are not announced. If screen
+  reader users need them, mirror the state into your own `aria-live="polite"` element.
+- It ignores pointer events (`pointer-events: none`), so it never blocks clicks on the orb behind
+  it.
+
+## API
+
+<ApiTable component="StatusLabel" />

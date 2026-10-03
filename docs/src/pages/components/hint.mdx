@@ -1,0 +1,49 @@
+# Hint
+
+<Lead>
+    A muted line of text that tells the user about a keyboard shortcut. `Hint.Key` renders a single
+    key chip and also works on its own, for example inside an [Input](/components/input).
+</Lead>
+
+<ComponentMeta component="Hint" />
+
+## Inline
+
+`position="inline"` keeps the hint in the document flow. Mix text and `Hint.Key` chips freely.
+
+<Demo name="hint/Inline" />
+
+## Fixed in the corner
+
+The default `position="fixed-br"` pins the hint 16px from the bottom-right corner of the viewport,
+above the page content. Render it once per screen for the most important shortcut.
+
+<Demo name="hint/Fixed" height="tall" />
+
+A fixed hint escapes to the viewport. To keep it inside a preview container, give the container
+`relative overflow-hidden transform-gpu` and an explicit height.
+
+## Key chips
+
+`Hint.Key` renders a `<kbd>` in a hairline frame with the accent color. Use it anywhere a shortcut
+is mentioned, such as the end adornment of an input.
+
+<Demo name="hint/KeyChip" />
+
+### Hint.Key props
+
+| Prop        | Type        | Default | Description                                     |
+| ----------- | ----------- | ------- | ----------------------------------------------- |
+| `children`  | `ReactNode` | —       | Key or key combination to show, e.g. `SPACE`.   |
+| `className` | `string`    | —       | Additional class names for the `<kbd>` element. |
+
+## Accessibility
+
+- `Hint` is a plain `<div>` with no role; `Hint.Key` is a native `<kbd>`, which marks keyboard input
+  for assistive technology.
+- The hint only describes a shortcut; the shortcut itself must be implemented by your app.
+- The text is uppercase by CSS. Write key names in normal case (`Ctrl K`), so they are read as words.
+
+## API
+
+<ApiTable component="Hint" />

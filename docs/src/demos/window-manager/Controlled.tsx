@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Mono, WindowManager } from '@ui';
-import type { ManagedWindow, PanelMode, SlotId } from '@ui';
+import { Mono, WindowManager } from 'jarvis-react-ui';
+import type { ManagedWindow, PanelMode, SlotId } from 'jarvis-react-ui';
 
 const WINDOWS: ManagedWindow[] = [
     { id: 'system', title: 'System', ix: '◈', itemRenderer: ({ mode }) => mode },

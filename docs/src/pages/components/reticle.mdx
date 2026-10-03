@@ -1,0 +1,31 @@
+# Reticle
+
+<Lead>
+    Reticle is a small crosshair glyph. Use it as a decorative marker next to labels, in corners or
+    on targets.
+</Lead>
+
+<ComponentMeta component="Reticle" />
+
+## Sizes
+
+`size` sets width and height in pixels; the default is 12. The lines are 1px wide at every size.
+
+<Demo name="reticle/Sizes" />
+
+## In a heading
+
+The lines use `currentColor` and default to the accent color. Change it with a text color utility on
+`className`, e.g. `text-text-muted`.
+
+<Demo name="reticle/InHeading" />
+
+## Accessibility
+
+- Reticle renders a `<span role="presentation">` that is `aria-hidden` by default.
+- If the crosshair carries meaning, set `aria-hidden={false}` and put the meaning into nearby text;
+  the glyph itself has no accessible name.
+
+## API
+
+<ApiTable component="Reticle" />

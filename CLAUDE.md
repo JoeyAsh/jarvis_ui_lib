@@ -80,7 +80,8 @@ scripts/                gen-api.ts, check-docs.ts (run with tsx; typed by tsconf
 ## Path aliases (tsconfig.json + vite.config.ts — keep both in sync)
 
 `@ui` → `src/ui/index.ts` · `@ui/*` → `src/ui/*` · `@common/*` · `@core/*` · `@test/*` · `@docs/*`
-(`vite.config.docs.ts` mirrors them for the docs site)
+· `jarvis-react-ui`, `jarvis-react-ui/orb` → `src/lib.ts`, `src/ui/orb/index.ts` (package name, used by
+docs demos so their code is copy-pasteable; `vite.config.docs.ts` mirrors all aliases)
 
 ## Import rules
 

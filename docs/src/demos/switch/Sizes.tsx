@@ -1,4 +1,4 @@
-import { Switch } from '@ui';
+import { Switch } from 'jarvis-react-ui';
 
 export default function Sizes() {
     return (

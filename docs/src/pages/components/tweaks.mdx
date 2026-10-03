@@ -1,0 +1,101 @@
+# Tweaks
+
+<Lead>
+    A floating development panel for adjusting the HUD theme live: accent hue, glow intensity and
+    five on/off flags. Pair it with `useTweakApply` to write the hue and glow into the design
+    tokens.
+</Lead>
+
+<ComponentMeta component="Tweaks" />
+
+<Callout variant="warning" title="Development aid">
+    Tweaks is meant for showcases, prototypes and design sessions. Do not ship it in a production
+    UI; render it behind a dev flag such as `import.meta.env.DEV`. For a permanent theme, override
+    the tokens in CSS instead (see [Theming](/customization/theming)).
+</Callout>
+
+## Panel and useTweakApply
+
+`Tweaks` is controlled: it shows `tweaks` and calls `onChange` with the complete next object.
+`open` shows or hides it. The panel is `position: fixed` in the bottom-right corner (14px from the
+right, 110px from the bottom); in this demo frame it stays within the frame.
+
+`useTweakApply(tweaks)` sets the accent and glow variables on `:root`, so moving the hue slider or
+picking a swatch recolors **this whole page**.
+
+<Demo name="tweaks/Panel" height="tall" />
+
+<Callout variant="info" title="No automatic reset">
+    `useTweakApply` does not remove its variables when the component unmounts. The demo does that in
+    its own cleanup effect so the rest of the site gets its default colors back; in an app where the
+    panel lives as long as the page you do not need it.
+</Callout>
+
+## Feature flags
+
+`scan`, `grid`, `rings`, `particles` and `idleDim` are plain booleans: neither the panel nor
+`useTweakApply` applies them. Read them in your app and pass them on, for example to the `rings` and
+`particles` props of `CssOrb`. This demo flips two of them with switches.
+
+<Demo name="tweaks/FeatureFlags" />
+
+## TWEAKS_DEFAULTS
+
+The starting values. Use them as the initial state.
+
+```tsx
+import { Tweaks, TWEAKS_DEFAULTS, useTweakApply, type TweaksState } from 'jarvis-react-ui';
+
+const [tweaks, setTweaks] = useState<TweaksState>(TWEAKS_DEFAULTS);
+useTweakApply(tweaks);
+
+<Tweaks open={open} tweaks={tweaks} onChange={setTweaks} />;
+```
+
+| Field       | Type      | Default | Description                                                |
+| ----------- | --------- | ------- | ---------------------------------------------------------- |
+| `hue`       | `number`  | `215`   | Accent hue in degrees (0–360); applied by `useTweakApply`. |
+| `glow`      | `number`  | `74`    | Glow intensity (0–100); applied by `useTweakApply`.        |
+| `scan`      | `boolean` | `true`  | Show scanlines. Read by your app.                          |
+| `grid`      | `boolean` | `true`  | Show the grid background. Read by your app.                |
+| `rings`     | `boolean` | `true`  | Show the orb rings. Read by your app.                      |
+| `particles` | `boolean` | `true`  | Show the orb particles. Read by your app.                  |
+| `idleDim`   | `boolean` | `true`  | Dim the HUD while idle. Read by your app.                  |
+
+The hue swatches in the panel select 215, 28, 150, 280 and 0.
+
+## useTweakApply
+
+`useTweakApply(tweaks: TweaksState): void` runs an effect whenever `tweaks` changes and sets these
+inline styles on `document.documentElement`:
+
+| Variable          | Value                                                            |
+| ----------------- | ---------------------------------------------------------------- |
+| `--tweak-hue`     | `hue`                                                            |
+| `--accent`        | `oklch(0.72 0.14 hue)`                                           |
+| `--accent-bright` | `oklch(0.82 0.16 hue)`                                           |
+| `--accent-speak`  | `oklch(0.77 0.15 hue)`                                           |
+| `--accent-dim`    | `oklch(0.52 0.10 hue)`                                           |
+| `--glow`          | one accent glow whose blur and opacity grow with `glow`          |
+| `--glow-strong`   | two stacked accent glows whose blur and opacity grow with `glow` |
+
+Every component that uses these tokens, including Tailwind classes such as `text-accent`, follows
+the new color immediately. Inline styles on `:root` win over the token stylesheet, so the values stay
+until you change them or remove the properties.
+
+## Sound
+
+Hovering a hue swatch or a flag toggle plays `hover_button`, clicking it plays `click`. The two range
+sliders are silent. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- The hue and glow sliders are native `<input type="range">` elements with visible labels, so arrow
+  keys adjust them.
+- Each flag is a `<button>` with `aria-pressed` and an `aria-label` equal to its caption.
+- Hue swatches are buttons named `Hue <degrees>`; the selected swatch is marked visually only.
+- The slider ids are fixed (`lib-tweaks-hue`, `lib-tweaks-glow`), so render only one panel per page.
+
+## API
+
+<ApiTable component="Tweaks" />

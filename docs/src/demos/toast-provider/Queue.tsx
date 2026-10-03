@@ -1,4 +1,4 @@
-import { Button, ToastProvider, useToast } from '@ui';
+import { Button, ToastProvider, useToast } from 'jarvis-react-ui';
 
 function Burst() {
     const { toast, dismissAll } = useToast();

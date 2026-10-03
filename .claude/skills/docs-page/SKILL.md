@@ -16,7 +16,7 @@ tests and showcase demo to understand its real behavior.
    and `className` (say which element receives it). Comments only, no type changes.
 2. **Demos**: `docs/src/demos/<slug>/<DemoName>.tsx`, one per use case (variants, sizes, states,
    controlled usage, realistic composition). Default-export one function component, import from
-   `'@ui'` only. Keep each file short; it is the example code readers copy. Fixed-position HUD
+   `'jarvis-react-ui'` only (aliased to the source; never `@ui` or `@common` in demos). Keep each file short; it is the example code readers copy. Fixed-position HUD
    pieces need `<Demo height="tall" />`; wide content `align="stretch"`.
 3. **Page**: `docs/src/pages/components/<slug>.mdx`, modelled on `button.mdx`:
     ```mdx

@@ -1,0 +1,42 @@
+# Scene
+
+<Lead>
+    Scene is the full-screen backdrop of the HUD: a dark radial background with a drifting grid,
+    scanlines, stars, a vignette, film grain and a horizon glow. Render it once behind everything
+    else.
+</Lead>
+
+<ComponentMeta component="Scene" />
+
+## Basic
+
+Scene is a `fixed`, full-viewport layer with `z-index: 0` and an opaque background. Content that
+should appear above it needs a position (e.g. `relative`) and must come after it in the tree. In
+this demo the frame contains the layer; in an app it covers the viewport.
+
+<Demo name="scene/Basic" height="tall" />
+
+## Layers
+
+`grid`, `stars` and `scanlines` switch the optional layers off; all three are on by default. The
+background, vignette, grain and horizon glow are always drawn.
+
+<Demo name="scene/Layers" height="tall" />
+
+## Backdrop
+
+Combine Scene with a [Reactor](/components/reactor) and [ViewportCorners](/components/viewport-corners)
+for the complete HUD backdrop, then put your panels on top. `HUDShell`
+renders exactly this stack for you, with props to toggle each piece.
+
+<Demo name="scene/Backdrop" height="tall" />
+
+## Accessibility
+
+- The whole backdrop is `aria-hidden`. Its layers ignore pointer events.
+- The grid drift and the star twinkle run continuously and do not respond to
+  `prefers-reduced-motion`. Pass `grid={false}` and `stars={false}` for a static backdrop.
+
+## API
+
+<ApiTable component="Scene" />

@@ -1,4 +1,4 @@
-import { Panel } from '@ui';
+import { Panel } from 'jarvis-react-ui';
 
 export default function Basic() {
     return (

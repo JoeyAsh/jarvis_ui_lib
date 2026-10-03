@@ -1,0 +1,28 @@
+# Reactor
+
+<Lead>
+    Reactor is a large, soft hemisphere of accent light rising from the bottom of the screen, with a
+    thin arc at its rim. It gives the space below the orb an ambient glow.
+</Lead>
+
+<ComponentMeta component="Reactor" />
+
+## Basic
+
+Reactor is a 900px circle, `position: fixed`, centered horizontally and pushed 360px below the
+bottom edge, with `z-index: 0`. Render it once near the root of your app, after the backdrop, and
+give content on top a position. The size is fixed and tuned for full-height viewports; in the
+shorter demo frame only the lower part of the glow is visible.
+
+<Demo name="reactor/Basic" height="tall" />
+
+`HUDShell` renders a Reactor by default (`reactor`). See
+[Scene](/components/scene) for a full backdrop that layers Reactor on top of the scene.
+
+## Accessibility
+
+- The glow is `aria-hidden`, ignores pointer events and does not animate.
+
+## API
+
+<ApiTable component="Reactor" />

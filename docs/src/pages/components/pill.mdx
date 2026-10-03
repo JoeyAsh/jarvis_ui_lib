@@ -1,0 +1,34 @@
+# Pill
+
+<Lead>
+    A small uppercase tag with a hairline border. Use it to show the state of a system, a connection
+    or a task at a glance.
+</Lead>
+
+<ComponentMeta component="Pill" />
+
+## Variants
+
+`default` is neutral. `ok`, `warn` and `err` map to the success, warning and error colors, and
+`info` uses the bright accent for transient states such as syncing.
+
+<Demo name="pill/Variants" />
+
+## Status list
+
+Pair pills with a [Label](/components/label) to build a compact status readout. Keep the pill text
+to one or two words.
+
+<Demo name="pill/StatusList" />
+
+## Accessibility
+
+- Renders a plain `<span>`; it has no role and is not focusable.
+- The text is the only status information for screen readers. Do not rely on color alone: the word
+  inside the pill must name the state.
+- For a status that changes live and must be announced, wrap the readout in an element with
+  `aria-live="polite"`.
+
+## API
+
+<ApiTable component="Pill" />

@@ -1,5 +1,5 @@
 import { Copy } from 'lucide-react';
-import { IconButton, Tooltip } from '@ui';
+import { IconButton, Tooltip } from 'jarvis-react-ui';
 
 export default function Basic() {
     return (

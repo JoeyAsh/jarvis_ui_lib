@@ -1,0 +1,47 @@
+# CornerBrackets
+
+<Lead>
+    CornerBrackets draws four small L-shaped marks at the corners of its content, the signature
+    frame of the HUD. Wrap any box in it to give it the same targeting look as a
+    [Panel](/components/panel).
+</Lead>
+
+<ComponentMeta component="CornerBrackets" />
+
+## Basic
+
+CornerBrackets renders a `relative` wrapper `<div>` around its children and places the brackets 2px
+outside the wrapper's edges. Padding on `className` moves the brackets away from the content.
+
+<Demo name="corner-brackets/Basic" />
+
+## Focused
+
+`focused` brightens the brackets to `--accent-bright` at full opacity. The change fades over 200ms,
+so it works well for hover, selection or an active state you keep in your own state.
+
+<Demo name="corner-brackets/Focused" />
+
+## Sizes
+
+`size` sets the length of each bracket arm in pixels. The default is 12.
+
+<Demo name="corner-brackets/Sizes" />
+
+<Callout title="Panels already have brackets">
+    [Panel](/components/panel) and [TopBar](/components/top-bar) draw their own corner brackets. Use
+    CornerBrackets for custom surfaces; see [LightTrace](/components/light-trace) for a card that
+    combines it with the other chrome layers.
+</Callout>
+
+## Accessibility
+
+- The four brackets are `aria-hidden` and ignore pointer events; only the children are exposed to
+  assistive technology.
+- The wrapper is a plain `<div>` without a role. `focused` is purely visual and does not move
+  keyboard focus.
+- The only motion is a 200ms color and opacity transition when `focused` changes.
+
+## API
+
+<ApiTable component="CornerBrackets" />

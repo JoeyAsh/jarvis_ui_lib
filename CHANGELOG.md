@@ -33,8 +33,18 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - JSDoc descriptions for the props of `Button`, `Panel`, `TopBar`, `WindowManager`, `Input`,
   `IconButton`, `Switch`, `Link`, `Tooltip`, `Divider`, `Callout`, `CodeBlock`, `NavList`, `Table`
   and `Tabs`, shown in editor tooltips.
+- JSDoc descriptions for the props of all primitives (`Pill`, `Label`, `Mono`, `Metric`,
+  `ProgressBar`, `Sparkline`, `Icon`, `Hint`, `BrandMark`, the HUD decoration layers,
+  `PushToTalkButton`, `WaveformMeter`, `WaveStrip`, `StatusLabel`, `StateSimulator`, `Tweaks`),
+  with documentation pages and live demos for each.
 - `TopBar`: new `position` prop (`'fixed'` default, `'sticky'`, `'static'`) so the bar can be used
   inside a page layout; new `TopBarPosition` type.
+
+### Fixed
+
+- `GlowFrame` `breathe`, `GridBackground` `drift`, `Scanlines` `sweep` and the `StatusBadge` pulse
+  referenced animations that did not exist, so they did nothing (`breathe` even removed the glow).
+  The keyframes now ship in the stylesheet.
 
 ## [0.1.0] - 2026-10-03
 

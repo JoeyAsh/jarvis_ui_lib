@@ -1,4 +1,4 @@
-import { Link } from '@ui';
+import { Link } from 'jarvis-react-ui';
 
 export default function Variants() {
     return (

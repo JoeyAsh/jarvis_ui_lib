@@ -1,0 +1,35 @@
+# Scanlines
+
+<Lead>
+    Scanlines lays fine horizontal CRT lines over its content. Use it to give a readout, a metric or
+    a media tile the look of a HUD display.
+</Lead>
+
+<ComponentMeta component="Scanlines" />
+
+## Basic
+
+Scanlines wraps its children in a `relative`, `overflow-hidden` `<div>` and draws the lines on top
+with a screen blend, so the content stays readable. Style the wrapper with `className`.
+
+<Demo name="scanlines/Basic" />
+
+## Sweep
+
+`sweep` adds a light band that moves across the content in a loop, e.g. while data is loading or
+streaming in.
+
+<Demo name="scanlines/Sweep" />
+
+For a full-screen scanline layer use [Scene](/components/scene), which includes one.
+
+## Accessibility
+
+- The scanline overlay and the sweep band are `aria-hidden` and ignore pointer events; the children
+  stay fully accessible and clickable.
+- With `prefers-reduced-motion: reduce` both the scanlines and the sweep band are hidden
+  (`motion-reduce:hidden`), and only the content remains.
+
+## API
+
+<ApiTable component="Scanlines" />

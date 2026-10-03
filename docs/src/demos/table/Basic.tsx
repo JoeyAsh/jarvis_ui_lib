@@ -1,5 +1,5 @@
-import { Pill, Table } from '@ui';
-import type { TableColumn } from '@ui';
+import { Pill, Table } from 'jarvis-react-ui';
+import type { TableColumn } from 'jarvis-react-ui';
 
 interface Subsystem {
     id: string;

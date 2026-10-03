@@ -19,7 +19,8 @@ its docs, in the same PR.**
    Accessibility (and Sound for interactive components), and `## API` with
    `<ApiTable component="Name" />`.
 2. **At least one demo** in `docs/src/demos/<slug>/<DemoName>.tsx`: one default-exported function
-   component, imports from `'@ui'` only (plus `lucide-react` / React). The file is shown verbatim
+   component, imports from `'jarvis-react-ui'` only (plus `lucide-react` / React) — the package
+   name is aliased to the source, so readers can copy the demo code unchanged. The file is shown verbatim
    as the example code, so it must be short, idiomatic and copy-pasteable.
 3. **A sidebar entry** in `docs/src/nav.ts` (`{ slug: 'components/<slug>', title, group }`).
 4. **JSDoc on every public prop** in `<Name>.types.ts`, including `children` and `className`, with

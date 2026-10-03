@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Panel } from '@ui';
+import { Panel } from 'jarvis-react-ui';
 
 const PANELS = ['Transcript', 'Agenda', 'Now Playing'];
 

@@ -1,4 +1,4 @@
-import { Button, useToast } from '@ui';
+import { Button, useToast } from 'jarvis-react-ui';
 
 export default function Duration() {
     const { toast, dismiss } = useToast();

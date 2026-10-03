@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Pill, useToast } from '@ui';
+import { Button, Pill, useToast } from 'jarvis-react-ui';
 
 export default function WithAction() {
     const { toast } = useToast();

@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { Input } from '@ui';
+import { Input } from 'jarvis-react-ui';
 
 export default function Invalid() {
     const helpId = useId();

@@ -1,4 +1,4 @@
-import { Button, Panel, useJarvis, useToast } from '@ui';
+import { Button, Panel, useJarvis, useToast } from 'jarvis-react-ui';
 
 export default function Everything() {
     const { isMuted } = useJarvis();

@@ -1,0 +1,28 @@
+# PanelRails
+
+<Lead>
+    PanelRails adds two dashed vertical rails just outside the left and right edges of a surface.
+    Use them as an extra highlight for a hovered or selected panel.
+</Lead>
+
+<ComponentMeta component="PanelRails" />
+
+## Visible
+
+PanelRails covers its parent (`position: absolute; inset: 0`), so the parent needs `relative` and
+must not clip overflow: the rails sit 4px outside its edges. They start 26px below the top, leaving
+room for a header strip, and end 4px above the bottom. `visible` fades them in over 300ms.
+
+<Demo name="panel-rails/Basic" />
+
+To combine PanelRails with the other chrome layers, see the custom card on
+[LightTrace](/components/light-trace).
+
+## Accessibility
+
+- The rails are `aria-hidden` and ignore pointer events. They are a purely visual cue.
+- The only motion is the 300ms opacity transition when `visible` changes.
+
+## API
+
+<ApiTable component="PanelRails" />
