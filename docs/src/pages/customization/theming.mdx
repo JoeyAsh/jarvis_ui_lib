@@ -1,0 +1,70 @@
+# Theming
+
+<Lead>
+    Every color, glow, radius, spacing step and timing is a CSS custom property. Components read
+    only those tokens, so overriding a few variables re-themes the whole library at runtime.
+</Lead>
+
+## Theme the whole app
+
+Override the variables on `:root`, after importing the stylesheet:
+
+```css
+:root {
+    --accent: #e8a84c;
+    --accent-bright: #ffc76e;
+    --accent-dim: #a1702d;
+    --border-bright: #4f3d2a;
+
+    /* glows: the component stylesheets read --glow*, the glow utilities read --shadow-glow* */
+    --glow: 0 0 8px #e8a84caa;
+    --glow-strong: 0 0 20px #e8a84ccc, 0 0 40px #e8a84c44;
+    --shadow-glow: 0 0 8px #e8a84caa;
+    --shadow-glow-strong: 0 0 20px #e8a84ccc, 0 0 40px #e8a84c44;
+}
+```
+
+You can also change them from JavaScript, e.g. `document.documentElement.style.setProperty('--accent', color)`,
+to switch themes at runtime.
+
+## Theme one area
+
+The utility colors are aliases declared on `:root` (`--color-accent: var(--accent)`), so they are
+resolved there. To re-theme only a sub-tree, set the alias next to the token:
+
+```css
+.my-area {
+    --accent: #e8a84c;
+    --color-accent: #e8a84c;
+}
+```
+
+## Playground
+
+Pick a preset. It is applied to the preview only, and the CSS below it is the complete scoped
+override, including the `--color-*` and `--shadow-glow*` aliases.
+
+<ThemePlayground />
+
+## What to override
+
+- **Accent**: `--accent`, `--accent-bright`, `--accent-dim` drive buttons, focus rings, active
+  states, the orb and most chrome.
+- **Glow**: `--glow` / `--glow-strong` (component stylesheets) and `--shadow-glow` /
+  `--shadow-glow-strong` (glow utilities) hold literal colors, so override them together with the
+  accent.
+- **Surfaces**: `--bg`, `--surface`, `--surface-raised`, `--border`, `--border-bright`.
+- **Text**: `--text`, `--text-secondary`, `--text-muted`.
+- **Status**: `--success`, `--warning`, `--error`.
+
+The full list with current values is on [Design tokens](/customization/tokens).
+
+## Design rules
+
+The look depends on a few rules that the tokens alone do not enforce. Keep them when you build your
+own components next to the library:
+
+- Sharp edges: radius 2px by default, never more than 4px.
+- Glow instead of drop shadows.
+- JetBrains Mono everywhere, uppercase labels with letter spacing.
+- Dark only. There is no light theme.

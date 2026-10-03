@@ -4,8 +4,11 @@ import type { ResizeDir } from '../hooks/useResizable';
 export type PanelMode = 'compact' | 'expanded';
 
 export interface PanelContentRenderProps {
+    /** `compact` while docked in a slot, `expanded` while free-floating. */
     mode: PanelMode;
+    /** Whether the window is currently focused. */
     focused: boolean;
+    /** Whether the window is being dragged or resized right now. */
     dragging: boolean;
 }
 

@@ -15,5 +15,6 @@ export interface TopBarProps {
      * @default 'fixed'
      */
     position?: TopBarPosition;
+    /** Additional class names for the root element. */
     className?: string;
 }

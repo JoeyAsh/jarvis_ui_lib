@@ -10,5 +10,6 @@ export interface DividerProps {
     variant?: DividerVariant;
     /** Optional caption centered in a horizontal divider. */
     label?: ReactNode;
+    /** Additional class names for the root `role="separator"` element (the row when labelled). */
     className?: string;
 }

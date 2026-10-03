@@ -61,6 +61,11 @@ A public component (and its types) is exported from `src/ui/index.ts`, under the
 (Primitives / Orb / Window subsystem / Compositions). Exception: Three.js orb pieces stay out of
 the barrel (see `protected.md`).
 
+## Documentation
+
+Every public component needs JSDoc on all props and a docs page with demos in the same PR, see
+`docs.md`.
+
 ## Interactivity
 
 Interactive components use the SFX hooks (see `audio.md`) and must be keyboard accessible

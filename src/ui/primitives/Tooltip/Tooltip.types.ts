@@ -18,6 +18,6 @@ export interface TooltipProps {
     delayMs?: number;
     /** Disables the tooltip without removing it from the tree. @default false */
     disabled?: boolean;
-    /** Class name for the tooltip bubble. */
+    /** Additional class names for the tooltip bubble (`role="tooltip"`), not the trigger wrapper. */
     className?: string;
 }

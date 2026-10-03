@@ -10,6 +10,7 @@ exception. If a rule conflicts with a request or cannot be met, stop and ask ins
 - `typescript.md` — strict typing, no `any` / `!` / `@ts-ignore`
 - `testing.md` — test conventions
 - `showcase.md` — every public component needs a showcase demo
+- `docs.md` — every public component needs a docs page, demos and prop JSDoc in the same PR
 - `audio.md` — SFX hooks, events and sound assets
 - `protected.md` — protected files (orbEngine, sounds, aliases, ESLint config)
 - `changelog.md` — every user-facing change adds a `CHANGELOG.md` entry under `[Unreleased]`
@@ -21,7 +22,8 @@ exception. If a rule conflicts with a request or cannot be met, stop and ask ins
 Standalone React component library for the JARVIS HUD interface (sharp, dark, JetBrains Mono,
 glow instead of shadows), published to npm as **`jarvis-react-ui`** (MIT). It contains
 primitives, compositions, a window/slot-grid system and a CSS/Three.js orb. The dev entry is a
-live **showcase** (`npm run dev` → http://localhost:5173).
+live **showcase** (`npm run dev` → http://localhost:5173). The public **documentation site**
+(`docs/`, Vite + React + MDX) is deployed to https://joeyash.github.io/jarvis_ui_lib/.
 
 Stack: React 19, TypeScript 7 (strict; `tsc` from `@typescript/native`, TS 6 API kept as `typescript` for
 typescript-eslint / vite-plugin-dts), Vite 8, Tailwind v4 (`@tailwindcss/vite`), Three.js,
@@ -38,6 +40,11 @@ npm test               # vitest run (single pass); npm run test:watch for watch 
 npm run lint           # eslint . — must be 0 errors AND 0 warnings
 npm run lint:fix
 npm run format:check   # prettier --check .  (npm run format to write)
+npm run docs:dev       # docs site dev server (:5174); runs docs:api first
+npm run build:docs     # docs site → dist-docs/ (GitHub Pages build)
+npm run preview:docs   # serve dist-docs at http://localhost:4174/jarvis_ui_lib/
+npm run docs:api       # generate prop tables from TS types + JSDoc → docs/generated/api (gitignored)
+npm run docs:check     # docs coverage per component (-- --only Name, -- --strict)
 ```
 
 `.npmrc` sets `legacy-peer-deps=true` (jsx-a11y lacks ESLint 10 peer support) — keep it.
@@ -61,11 +68,19 @@ src/core/audio/         SFX subset: SfxContext/SfxProvider, useClickSfx, useHove
 src/styles/tokens.css   design tokens (CSS custom properties, font import)
 src/index.css           Tailwind v4 `@theme` mapped onto the tokens
 src/test/setup.ts       vitest setup (jest-dom)
+docs/                   DOCUMENTATION SITE (not part of the package)
+  src/pages/**.mdx      one MDX page per route (components/<slug>.mdx, getting-started/, ...)
+  src/demos/<slug>/     live demo files; their source is shown as example code
+  src/nav.ts            sidebar entries (must match pages; checked by docs:check)
+  src/components/       Demo, ApiTable, ComponentMeta, TokenTable, ... (docs glue only)
+  plugins/              Vite/MDX build plugins (shiki highlighting, ?highlight, 404 fallback)
+scripts/                gen-api.ts, check-docs.ts (run with tsx; typed by tsconfig.scripts.json)
 ```
 
 ## Path aliases (tsconfig.json + vite.config.ts — keep both in sync)
 
-`@ui` → `src/ui/index.ts` · `@ui/*` → `src/ui/*` · `@common/*` · `@core/*` · `@test/*`
+`@ui` → `src/ui/index.ts` · `@ui/*` → `src/ui/*` · `@common/*` · `@core/*` · `@test/*` · `@docs/*`
+(`vite.config.docs.ts` mirrors them for the docs site)
 
 ## Import rules
 
@@ -85,9 +100,11 @@ A change is done only when ALL hold:
 1. `npm run typecheck`, `npm run build`, `npm run build:showcase`, `npm test` pass.
 2. `npm run lint` has 0 errors and 0 warnings; `npm run format:check` is clean.
 3. New/changed components have tests and a showcase demo (section updated, nav item if new section).
-4. Affected showcase sections were checked visually in a browser (`/verify` skill).
-5. No rule in `.claude/rules/` is violated; no `any`, `!`, `@ts-ignore`, `eslint-disable`.
-6. `CHANGELOG.md` updated per `.claude/rules/changelog.md` (user-facing changes).
+4. New/changed components have an updated docs page, demos and prop JSDoc; `npm run build:docs`
+   passes and `npm run docs:check -- --only <Name>` passes for them.
+5. Affected showcase sections and docs pages were checked visually in a browser (`/verify` skill).
+6. No rule in `.claude/rules/` is violated; no `any`, `!`, `@ts-ignore`, `eslint-disable`.
+7. `CHANGELOG.md` updated per `.claude/rules/changelog.md` (user-facing changes).
 
 ## Rules (path-scoped, auto-loaded) — `.claude/rules/`
 
@@ -95,7 +112,8 @@ See the list under "Rules are mandatory" above (loaded automatically; `changelog
 
 ## Skills — `.claude/skills/`
 
-- `/new-component` — scaffold a primitive/composition end to end
+- `/new-component` — scaffold a primitive/composition end to end (includes the docs page)
+- `/docs-page` — create or update a component's docs page, demos, nav entry and prop JSDoc
 - `/showcase-section` — add or extend a showcase section and nav item
 - `/add-sound` — add an SFX event (file, config entry, hook usage)
 - `/verify` — run all checks, then visually check the showcase with Playwright

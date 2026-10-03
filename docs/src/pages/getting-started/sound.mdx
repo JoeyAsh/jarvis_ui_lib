@@ -1,0 +1,79 @@
+# Sound effects
+
+<Lead>
+    Interactive components play short UI sounds (hover, click, drag, boot, ...) through a React
+    context. Without a provider they stay silent, so audio is strictly opt-in.
+</Lead>
+
+## Enable sound
+
+Mount the audio engine once and pass its functions to `SfxProvider`:
+
+```tsx
+import type { ReactNode } from 'react';
+import { SfxProvider, useAudioEngine } from 'jarvis-react-ui';
+
+export function SoundRoot({ children }: { children: ReactNode }) {
+    const { playOneShot, play, stop } = useAudioEngine('idle', true);
+    return (
+        <SfxProvider playOneShot={playOneShot} play={play} stop={stop}>
+            {children}
+        </SfxProvider>
+    );
+}
+```
+
+`useAudioEngine(orbState, connected, heartbeatEnabled?, options?)` also returns `isMuted` and
+`toggleMute`. The mute state is stored in `localStorage`, so it survives reloads. Try the **SFX**
+switch in the header of this site.
+
+> Browsers only start audio after a user gesture. The first sounds play after the first click or key
+> press on the page.
+
+## Serve the sound files
+
+The sound files ship inside the package under `public/sounds`. The engine loads them from a base URL
+that defaults to `/sounds/` on your site.
+
+**Option 1: copy them into your static folder** (no configuration):
+
+```bash
+cp -r node_modules/jarvis-react-ui/public/sounds public/sounds
+```
+
+**Option 2: point `soundBaseUrl` at your own path or a CDN** (pin the version in the URL):
+
+```tsx
+const { playOneShot, play, stop } = useAudioEngine('idle', true, false, {
+    soundBaseUrl: 'https://cdn.jsdelivr.net/npm/jarvis-react-ui@0.1.0/public/sounds/',
+});
+```
+
+The value may be relative or absolute; a trailing slash is added if missing. Query strings and
+hashes are rejected. The engine is a process-wide singleton, so the last applied URL wins. A CDN must
+send CORS headers (unpkg and jsDelivr do). Missing files are logged and skipped; nothing throws.
+
+## Sounds in your own components
+
+| Hook                    | Use                                                                                            |
+| ----------------------- | ---------------------------------------------------------------------------------------------- |
+| `useClickSfx(onClick)`  | Wraps a click handler: plays `click`, then calls yours.                                        |
+| `useHoverSfx('button')` | Returns an `onMouseEnter` handler that plays a throttled hover sound (`'panel'` for surfaces). |
+| `useSfx()`              | `{ playOneShot, play, stop }` for any other sound event.                                       |
+
+```tsx
+import { useClickSfx, useHoverSfx } from 'jarvis-react-ui';
+
+export function ScanButton({ onScan }: { onScan: () => void }) {
+    const onMouseEnter = useHoverSfx('button');
+    const onClick = useClickSfx(onScan);
+    return (
+        <button type="button" onMouseEnter={onMouseEnter} onClick={onClick} data-sfx-hover="button">
+            Scan
+        </button>
+    );
+}
+```
+
+Mark buttons with `data-sfx-hover="button"` so the hover sound of a surrounding panel does not play
+on top of the button's own.

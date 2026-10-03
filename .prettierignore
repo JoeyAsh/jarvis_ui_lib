@@ -4,3 +4,5 @@ public/sounds
 coverage
 *.min.js
 dist-showcase
+dist-docs
+docs/generated

@@ -1,0 +1,39 @@
+# Divider
+
+<Lead>
+    A hairline that separates content. It runs horizontally or vertically, can fade in the accent
+    color and can carry a small caption.
+</Lead>
+
+<ComponentMeta component="Divider" />
+
+## Variants
+
+`default` uses the border color. `accent` draws a line in the accent color that fades out at both
+ends.
+
+<Demo name="divider/Variants" align="stretch" />
+
+## With a label
+
+`label` centers a small uppercase caption in a horizontal divider. Use it to title groups of
+content.
+
+<Demo name="divider/WithLabel" align="stretch" />
+
+## Vertical
+
+`orientation="vertical"` stretches to the height of its flex row. Use it to group actions in a
+toolbar.
+
+<Demo name="divider/Vertical" />
+
+## Accessibility
+
+- Renders a `<div role="separator">` with `aria-orientation` set to `horizontal` or `vertical`.
+- A `label` is plain text inside the separator; it is not a heading. Use a real heading when the
+  caption titles a section.
+
+## API
+
+<ApiTable component="Divider" />

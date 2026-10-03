@@ -1,0 +1,65 @@
+# CodeBlock
+
+<Lead>
+    CodeBlock shows a snippet of source code in a dark frame with an optional header for a file
+    name, a language label, custom actions and a copy-to-clipboard button.
+</Lead>
+
+<ComponentMeta component="CodeBlock" />
+
+## Basic
+
+Pass the source as `code`. It is rendered as plain text, so no escaping is needed. The copy button
+is on by default.
+
+<Demo name="code-block/Basic" align="stretch" />
+
+## Title and language
+
+`title` (usually a file name) and `language` are shown in the header. The language is only a label;
+CodeBlock does not highlight code by itself.
+
+<Demo name="code-block/TitleAndLanguage" align="stretch" />
+
+## Header actions
+
+`actions` renders extra controls at the right end of the header, before the copy button. Use small
+icon buttons such as [IconButton](/components/icon-button) with `size="sm"`.
+
+<Demo name="code-block/WithActions" align="stretch" />
+
+## Not copyable
+
+Set `copyable={false}` to hide the copy button, e.g. for logs or output that nobody should paste.
+Without `title`, `language`, `actions` and the copy button, the header is not rendered at all.
+
+<Demo name="code-block/NotCopyable" align="stretch" />
+
+## Syntax highlighting
+
+CodeBlock does not ship a highlighter. To show colored code, highlight it yourself (ideally at
+build time, e.g. with [shiki](https://shiki.style)) and pass the resulting markup as `html`. It is
+injected into the `<code>` element, while `code` is still used for the copy button. Every code
+sample on this site works that way: the demo sources are highlighted by shiki during the build and
+handed to `CodeBlock` together with the raw source.
+
+<Demo name="code-block/Highlighted" align="stretch" />
+
+<Callout variant="warning" title="Trusted markup only">
+    `html` is injected with `dangerouslySetInnerHTML` and is not sanitized. Only pass markup that
+    you generated yourself from trusted sources. Never pass user input, URL parameters or API
+    responses, because that opens the door to cross-site scripting (XSS).
+</Callout>
+
+## Accessibility
+
+- The code is rendered in a native `<pre><code>`, which scrolls horizontally for long lines and
+  keeps whitespace intact.
+- The copy button is an [IconButton](/components/icon-button) labelled "Copy code"; after a
+  successful copy its label and tooltip switch to "Copied" for 1.5 seconds.
+- Copying uses the async Clipboard API, which browsers only allow in secure contexts (HTTPS or
+  localhost). Where it is unavailable the button does nothing.
+
+## API
+
+<ApiTable component="CodeBlock" />

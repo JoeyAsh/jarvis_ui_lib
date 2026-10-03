@@ -1,0 +1,58 @@
+# Installation
+
+<Lead>
+    Install the package and its peer dependencies, import the stylesheet once, and you are ready to
+    render your first component.
+</Lead>
+
+## Install the package
+
+```bash
+npm i jarvis-react-ui
+```
+
+The library has three peer dependencies. Install them if your project does not have them yet:
+
+```bash
+npm i react react-dom lucide-react
+```
+
+| Package              | Version  | Why                                                                   |
+| -------------------- | -------- | --------------------------------------------------------------------- |
+| `react`, `react-dom` | `^19`    | The components use React 19 APIs.                                     |
+| `lucide-react`       | `^1`     | Icons used inside components and accepted by `Icon` and `IconButton`. |
+| `three`              | optional | Only for `ThreeOrb` from `jarvis-react-ui/orb`.                       |
+
+## Import the stylesheet
+
+Import the compiled stylesheet once, at the root of your app:
+
+```tsx
+// main.tsx
+import 'jarvis-react-ui/style.css';
+```
+
+It contains the design tokens (CSS custom properties), the compiled utility layer the components
+use, keyframes and all component styles. It also loads JetBrains Mono from Google Fonts and includes
+Tailwind's preflight reset. You do **not** need Tailwind in your project.
+
+> The preflight reset normalizes margins, headings and form elements. Import the stylesheet before
+> your own styles so your rules win.
+
+## Package entry points
+
+| Import                      | Contents                                                   |
+| --------------------------- | ---------------------------------------------------------- |
+| `jarvis-react-ui`           | All components, hooks, the audio API, utilities and types. |
+| `jarvis-react-ui/orb`       | `ThreeOrb`, `createOrb` and `OrbEngine` (needs `three`).   |
+| `jarvis-react-ui/style.css` | The stylesheet.                                            |
+| `jarvis-react-ui/sounds/*`  | The bundled sound files.                                   |
+
+The package is ESM only and ships TypeScript declarations. The Three.js orb lives in its own entry,
+so `three` never ends up in your bundle unless you import it.
+
+## Next steps
+
+- Build a first screen in [Usage](/getting-started/usage).
+- Turn on sounds in [Sound effects](/getting-started/sound).
+- Change the colors in [Theming](/customization/theming).

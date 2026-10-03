@@ -1,0 +1,49 @@
+# Switch
+
+<Lead>
+    An on/off toggle for settings that take effect immediately. The track glows in the accent color
+    when the switch is on.
+</Lead>
+
+<ComponentMeta component="Switch" />
+
+## Uncontrolled
+
+Without `checked` the switch keeps its own state. Set the initial state with `defaultChecked`.
+
+<Demo name="switch/Uncontrolled" />
+
+## Controlled
+
+Pass `checked` and update it in `onCheckedChange`, which receives the new state.
+
+<Demo name="switch/Controlled" />
+
+<Callout variant="info" title="onClick">
+    `onClick` runs before the toggle. Call `event.preventDefault()` in it to veto the change.
+</Callout>
+
+## Sizes
+
+<Demo name="switch/Sizes" />
+
+## Disabled
+
+<Demo name="switch/Disabled" />
+
+## Sound
+
+Hovering plays `hover_button` and toggling plays `click` through the nearest `SfxProvider`. See
+[Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Renders a native `<button type="button">` with `role="switch"` and `aria-checked`, so Space and
+  Enter toggle it.
+- The `label` is rendered inside the button and becomes its accessible name. Without a `label`,
+  pass `aria-label`.
+- The track graphic is `aria-hidden`.
+
+## API
+
+<ApiTable component="Switch" />

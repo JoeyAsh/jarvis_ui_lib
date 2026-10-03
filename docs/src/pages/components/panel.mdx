@@ -1,0 +1,52 @@
+# Panel
+
+<Lead>
+    Panels are the framed surfaces of the HUD: a translucent glass body with corner brackets, side
+    rails, a light trace and a header strip. They hold the content of a dashboard tile or a window.
+</Lead>
+
+<ComponentMeta component="Panel" />
+
+## Basic
+
+A panel takes the size of its container or of the classes you give it. Size it with Tailwind
+utilities on `className`; the body scrolls when its content overflows.
+
+<Demo name="panel/Basic" />
+
+## Header
+
+The header shows an optional index glyph (`ix`), the `title`, three status dots, optional `actions`
+and an optional `badge`, in that order. Use [IconButton](/components/icon-button) for actions.
+
+<Demo name="panel/Header" />
+
+## Focus
+
+`focused` switches the border to the accent color and turns on an animated bloom. The panel does not
+track focus itself: `onFocus` fires on mouse down anywhere inside it, so keep the focused id in state
+and pass it back.
+
+<Demo name="panel/Focus" />
+
+<Callout title="Building windows">
+    For draggable, slot-docked panels use [WindowManager](/components/window-manager). Its windows
+    are Panels wired through `headerRef`, `onHeaderPointerDown` and `onHeaderClick` for dragging and
+    double-click docking. You rarely need these three props yourself.
+</Callout>
+
+## Sound
+
+Hovering a panel plays `hover_panel` through the nearest `SfxProvider`. Without a provider the panel
+stays silent. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- The panel is a presentational `<div>` without a landmark role. Wrap it in a `<section>` with an
+  `aria-label` when the panel is a distinct region of the page.
+- `focused` is purely visual and does not move keyboard focus.
+- Header `actions` should be real buttons with accessible names, such as `IconButton` with `label`.
+
+## API
+
+<ApiTable component="Panel" />

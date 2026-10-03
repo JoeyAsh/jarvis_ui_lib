@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+/** Props of the `CodeBlock` component. */
 export interface CodeBlockProps {
     /** Raw source code. Copied to the clipboard and rendered as plain text when `html` is absent. */
     code: string;
@@ -16,5 +17,6 @@ export interface CodeBlockProps {
     copyable?: boolean;
     /** Content rendered at the right end of the header, next to the copy button. */
     actions?: ReactNode;
+    /** Additional class names for the outer frame (wraps the header and the `<pre>`). */
     className?: string;
 }
