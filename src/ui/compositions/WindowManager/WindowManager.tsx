@@ -79,7 +79,7 @@ export function WindowManager({
         ? expandedRectsProp
         : internalExpandedRects;
 
-    // Container root � slot geometry is derived from its measured size, not the viewport.
+    // Container root — slot geometry is derived from its measured size, not the viewport.
     const rootRef = useRef<HTMLDivElement>(null);
 
     // Re-layout whenever the container (or the window) changes size.
