@@ -25,6 +25,7 @@ export function Panel({
 
     return (
         <div
+            role="presentation"
             className={cx('lib-panel', focused && 'focused', className)}
             style={style}
             onMouseDown={handleMouseDown}
@@ -48,6 +49,7 @@ export function Panel({
 
             {/* Header */}
             <div
+                role="presentation"
                 className="lib-panel__hdr"
                 ref={headerRef}
                 onPointerDown={onHeaderPointerDown}

@@ -12,7 +12,7 @@ export function Reticle({
             role="presentation"
             aria-hidden={ariaHidden}
             className={cx('relative inline-block text-accent', className)}
-            style={{ width: size, height: size } as React.CSSProperties}
+            style={{ width: size, height: size }}
         >
             {/* vertical line */}
             <span className="absolute bg-current left-1/2 top-0 bottom-0 w-px -translate-x-1/2" />

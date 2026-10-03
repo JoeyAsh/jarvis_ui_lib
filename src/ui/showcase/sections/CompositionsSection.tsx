@@ -82,7 +82,7 @@ export function CompositionsSection(): ReactElement {
                         </span>
                         <Panel
                             title="Panel · Rest"
-                            style={{ width: 280, height: 100 } as React.CSSProperties}
+                            style={{ width: 280, height: 100 }}
                             focused={focusedId === 'rest'}
                             onFocus={() => setFocusedId('rest')}
                         >
@@ -98,7 +98,7 @@ export function CompositionsSection(): ReactElement {
                         </span>
                         <Panel
                             title="Panel · Focused"
-                            style={{ width: 280, height: 100 } as React.CSSProperties}
+                            style={{ width: 280, height: 100 }}
                             focused={focusedId === 'focused' || focusedId === null}
                             onFocus={() => setFocusedId('focused')}
                         >
@@ -116,7 +116,7 @@ export function CompositionsSection(): ReactElement {
                             ix="◈"
                             title="System Vitals · live"
                             badge="LIVE"
-                            style={{ width: 280, height: 180 } as React.CSSProperties}
+                            style={{ width: 280, height: 180 }}
                             focused={focusedId === 'vitals'}
                             onFocus={() => setFocusedId('vitals')}
                         >

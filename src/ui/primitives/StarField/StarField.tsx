@@ -1,4 +1,4 @@
-import { useMemo, type CSSProperties, type ReactElement } from 'react';
+import { useMemo, type ReactElement } from 'react';
 import type { StarFieldProps, StarData } from './StarField.types';
 
 export function StarField({ count = 60, className }: StarFieldProps): ReactElement {
@@ -20,13 +20,11 @@ export function StarField({ count = 60, className }: StarFieldProps): ReactEleme
                 <i
                     key={star.id}
                     className="lib-starfield__star"
-                    style={
-                        {
-                            left: star.left,
-                            top: star.top,
-                            animationDelay: star.delay,
-                        } as CSSProperties
-                    }
+                    style={{
+                        left: star.left,
+                        top: star.top,
+                        animationDelay: star.delay,
+                    }}
                 />
             ))}
         </div>

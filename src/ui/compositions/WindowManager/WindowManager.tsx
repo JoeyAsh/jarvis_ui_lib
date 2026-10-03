@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react';
+import {
+    useLayoutEffect,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    type ReactElement,
+} from 'react';
 import { Window } from '../../window/Window';
 import type { WindowState } from '../../window/Window';
 import { SnapOverlay } from '../../window/SnapOverlay';
@@ -114,13 +121,19 @@ export function WindowManager({
 
     // Keep assignments in a ref so event handlers never close over stale values.
     const assignmentsRef = useRef(assignments);
-    assignmentsRef.current = assignments;
+    useLayoutEffect(() => {
+        assignmentsRef.current = assignments;
+    });
 
     const modesRef = useRef(modes);
-    modesRef.current = modes;
+    useLayoutEffect(() => {
+        modesRef.current = modes;
+    });
 
     const expandedRectsRef = useRef(expandedRects);
-    expandedRectsRef.current = expandedRects;
+    useLayoutEffect(() => {
+        expandedRectsRef.current = expandedRects;
+    });
 
     // Home assignments — captured once on mount (or taken from prop).
     const homeRef = useRef<Record<string, SlotId>>(homeAssignments ?? assignments);
@@ -389,7 +402,6 @@ export function WindowManager({
 
             setWindowStates((prev) => ({ ...prev, [id]: 'resizing' }));
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [customRects, slotRects],
     );
 
@@ -458,7 +470,7 @@ export function WindowManager({
 
     // Compute ghostRect for SwapOverlay.
     const swapGhostRect: SlotRect | null =
-        swapTarget !== null ? (slotRects[assignments[swapTarget] as SlotId] ?? null) : null;
+        swapTarget !== null ? (slotRects[assignments[swapTarget]] ?? null) : null;
 
     return (
         <div className={rootCls}>

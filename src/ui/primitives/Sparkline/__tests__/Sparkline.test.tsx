@@ -41,6 +41,6 @@ describe('Sparkline', () => {
 
     it('className merges onto svg', () => {
         const { container } = render(<Sparkline data={DATA} className="my-sparkline" />);
-        expect(container.querySelector('svg')?.className.baseVal).toContain('my-sparkline');
+        expect(container.querySelector('svg')?.getAttribute('class')).toContain('my-sparkline');
     });
 });

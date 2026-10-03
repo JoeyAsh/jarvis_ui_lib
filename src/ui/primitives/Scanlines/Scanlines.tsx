@@ -10,13 +10,11 @@ export function Scanlines({ children, className, sweep = false }: ScanlinesProps
             <span
                 aria-hidden
                 className="pointer-events-none absolute inset-0 motion-reduce:hidden z-[1]"
-                style={
-                    {
-                        background:
-                            'repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(76,168,232,0.035) 2px, rgba(76,168,232,0.035) 3px)',
-                        mixBlendMode: 'screen',
-                    } as React.CSSProperties
-                }
+                style={{
+                    background:
+                        'repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(76,168,232,0.035) 2px, rgba(76,168,232,0.035) 3px)',
+                    mixBlendMode: 'screen',
+                }}
             />
             {/* optional data-sweep shimmer */}
             {sweep && (
@@ -26,13 +24,11 @@ export function Scanlines({ children, className, sweep = false }: ScanlinesProps
                 >
                     <span
                         className="absolute top-0 bottom-0 w-[40%]"
-                        style={
-                            {
-                                background:
-                                    'linear-gradient(90deg, transparent, rgba(76,168,232,0.25), transparent)',
-                                animation: 'jlib-sweep-x 3.2s linear infinite',
-                            } as React.CSSProperties
-                        }
+                        style={{
+                            background:
+                                'linear-gradient(90deg, transparent, rgba(76,168,232,0.25), transparent)',
+                            animation: 'jlib-sweep-x 3.2s linear infinite',
+                        }}
                     />
                 </span>
             )}

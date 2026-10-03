@@ -49,9 +49,9 @@ describe('Tweaks — visual', () => {
         const { container } = render(
             <Tweaks open tweaks={{ ...TWEAKS_DEFAULTS, hue: 180 }} onChange={() => undefined} />,
         );
-        const slider = container.querySelector(
+        const slider = container.querySelector<HTMLInputElement>(
             'input[type="range"]#lib-tweaks-hue',
-        ) as HTMLInputElement | null;
+        );
         expect(slider?.value).toBe('180');
     });
 

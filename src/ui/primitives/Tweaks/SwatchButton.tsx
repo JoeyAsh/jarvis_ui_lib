@@ -9,7 +9,7 @@ export function SwatchButton({ hue, active, onSelect }: SwatchButtonProps): Reac
         <button
             type="button"
             className={['lib-tweaks__swatch', active && 'active'].filter(Boolean).join(' ')}
-            style={{ background: `oklch(0.72 0.14 ${hue})` } as React.CSSProperties}
+            style={{ background: `oklch(0.72 0.14 ${hue})` }}
             onClick={clickSfx}
             onMouseEnter={hoverSfx}
             aria-label={`Hue ${hue}`}

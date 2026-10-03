@@ -33,12 +33,10 @@ export function ColorsSection(): ReactElement {
                     <div key={sw.cssVar} className="border border-border rounded-[2px] p-[10px]">
                         <div
                             className="h-[42px] rounded-[2px] mb-2"
-                            style={
-                                {
-                                    background: `var(${sw.cssVar})`,
-                                    border: sw.border ? '1px solid var(--border)' : undefined,
-                                } as React.CSSProperties
-                            }
+                            style={{
+                                background: `var(${sw.cssVar})`,
+                                border: sw.border ? '1px solid var(--border)' : undefined,
+                            }}
                         />
                         <div className="text-[10px] text-text font-mono leading-[1.3]">
                             {sw.name}

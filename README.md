@@ -64,5 +64,5 @@ export it from `src/ui/index.ts`, add `__tests__/MyThing.test.tsx`. See `src/ui/
 ## Notes
 
 - `.npmrc` sets `legacy-peer-deps=true` (eslint-plugin-jsx-a11y does not yet declare ESLint 10 support).
-- Lint: a number of rules that were already violated in the original codebase are downgraded to
-  warnings in `eslint.config.js` (0 errors); fix them incrementally.
+- Lint: `npm run lint` is clean (0 errors, 0 warnings) with the full type-checked rule set;
+  no rules are downgraded. `vite.config.ts` is linted via `tsconfig.node.json`.

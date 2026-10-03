@@ -46,13 +46,13 @@ export function useAudioEngine(
     connected: boolean,
     heartbeatEnabled = false,
 ): UseAudioEngineReturn {
-    const engineRef = useRef<AudioEngine>(getAudioEngine());
+    const [engine] = useState<AudioEngine>(getAudioEngine);
 
     const [isMuted, setIsMuted] = useState<boolean>(readStoredMute);
 
     useEffect(() => {
-        engineRef.current.setMuted(isMuted);
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+        engine.setMuted(isMuted);
+    }, [engine, isMuted]);
 
     const bootFiredRef = useRef(false);
     const prevOrbStateRef = useRef<AppOrbState | null>(null);
@@ -76,22 +76,20 @@ export function useAudioEngine(
 
     const stopIdleLoops = useCallback(() => {
         clearIdleTimer();
-        engineRef.current.stop('idle_pulse');
-        engineRef.current.stop('heartbeat');
-    }, [clearIdleTimer]);
+        engine.stop('idle_pulse');
+        engine.stop('heartbeat');
+    }, [clearIdleTimer, engine]);
 
     const startIdleTimer = useCallback(() => {
         clearIdleTimer();
         idleTimerRef.current = setTimeout(() => {
-            const engine = engineRef.current;
             if (!engine) return;
             engine.play('idle_pulse');
             if (heartbeatEnabledRef.current) engine.play('heartbeat');
         }, IDLE_TIMEOUT_MS);
-    }, [clearIdleTimer]);
+    }, [clearIdleTimer, engine]);
 
     useEffect(() => {
-        const engine = engineRef.current;
         if (!engine) return;
 
         const resume = (): void => {
@@ -121,10 +119,9 @@ export function useAudioEngine(
             document.removeEventListener('pointerdown', resume);
             document.removeEventListener('keydown', resume);
         };
-    }, []);
+    }, [engine]);
 
     useEffect(() => {
-        const engine = engineRef.current;
         if (!engine) return;
 
         const onVisible = (): void => {
@@ -137,20 +134,19 @@ export function useAudioEngine(
         return () => {
             document.removeEventListener('visibilitychange', onVisible);
         };
-    }, []);
+    }, [engine]);
 
     useEffect(() => {
         const onUnload = (): void => {
-            engineRef.current.playOneShot('shutdown');
+            engine.playOneShot('shutdown');
         };
         window.addEventListener('beforeunload', onUnload);
         return () => {
             window.removeEventListener('beforeunload', onUnload);
         };
-    }, []);
+    }, [engine]);
 
     useEffect(() => {
-        const engine = engineRef.current;
         if (!engine) return;
 
         const prev = prevOrbStateRef.current;
@@ -206,16 +202,16 @@ export function useAudioEngine(
             engine.setDucking(true);
             engine.playOneShot('speech_start');
         }
-    }, [orbState, startIdleTimer, stopIdleLoops]);
+    }, [engine, orbState, startIdleTimer, stopIdleLoops]);
 
     useEffect(() => {
         if (!connected) {
             disconnectSfxTimerRef.current = setTimeout(() => {
-                engineRef.current.playOneShot('disconnect');
+                engine.playOneShot('disconnect');
             }, DISCONNECT_SFX_GATE_MS);
 
             offlineTimerRef.current = setTimeout(() => {
-                engineRef.current.playOneShot('offline');
+                engine.playOneShot('offline');
             }, OFFLINE_DELAY_MS);
         } else {
             if (disconnectSfxTimerRef.current !== null) {
@@ -238,22 +234,21 @@ export function useAudioEngine(
                 offlineTimerRef.current = null;
             }
         };
-    }, [connected]);
+    }, [connected, engine]);
 
     useEffect(() => {
         if ((orbState === 'idle' || orbState === 'follow_up') && idleTimerRef.current === null) {
             if (heartbeatEnabled) {
-                engineRef.current.play('heartbeat');
+                engine.play('heartbeat');
             } else {
-                engineRef.current.stop('heartbeat');
+                engine.stop('heartbeat');
             }
         }
-    }, [heartbeatEnabled, orbState]);
+    }, [engine, heartbeatEnabled, orbState]);
 
     useEffect(() => {
         return () => {
             clearIdleTimer();
-            const engine = engineRef.current;
             engine.stop('ambient');
             engine.stop('scan');
             engine.stop('thinking');
@@ -265,27 +260,35 @@ export function useAudioEngine(
             bootFiredRef.current = false;
             prevOrbStateRef.current = null;
         };
-    }, [clearIdleTimer]);
+    }, [clearIdleTimer, engine]);
 
     const toggleMute = useCallback(() => {
-        const engine = engineRef.current;
         const next = !engine.isMuted;
         engine.setMuted(next);
         setIsMuted(next);
         writeStoredMute(next);
-    }, []);
+    }, [engine]);
 
-    const playOneShot = useCallback((event: SfxEvent) => {
-        engineRef.current.playOneShot(event);
-    }, []);
+    const playOneShot = useCallback(
+        (event: SfxEvent) => {
+            engine.playOneShot(event);
+        },
+        [engine],
+    );
 
-    const play = useCallback((event: SfxEvent) => {
-        engineRef.current.play(event);
-    }, []);
+    const play = useCallback(
+        (event: SfxEvent) => {
+            engine.play(event);
+        },
+        [engine],
+    );
 
-    const stop = useCallback((event: SfxEvent) => {
-        engineRef.current.stop(event);
-    }, []);
+    const stop = useCallback(
+        (event: SfxEvent) => {
+            engine.stop(event);
+        },
+        [engine],
+    );
 
     void WAKE_GUARD_MS;
 
@@ -295,7 +298,7 @@ export function useAudioEngine(
         playOneShot,
         play,
         stop,
-        engine: engineRef.current,
+        engine: engine,
     };
 }
 

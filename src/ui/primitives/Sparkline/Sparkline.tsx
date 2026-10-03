@@ -36,7 +36,7 @@ export function Sparkline({
             viewBox={`0 0 ${width} ${height}`}
             preserveAspectRatio="none"
             className={cx('block w-full', className)}
-            style={{ height: `${height}px` } as React.CSSProperties}
+            style={{ height: `${height}px` }}
             aria-label={ariaLabel}
             role={ariaLabel ? 'img' : undefined}
         >

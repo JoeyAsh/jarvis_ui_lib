@@ -13,48 +13,52 @@
  */
 
 import { act, renderHook } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest';
 
 // ---------------------------------------------------------------------------
 // Shared spy registry — the mock class delegates to these.
 // ---------------------------------------------------------------------------
 
-const spies = {
-    resumeContext: vi.fn().mockResolvedValue(undefined),
-    playOneShot: vi.fn(),
-    play: vi.fn(),
-    stop: vi.fn(),
-    setMuted: vi.fn(),
-    setDucking: vi.fn(),
-    destroy: vi.fn(),
-};
+function createSpies() {
+    return {
+        resumeContext: vi.fn<() => Promise<void>>().mockResolvedValue(undefined),
+        playOneShot: vi.fn<(event: string) => void>(),
+        play: vi.fn<(event: string) => void>(),
+        stop: vi.fn<(event: string) => void>(),
+        setMuted: vi.fn<(muted: boolean) => void>(),
+        setDucking: vi.fn<(ducked: boolean) => void>(),
+        destroy: vi.fn<() => void>(),
+    };
+}
+
+const spies = createSpies();
 
 let mockIsMuted = false;
 
 vi.mock('@core/audio/audioEngine', () => {
     class AudioEngine {
-        resumeContext(...args: Parameters<typeof spies.resumeContext>) {
-            return spies.resumeContext(...args);
+        resumeContext(): Promise<void> {
+            return spies.resumeContext();
         }
-        playOneShot(...args: Parameters<typeof spies.playOneShot>) {
-            return spies.playOneShot(...args);
+        playOneShot(event: string): void {
+            spies.playOneShot(event);
         }
-        play(...args: Parameters<typeof spies.play>) {
-            return spies.play(...args);
+        play(event: string): void {
+            spies.play(event);
         }
-        stop(...args: Parameters<typeof spies.stop>) {
-            return spies.stop(...args);
+        stop(event: string): void {
+            spies.stop(event);
         }
-        setMuted(...args: Parameters<typeof spies.setMuted>) {
-            return spies.setMuted(...args);
+        setMuted(muted: boolean): void {
+            spies.setMuted(muted);
         }
-        setDucking(...args: Parameters<typeof spies.setDucking>) {
-            return spies.setDucking(...args);
+        setDucking(ducked: boolean): void {
+            spies.setDucking(ducked);
         }
-        destroy(...args: Parameters<typeof spies.destroy>) {
-            return spies.destroy(...args);
+        destroy(): void {
+            spies.destroy();
         }
-        get isMuted() {
+        get isMuted(): boolean {
             return mockIsMuted;
         }
     }
@@ -104,15 +108,18 @@ beforeEach(() => {
 // ---------------------------------------------------------------------------
 
 let localStorageStore: Record<string, string> = {};
+let setItemSpy: MockInstance<Storage['setItem']>;
 
 beforeEach(() => {
     localStorageStore = {};
     vi.spyOn(Storage.prototype, 'getItem').mockImplementation(
         (key: string) => localStorageStore[key] ?? null,
     );
-    vi.spyOn(Storage.prototype, 'setItem').mockImplementation((key: string, value: string) => {
-        localStorageStore[key] = value;
-    });
+    setItemSpy = vi
+        .spyOn(Storage.prototype, 'setItem')
+        .mockImplementation((key: string, value: string) => {
+            localStorageStore[key] = value;
+        });
     vi.spyOn(Storage.prototype, 'removeItem').mockImplementation((key: string) => {
         delete localStorageStore[key];
     });
@@ -126,13 +133,7 @@ afterEach(() => {
     __resetAudioEngineSingleton();
     vi.clearAllMocks();
     mockIsMuted = false;
-    spies.resumeContext = vi.fn().mockResolvedValue(undefined);
-    spies.playOneShot = vi.fn();
-    spies.play = vi.fn();
-    spies.stop = vi.fn();
-    spies.setMuted = vi.fn();
-    spies.setDucking = vi.fn();
-    spies.destroy = vi.fn();
+    Object.assign(spies, createSpies());
 });
 
 // ---------------------------------------------------------------------------
@@ -195,6 +196,7 @@ describe('useAudioEngine — orbState loop management', () => {
                 { initialProps: { orb: 'idle' as 'idle' | 'thinking' } },
             );
             rerender({ orb: 'thinking' });
+            await Promise.resolve();
         });
 
         expect(spies.play).toHaveBeenCalledWith('thinking');
@@ -207,6 +209,7 @@ describe('useAudioEngine — orbState loop management', () => {
                 { initialProps: { orb: 'idle' as 'idle' | 'thinking' } },
             );
             rerender({ orb: 'thinking' });
+            await Promise.resolve();
         });
 
         expect(spies.stop).toHaveBeenCalledWith('idle_pulse');
@@ -220,6 +223,7 @@ describe('useAudioEngine — orbState loop management', () => {
                 { initialProps: { orb: 'idle' as 'idle' | 'working' } },
             );
             rerender({ orb: 'working' });
+            await Promise.resolve();
         });
 
         expect(spies.play).toHaveBeenCalledWith('working');
@@ -235,12 +239,14 @@ describe('useAudioEngine — orbState loop management', () => {
 
         await act(async () => {
             rerender({ orb: 'thinking' });
+            await Promise.resolve();
         });
 
         spies.play.mockClear();
 
         await act(async () => {
             rerender({ orb: 'idle' });
+            await Promise.resolve();
         });
 
         expect(spies.play).toHaveBeenCalledWith('ambient');
@@ -253,6 +259,7 @@ describe('useAudioEngine — orbState loop management', () => {
                 { initialProps: { orb: 'idle' as 'idle' | 'listening' } },
             );
             rerender({ orb: 'listening' });
+            await Promise.resolve();
         });
 
         expect(spies.setDucking).toHaveBeenCalledWith(true);
@@ -266,6 +273,7 @@ describe('useAudioEngine — orbState loop management', () => {
                 { initialProps: { orb: 'idle' as 'idle' | 'speaking' } },
             );
             rerender({ orb: 'speaking' });
+            await Promise.resolve();
         });
 
         expect(spies.setDucking).toHaveBeenCalledWith(true);
@@ -282,6 +290,7 @@ describe('useAudioEngine — orbState loop management', () => {
 
         await act(async () => {
             rerender({ orb: 'thinking' });
+            await Promise.resolve();
         });
 
         const newPlayCalls = spies.play.mock.calls.slice(playCallsBefore);
@@ -293,6 +302,7 @@ describe('useAudioEngine — state_change on every non-wake-guarded transition',
     it('does NOT fire state_change on initial render (prev === null)', async () => {
         await act(async () => {
             renderHook(() => useAudioEngine('idle', true));
+            await Promise.resolve();
         });
         const stateChangeCalls = spies.playOneShot.mock.calls.filter(
             (c) => c[0] === 'state_change',
@@ -310,6 +320,7 @@ describe('useAudioEngine — state_change on every non-wake-guarded transition',
 
         await act(async () => {
             rerender({ orb: 'thinking' });
+            await Promise.resolve();
         });
 
         expect(spies.playOneShot).toHaveBeenCalledWith('state_change');
@@ -325,6 +336,7 @@ describe('useAudioEngine — state_change on every non-wake-guarded transition',
 
         await act(async () => {
             rerender({ orb: 'listening' });
+            await Promise.resolve();
         });
 
         expect(spies.playOneShot).toHaveBeenCalledWith('state_change');
@@ -338,12 +350,14 @@ describe('useAudioEngine — state_change on every non-wake-guarded transition',
 
         await act(async () => {
             rerender({ orb: 'thinking' });
+            await Promise.resolve();
         });
 
         spies.playOneShot.mockClear();
 
         await act(async () => {
             rerender({ orb: 'working' });
+            await Promise.resolve();
         });
 
         expect(spies.playOneShot).toHaveBeenCalledWith('state_change');
@@ -357,12 +371,14 @@ describe('useAudioEngine — state_change on every non-wake-guarded transition',
 
         await act(async () => {
             rerender({ orb: 'listening' });
+            await Promise.resolve();
         });
 
         spies.playOneShot.mockClear();
 
         await act(async () => {
             rerender({ orb: 'thinking' });
+            await Promise.resolve();
         });
 
         expect(spies.playOneShot).toHaveBeenCalledWith('state_change');
@@ -370,13 +386,14 @@ describe('useAudioEngine — state_change on every non-wake-guarded transition',
 
     it('same-state update does NOT fire state_change', async () => {
         const { rerender } = renderHook(({ orb }: { orb: 'idle' }) => useAudioEngine(orb, true), {
-            initialProps: { orb: 'idle' as 'idle' },
+            initialProps: { orb: 'idle' as const },
         });
 
         spies.playOneShot.mockClear();
 
         await act(async () => {
             rerender({ orb: 'idle' });
+            await Promise.resolve();
         });
 
         const stateChangeCalls = spies.playOneShot.mock.calls.filter(
@@ -394,6 +411,7 @@ describe('useAudioEngine — duck toggling', () => {
                 { initialProps: { orb: 'idle' as 'idle' | 'listening' } },
             );
             rerender({ orb: 'listening' });
+            await Promise.resolve();
         });
 
         expect(spies.setDucking).toHaveBeenCalledWith(true);
@@ -407,12 +425,14 @@ describe('useAudioEngine — duck toggling', () => {
 
         await act(async () => {
             rerender({ orb: 'listening' });
+            await Promise.resolve();
         });
 
         spies.setDucking.mockClear();
 
         await act(async () => {
             rerender({ orb: 'idle' });
+            await Promise.resolve();
         });
 
         expect(spies.setDucking).toHaveBeenCalledWith(false);
@@ -426,6 +446,7 @@ describe('useAudioEngine — toggleMute()', () => {
 
         await act(async () => {
             result.current.toggleMute();
+            await Promise.resolve();
         });
 
         expect(spies.setMuted).toHaveBeenCalledWith(true);
@@ -437,9 +458,10 @@ describe('useAudioEngine — toggleMute()', () => {
 
         await act(async () => {
             result.current.toggleMute();
+            await Promise.resolve();
         });
 
-        expect(Storage.prototype.setItem).toHaveBeenCalledWith('jarvis.sfx.muted', 'true');
+        expect(setItemSpy).toHaveBeenCalledWith('jarvis.sfx.muted', 'true');
     });
 
     it('toggling twice restores original mute state', async () => {
@@ -448,15 +470,17 @@ describe('useAudioEngine — toggleMute()', () => {
 
         await act(async () => {
             result.current.toggleMute();
+            await Promise.resolve();
         });
         mockIsMuted = true;
 
         await act(async () => {
             result.current.toggleMute();
+            await Promise.resolve();
         });
 
         expect(spies.setMuted).toHaveBeenLastCalledWith(false);
-        expect(Storage.prototype.setItem).toHaveBeenLastCalledWith('jarvis.sfx.muted', 'false');
+        expect(setItemSpy).toHaveBeenLastCalledWith('jarvis.sfx.muted', 'false');
     });
 });
 
@@ -466,6 +490,7 @@ describe('useAudioEngine — localStorage persistence', () => {
 
         await act(async () => {
             renderHook(() => useAudioEngine('idle', true));
+            await Promise.resolve();
         });
 
         expect(spies.setMuted).toHaveBeenCalledWith(true);
@@ -476,6 +501,7 @@ describe('useAudioEngine — localStorage persistence', () => {
 
         await act(async () => {
             renderHook(() => useAudioEngine('idle', true));
+            await Promise.resolve();
         });
 
         expect(spies.setMuted).toHaveBeenCalledWith(false);
@@ -487,6 +513,7 @@ describe('useAudioEngine — localStorage persistence', () => {
         });
 
         expect(() => renderHook(() => useAudioEngine('idle', true))).not.toThrow();
+        await Promise.resolve();
     });
 
     it('localStorage setItem unavailable → toggleMute does not throw', async () => {
@@ -500,6 +527,7 @@ describe('useAudioEngine — localStorage persistence', () => {
         await expect(
             act(async () => {
                 result.current.toggleMute();
+                await Promise.resolve();
             }),
         ).resolves.toBeUndefined();
     });
@@ -550,7 +578,7 @@ describe('useAudioEngine — cleanup on unmount', () => {
         expect(spies.destroy).not.toHaveBeenCalled();
 
         // All loop events must be stopped so the next remount starts clean.
-        const stoppedEvents = spies.stop.mock.calls.map((c) => c[0] as string);
+        const stoppedEvents = spies.stop.mock.calls.map((c) => c[0]);
         expect(stoppedEvents).toContain('ambient');
         expect(stoppedEvents).toContain('scan');
         expect(stoppedEvents).toContain('thinking');
@@ -559,6 +587,7 @@ describe('useAudioEngine — cleanup on unmount', () => {
         expect(stoppedEvents).toContain('heartbeat');
         expect(stoppedEvents).toContain('drag_move');
         expect(stoppedEvents).toContain('resize');
+        await Promise.resolve();
     });
 });
 
@@ -568,6 +597,7 @@ describe('useAudioEngine — playOneShot passthrough', () => {
 
         await act(async () => {
             result.current.playOneShot('click');
+            await Promise.resolve();
         });
 
         expect(spies.playOneShot).toHaveBeenCalledWith('click');
@@ -580,6 +610,7 @@ describe('useAudioEngine — play/stop passthrough', () => {
 
         await act(async () => {
             result.current.play('drag_move');
+            await Promise.resolve();
         });
 
         expect(spies.play).toHaveBeenCalledWith('drag_move');
@@ -590,6 +621,7 @@ describe('useAudioEngine — play/stop passthrough', () => {
 
         await act(async () => {
             result.current.stop('drag_move');
+            await Promise.resolve();
         });
 
         expect(spies.stop).toHaveBeenCalledWith('drag_move');

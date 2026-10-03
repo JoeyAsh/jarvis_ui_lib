@@ -13,4 +13,4 @@ export type PanelId =
 
 export type PanelMode = 'compact' | 'expanded';
 
-export type { SlotId } from '@ui/window/slotGrid';
+export type { SlotId } from '@ui';

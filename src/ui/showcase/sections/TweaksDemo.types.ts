@@ -1,3 +1,2 @@
-export interface TweaksDemoProps {
-    // No external props — purely self-contained demo
-}
+/** TweaksDemo takes no external props — purely self-contained demo. */
+export type TweaksDemoProps = Record<string, never>;

@@ -35,6 +35,6 @@ describe('Icon', () => {
 
     it('className merges', () => {
         const { container } = render(<Icon icon={Mic} className="text-accent" />);
-        expect(container.querySelector('svg')?.className.baseVal).toContain('text-accent');
+        expect(container.querySelector('svg')?.getAttribute('class')).toContain('text-accent');
     });
 });

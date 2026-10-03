@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useCallback, useEffect, useRef, useState } from 'react';
 import type React from 'react';
 import { useSfx } from '@core/audio';
 
@@ -53,14 +53,18 @@ export function useResizable(options: UseResizableOptions): {
     const onStartRef = useRef(onStart);
     const onMoveRef = useRef(onMove);
     const onEndRef = useRef(onEnd);
-    onStartRef.current = onStart;
-    onMoveRef.current = onMove;
-    onEndRef.current = onEnd;
+    useLayoutEffect(() => {
+        onStartRef.current = onStart;
+        onMoveRef.current = onMove;
+        onEndRef.current = onEnd;
+    });
 
     const playRef = useRef(play);
     const stopRef = useRef(stop);
-    playRef.current = play;
-    stopRef.current = stop;
+    useLayoutEffect(() => {
+        playRef.current = play;
+        stopRef.current = stop;
+    });
 
     useEffect(() => {
         return () => {

@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useLayoutEffect, useCallback, useRef, useState } from 'react';
 import type React from 'react';
 import { useDraggable } from './useDraggable';
 import type { DragState } from './useDraggable';
@@ -72,26 +72,32 @@ export function useSlotDrag(options: UseSlotDragOptions): {
     const assignmentsRef = useRef(assignments);
     const vpWRef = useRef(viewportW);
     const vpHRef = useRef(viewportH);
-    assignmentsRef.current = assignments;
-    vpWRef.current = viewportW;
-    vpHRef.current = viewportH;
+    useLayoutEffect(() => {
+        assignmentsRef.current = assignments;
+        vpWRef.current = viewportW;
+        vpHRef.current = viewportH;
+    });
 
     const onDragStartRef = useRef(onDragStart);
     const onDragMoveRef = useRef(onDragMove);
     const onDragEndRef = useRef(onDragEnd);
-    onDragStartRef.current = onDragStart;
-    onDragMoveRef.current = onDragMove;
-    onDragEndRef.current = onDragEnd;
+    useLayoutEffect(() => {
+        onDragStartRef.current = onDragStart;
+        onDragMoveRef.current = onDragMove;
+        onDragEndRef.current = onDragEnd;
+    });
 
-    const windowAtSlot = useCallback((slotId: SlotId): WindowId | null => {
-        for (const [wId, sId] of Object.entries(assignmentsRef.current)) {
-            if (sId === slotId && wId !== windowId) {
-                return wId;
+    const windowAtSlot = useCallback(
+        (slotId: SlotId): WindowId | null => {
+            for (const [wId, sId] of Object.entries(assignmentsRef.current)) {
+                if (sId === slotId && wId !== windowId) {
+                    return wId;
+                }
             }
-        }
-        return null;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+            return null;
+        },
+        [windowId],
+    );
 
     const handleStart = useCallback(
         (e: PointerEvent): void => {
