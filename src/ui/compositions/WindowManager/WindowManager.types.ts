@@ -29,6 +29,14 @@ export interface ViewportSize {
     h: number;
 }
 
+/** Container size plus its offset from the browser viewport origin. */
+export interface ContainerGeometry extends ViewportSize {
+    /** Distance from the viewport's left edge to the container's left edge. */
+    left: number;
+    /** Distance from the viewport's top edge to the container's top edge. */
+    top: number;
+}
+
 export interface ManagedWindow {
     id: string;
     title?: ReactNode;

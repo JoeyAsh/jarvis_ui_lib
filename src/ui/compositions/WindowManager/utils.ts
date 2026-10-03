@@ -1,13 +1,18 @@
 import type { SlotRect } from '../../window/slotGrid';
 import type { ResizeDir } from '../../window/hooks/useResizable';
-import type { ExpandedRect, ViewportSize } from './WindowManager.types';
-import { MIN_EXPANDED_W, MIN_EXPANDED_H } from './constants';
+import type { ContainerGeometry, ExpandedRect, ViewportSize } from './WindowManager.types';
+import {
+    MIN_EXPANDED_W,
+    MIN_EXPANDED_H,
+    FALLBACK_VIEWPORT_W,
+    FALLBACK_VIEWPORT_H,
+} from './constants';
 import { TOP_BAR_HEIGHT } from '../../window/slotGrid';
 
 export function getViewport(): ViewportSize {
     return {
-        w: typeof window !== 'undefined' ? window.innerWidth : 1280,
-        h: typeof window !== 'undefined' ? window.innerHeight : 900,
+        w: typeof window !== 'undefined' ? window.innerWidth : FALLBACK_VIEWPORT_W,
+        h: typeof window !== 'undefined' ? window.innerHeight : FALLBACK_VIEWPORT_H,
     };
 }
 
@@ -65,4 +70,31 @@ export function defaultExpandedRect(slotRect: SlotRect, W: number, H: number): E
     const x = Math.floor(cx - w / 2);
     const y = Math.floor(cy - h / 2);
     return clampExpandedRect({ x, y, w, h }, W, H);
+}
+
+/**
+ * Measure the WindowManager container. Returns its size and viewport offset.
+ * Falls back to the full viewport (offset 0,0) when the element is missing or
+ * has no layout box (SSR, jsdom, display:none). For a full-screen container
+ * (position: fixed; inset: 0) the result equals the viewport, so behaviour is
+ * unchanged.
+ */
+export function measureContainer(el: HTMLElement | null): ContainerGeometry {
+    if (el !== null) {
+        const r = el.getBoundingClientRect();
+        if (r.width > 0 && r.height > 0) {
+            return { w: r.width, h: r.height, left: r.left, top: r.top };
+        }
+    }
+    const vp = getViewport();
+    return { w: vp.w, h: vp.h, left: 0, top: 0 };
+}
+
+/** Convert viewport (client) pointer coordinates to container-local coordinates. */
+export function toLocalPoint(
+    clientX: number,
+    clientY: number,
+    geometry: ContainerGeometry,
+): { x: number; y: number } {
+    return { x: clientX - geometry.left, y: clientY - geometry.top };
 }

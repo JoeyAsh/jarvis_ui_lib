@@ -10,7 +10,7 @@ import { Window } from '../../window/Window';
 import type { WindowState } from '../../window/Window';
 import { SnapOverlay } from '../../window/SnapOverlay';
 import { SwapOverlay } from '../../window/SwapOverlay';
-import { computeAllSlots, TOP_BAR_HEIGHT } from '../../window/slotGrid';
+import { computeAllSlots, slotAtPoint, TOP_BAR_HEIGHT } from '../../window/slotGrid';
 import type { SlotId, SlotRect } from '../../window/slotGrid';
 import type { ResizeDir } from '../../window/hooks/useResizable';
 import type {
@@ -23,7 +23,14 @@ import type {
     FreeDrag,
     WindowLocalState,
 } from './WindowManager.types';
-import { getViewport, applyResize, clampExpandedRect, defaultExpandedRect } from './utils';
+import {
+    getViewport,
+    measureContainer,
+    toLocalPoint,
+    applyResize,
+    clampExpandedRect,
+    defaultExpandedRect,
+} from './utils';
 import { MIN_EXPANDED_W, MIN_EXPANDED_H } from './constants';
 
 // Re-export so consumers can import from this module.
@@ -72,18 +79,21 @@ export function WindowManager({
         ? expandedRectsProp
         : internalExpandedRects;
 
-    // Recompute on resize.
-    useEffect(() => {
-        const onResize = (): void => {
-            const vp = getViewport();
-            setViewport(vp);
-            // Clamp all expanded rects to new viewport.
+    // Container root � slot geometry is derived from its measured size, not the viewport.
+    const rootRef = useRef<HTMLDivElement>(null);
+
+    // Re-layout whenever the container (or the window) changes size.
+    useLayoutEffect(() => {
+        const remeasure = (): void => {
+            const g = measureContainer(rootRef.current);
+            setViewport((prev) => (prev.w === g.w && prev.h === g.h ? prev : { w: g.w, h: g.h }));
+            // Clamp all expanded rects to the new container size.
             if (!isExpandedControlled) {
                 setInternalExpandedRects((prev) => {
                     const next = { ...prev };
                     let changed = false;
                     for (const id of Object.keys(next)) {
-                        const clamped = clampExpandedRect(next[id], vp.w, vp.h);
+                        const clamped = clampExpandedRect(next[id], g.w, g.h);
                         if (
                             clamped.x !== next[id].x ||
                             clamped.y !== next[id].y ||
@@ -98,9 +108,17 @@ export function WindowManager({
                 });
             }
         };
-        window.addEventListener('resize', onResize);
+        remeasure();
+        window.addEventListener('resize', remeasure);
+        let observer: ResizeObserver | null = null;
+        const el = rootRef.current;
+        if (typeof ResizeObserver !== 'undefined' && el !== null) {
+            observer = new ResizeObserver(remeasure);
+            observer.observe(el);
+        }
         return () => {
-            window.removeEventListener('resize', onResize);
+            window.removeEventListener('resize', remeasure);
+            if (observer !== null) observer.disconnect();
         };
     }, [isExpandedControlled]);
 
@@ -187,22 +205,12 @@ export function WindowManager({
                 // Compute default expanded rect from slot.
                 const slotId = assignmentsRef.current[id] as SlotId | undefined;
                 if (slotId !== undefined) {
-                    const rects = computeAllSlots(
-                        typeof window !== 'undefined' ? window.innerWidth : 1280,
-                        typeof window !== 'undefined' ? window.innerHeight : 900,
-                    );
+                    const g = measureContainer(rootRef.current);
+                    const rects = computeAllSlots(g.w, g.h);
                     const existing = expandedRectsRef.current[id];
                     const rect = existing
-                        ? clampExpandedRect(
-                              existing,
-                              typeof window !== 'undefined' ? window.innerWidth : 1280,
-                              typeof window !== 'undefined' ? window.innerHeight : 900,
-                          )
-                        : defaultExpandedRect(
-                              rects[slotId],
-                              typeof window !== 'undefined' ? window.innerWidth : 1280,
-                              typeof window !== 'undefined' ? window.innerHeight : 900,
-                          );
+                        ? clampExpandedRect(existing, g.w, g.h)
+                        : defaultExpandedRect(rects[slotId], g.w, g.h);
                     setExpandedRect(id, rect);
                 }
             }
@@ -245,22 +253,9 @@ export function WindowManager({
         (id: string, _dx: number, _dy: number, e: PointerEvent): void => {
             const current = modesRef.current[id] ?? 'compact';
             if (current === 'expanded') return;
-            const rects = computeAllSlots(
-                typeof window !== 'undefined' ? window.innerWidth : 1280,
-                typeof window !== 'undefined' ? window.innerHeight : 900,
-            );
-            let hovered: SlotId | null = null;
-            for (const [slotId, rect] of Object.entries(rects) as [SlotId, SlotRect][]) {
-                if (
-                    e.clientX >= rect.x &&
-                    e.clientX <= rect.x + rect.w &&
-                    e.clientY >= rect.y &&
-                    e.clientY <= rect.y + rect.h
-                ) {
-                    hovered = slotId;
-                    break;
-                }
-            }
+            const g = measureContainer(rootRef.current);
+            const p = toLocalPoint(e.clientX, e.clientY, g);
+            const hovered = slotAtPoint(p.x, p.y, computeAllSlots(g.w, g.h));
             setSnapTarget(hovered);
             const swap = hovered !== null ? windowAtSlot(hovered, id) : null;
             setSwapTarget(swap);
@@ -273,22 +268,9 @@ export function WindowManager({
             const current = modesRef.current[id] ?? 'compact';
             if (current === 'expanded') return;
 
-            const rects = computeAllSlots(
-                typeof window !== 'undefined' ? window.innerWidth : 1280,
-                typeof window !== 'undefined' ? window.innerHeight : 900,
-            );
-            let hovered: SlotId | null = null;
-            for (const [slotId, rect] of Object.entries(rects) as [SlotId, SlotRect][]) {
-                if (
-                    e.clientX >= rect.x &&
-                    e.clientX <= rect.x + rect.w &&
-                    e.clientY >= rect.y &&
-                    e.clientY <= rect.y + rect.h
-                ) {
-                    hovered = slotId;
-                    break;
-                }
-            }
+            const g = measureContainer(rootRef.current);
+            const p = toLocalPoint(e.clientX, e.clientY, g);
+            const hovered = slotAtPoint(p.x, p.y, computeAllSlots(g.w, g.h));
 
             const current2 = assignmentsRef.current;
             const originSlot = current2[id] as SlotId | undefined;
@@ -341,7 +323,7 @@ export function WindowManager({
             if (current !== 'expanded') return;
             setFreeDrag((prev) => {
                 if (!prev || prev.windowId !== id) return prev;
-                const vp = getViewport();
+                const vp = measureContainer(rootRef.current);
                 const rect = expandedRectsRef.current[id];
                 const w = rect ? rect.w : MIN_EXPANDED_W;
                 const h = rect ? rect.h : MIN_EXPANDED_H;
@@ -473,7 +455,7 @@ export function WindowManager({
         swapTarget !== null ? (slotRects[assignments[swapTarget]] ?? null) : null;
 
     return (
-        <div className={rootCls}>
+        <div ref={rootRef} className={rootCls}>
             {windows.map((win) => {
                 const slotId = assignments[win.id] as SlotId | undefined;
                 if (slotId === undefined) return null;
