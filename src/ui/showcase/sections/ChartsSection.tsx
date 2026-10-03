@@ -4,6 +4,7 @@ import { AreaChart } from '../../compositions/AreaChart';
 import { BarChart } from '../../compositions/BarChart';
 import type { ChartSeries } from '../../compositions/ChartFrame';
 import { ShowcaseCard } from '../ShowcaseCard';
+import { SectionHeader } from '../SectionHeader';
 
 const HOURS = ['00', '04', '08', '12', '16', '20'];
 
@@ -25,13 +26,10 @@ const TRAFFIC: ChartSeries[] = [
 export function ChartsSection(): ReactElement {
     return (
         <section id="charts" className="flex flex-col gap-4">
-            <div>
-                <h2 className="text-[12px] text-text font-mono mb-1">COMPOSITIONS — Charts</h2>
-                <p className="text-[10px] text-text-secondary font-mono">
-                    LineChart · AreaChart · BarChart — hover or focus + arrow keys to inspect
-                </p>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
+            <SectionHeader title="Compositions · Charts">
+                LineChart · AreaChart · BarChart — hover or focus + arrow keys to inspect
+            </SectionHeader>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                 <ShowcaseCard
                     label="LINE CHART (smooth)"
                     code={`<LineChart aria-label="Load" series={series} labels={hours} curve="smooth" />`}

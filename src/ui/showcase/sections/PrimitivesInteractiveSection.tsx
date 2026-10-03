@@ -5,6 +5,7 @@ import { WaveStrip } from '../../primitives/WaveStrip';
 import { StatusLabel } from '../../primitives/StatusLabel';
 import { Hint } from '../../primitives/Hint';
 import { ShowcaseCard } from '../ShowcaseCard';
+import { SectionHeader } from '../SectionHeader';
 import type { AppOrbState } from '@common/types';
 
 const STATES: AppOrbState[] = ['idle', 'listening', 'thinking', 'speaking', 'working'];
@@ -24,13 +25,10 @@ export function PrimitivesInteractiveSection(): ReactElement {
 
     return (
         <section id="primitives-interactive" className="flex flex-col gap-4">
-            <div>
-                <h2 className="text-[12px] text-text font-mono mb-1">PRIMITIVES — Interactive</h2>
-                <p className="text-[10px] text-text-secondary font-mono">
-                    PushToTalkButton · WaveformMeter · WaveStrip · StatusLabel · Hint
-                </p>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
+            <SectionHeader title="Primitives · Interactive">
+                PushToTalkButton · WaveformMeter · WaveStrip · StatusLabel · Hint
+            </SectionHeader>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                 <ShowcaseCard label="PTT IDLE" code={`<PushToTalkButton />`} dark>
                     <PushToTalkButton />
                 </ShowcaseCard>

@@ -12,6 +12,7 @@ import { Pill } from '../../primitives/Pill';
 import { Button } from '../../primitives/Button';
 import { Toast } from '../../primitives/Toast';
 import { ShowcaseCard } from '../ShowcaseCard';
+import { SectionHeader } from '../SectionHeader';
 import { ToastTriggers } from './ToastTriggers';
 import { DialogDemo } from './DialogDemo';
 import { Kbd } from '../../primitives/Kbd';
@@ -68,14 +69,11 @@ export function CompositionsLayoutSection(): ReactElement {
 
     return (
         <section id="compositions-layout" className="flex flex-col gap-4">
-            <div>
-                <h2 className="text-[12px] text-text font-mono mb-1">COMPOSITIONS — Layout</h2>
-                <p className="text-[10px] text-text-secondary font-mono">
-                    NavList · Tabs · Table · CodeBlock · Callout · Toast · Dialog · Kbd · TopBar
-                    position
-                </p>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
+            <SectionHeader title="Compositions · Layout">
+                NavList · Tabs · Table · CodeBlock · Callout · Toast · Dialog · Kbd · TopBar
+                position
+            </SectionHeader>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                 <ShowcaseCard
                     label="NAV LIST (click to activate)"
                     code={`<NavList\n  groups={groups}\n  activeId={active}\n  onItemClick={(item, e) => {\n    e.preventDefault();\n    setActive(item.id);\n  }}\n/>`}

@@ -2,8 +2,11 @@ import { useState, type ReactElement } from 'react';
 import { WindowManager } from '../../compositions/WindowManager';
 import type { ManagedWindow, PanelMode } from '../../compositions/WindowManager';
 import type { SlotId } from '../../window/slotGrid';
-import { Mono } from '../../primitives/Mono';
+import { Table } from '../../compositions/Table';
+import type { TableColumn } from '../../compositions/Table';
+import { SectionHeader } from '../SectionHeader';
 import { makeRenderer } from './WindowsSection.utils';
+import type { WindowStateRow } from './WindowsSection.types';
 
 // ── Window definitions ────────────────────────────────────────────────────────
 
@@ -41,6 +44,12 @@ const INITIAL_ASSIGNMENTS: Record<string, SlotId> = {
     'win-nowplaying': 'B1',
 };
 
+const STATE_COLUMNS: TableColumn<WindowStateRow>[] = [
+    { key: 'id', header: 'Window', render: (r) => <span className="text-accent">{r.id}</span> },
+    { key: 'slot', header: 'Slot', render: (r) => r.slot },
+    { key: 'mode', header: 'Mode', render: (r) => r.mode },
+];
+
 // ── Section ───────────────────────────────────────────────────────────────────
 
 export function WindowsSection(): ReactElement {
@@ -48,55 +57,30 @@ export function WindowsSection(): ReactElement {
     const [focusedId, setFocusedId] = useState<string | null>(null);
     const [modes, setModes] = useState<Record<string, PanelMode>>({});
 
-    const currentModesDisplay = Object.entries(INITIAL_ASSIGNMENTS)
-        .map(([id]) => {
-            const mode = modes[id] ?? 'compact';
-            return `${id.replace('win-', '')} → ${mode}`;
-        })
-        .join('  ·  ');
+    const rows: WindowStateRow[] = Object.entries(assignments).map(([id, slot]) => ({
+        id: id.replace('win-', ''),
+        slot,
+        mode: modes[id] ?? 'compact',
+    }));
 
     return (
         <section id="windows" className="flex flex-col gap-4">
-            <div>
-                <h2 className="text-[12px] text-text font-mono mb-1">WINDOWS</h2>
-                <p className="text-[10px] text-text-secondary font-mono">
-                    Dual-mode windows — compact (docked in slot) and expanded (free-floating). Drag
-                    headers to swap slots in compact mode. Click the dock/undock button (⊞/⊟) or
-                    double-click the header to toggle mode. In expanded mode: drag to move, drag
-                    edges to resize.
-                </p>
-            </div>
+            <SectionHeader title="Windows">
+                WindowManager with dual-mode windows. Compact: drag a header onto another slot to
+                move or swap · ↺ restores the home slot. Expanded (⊞ or double-click the header):
+                drag to move · resize via edges/corners · ⊟ docks back.
+            </SectionHeader>
 
-            {/* Interaction hint */}
-            <p className="text-[10px] text-text-secondary font-mono tracking-[0.5px]">
-                Compact: drag header to snap/swap slots · Reset (↺) restores home slot and docks.
-                Expanded: drag to move · resize via edges/corners · ⊟ to dock back.
-            </p>
+            <Table
+                caption="Live window state"
+                columns={STATE_COLUMNS}
+                rows={rows}
+                getRowKey={(r) => r.id}
+                dense
+            />
 
-            {/* Assignment readout */}
-            <div className="border border-border px-3 py-2 bg-[rgba(13,13,20,0.6)]">
-                <div className="text-[9px] tracking-[2px] uppercase text-text-secondary font-mono mb-1">
-                    Current Assignments
-                </div>
-                <Mono size="sm" secondary>
-                    {Object.entries(assignments)
-                        .map(([wId, sId]) => `${wId.replace('win-', '')} → ${sId}`)
-                        .join('  ·  ')}
-                </Mono>
-                <div className="text-[9px] tracking-[2px] uppercase text-text-secondary font-mono mt-2 mb-1">
-                    Current Modes
-                </div>
-                <Mono size="sm" secondary>
-                    {currentModesDisplay}
-                </Mono>
-                <div className="text-[8px] text-text-muted font-mono mt-1.5 tracking-[1px]">
-                    Drag compact window header to another slot to move · drag onto occupied slot to
-                    swap
-                </div>
-            </div>
-
-            {/* Scoped stage */}
-            <div className="relative h-[860px] w-full border border-border bg-[rgba(5,5,8,0.9)] overflow-hidden transform-gpu">
+            {/* Scoped stage: transform-gpu contains the fixed WindowManager layers */}
+            <div className="relative h-[860px] w-full overflow-hidden border border-border bg-[rgba(5,5,8,0.9)] transform-gpu">
                 <WindowManager
                     windows={MANAGED_WINDOWS}
                     assignments={assignments}
