@@ -8,6 +8,7 @@ export const GROUP_ORDER: DocsGroup[] = [
     'HUD decoration',
     'Voice & status',
     'Compositions',
+    'Charts',
     'Window',
     'Orb',
     'Hooks',
@@ -83,6 +84,10 @@ export const PAGES: DocsPage[] = [
     { slug: 'components/tabs', title: 'Tabs', group: 'Compositions' },
     { slug: 'components/toast-provider', title: 'ToastProvider', group: 'Compositions' },
     { slug: 'components/window-manager', title: 'WindowManager', group: 'Compositions' },
+
+    { slug: 'components/line-chart', title: 'LineChart', group: 'Charts' },
+    { slug: 'components/area-chart', title: 'AreaChart', group: 'Charts' },
+    { slug: 'components/bar-chart', title: 'BarChart', group: 'Charts' },
 
     { slug: 'components/window', title: 'Window', group: 'Window' },
     { slug: 'components/snap-overlay', title: 'SnapOverlay', group: 'Window' },
