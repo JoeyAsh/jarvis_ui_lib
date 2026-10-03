@@ -1,7 +1,7 @@
 /* ================================================================
    PushToTalkButton — 72×72 circular PTT chrome.
    Ported verbatim from handoff lines 439-458 (CSS) + 944-985 (JSX).
-   Keyframes: ppulse, spin — defined in ui.css. Custom CSS because the pulse rings and
+   Keyframes: ppulse, jlib-ptt-spin — defined in ui.css. Custom CSS because the pulse rings and
    rotating rim are pseudo-element / multi-layer chrome Tailwind cannot express.
    ================================================================ */
 
@@ -81,6 +81,6 @@
     inset: -4px;
     border-radius: 50%;
     border: 1px dashed var(--accent-dim);
-    animation: spin 22s linear infinite;
+    animation: jlib-ptt-spin 22s linear infinite;
     pointer-events: none;
 }

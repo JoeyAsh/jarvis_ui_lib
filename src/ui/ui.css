@@ -82,20 +82,11 @@
     }
 }
 
-@keyframes spin {
+/* Push-to-talk rim: rotation only. Library keyframes must not reuse Tailwind's names
+   (spin, ping, pulse, bounce): style.css would override `animate-spin` etc. in consumer apps. */
+@keyframes jlib-ptt-spin {
     to {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
-
-@keyframes pulse {
-    0% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.85;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(2.4);
-        opacity: 0;
+        transform: rotate(360deg);
     }
 }
 

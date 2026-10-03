@@ -109,6 +109,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `WaveformMeter`: every bar gets its own animation delay, not only the first 12.
 - `Tweaks`: slider ids are unique per instance (`useId`).
 - `StateSimulator`: the toolbar wraps on narrow screens instead of overflowing its container.
+- `PushToTalkButton`: the rotating dashed rim was shifted to the top left (it reused a `spin`
+  keyframe meant for centered orb rings).
+- The stylesheet no longer defines `spin` and `pulse` keyframes, which overrode Tailwind's
+  `animate-spin` / `animate-pulse` in apps that use Tailwind.
 
 ## [0.1.0] - 2026-10-03
 

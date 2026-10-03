@@ -18,16 +18,20 @@ function sourceFiles(dir: string): string[] {
     });
 }
 
+function stylesheets(): string[] {
+    return sourceFiles(UI_DIR)
+        .filter((f) => f.endsWith('.css'))
+        .map((f) => readFileSync(f, 'utf8'));
+}
+
 describe('keyframes', () => {
     it('every jlib-* animation used by a component is defined in a stylesheet', () => {
         const files = sourceFiles(UI_DIR);
         const read = (f: string): string => readFileSync(f, 'utf8');
         const defined = new Set(
-            files
-                .filter((f) => f.endsWith('.css'))
-                .flatMap((f) =>
-                    [...read(f).matchAll(/@keyframes\s+(jlib-[\w-]+)/g)].map((m) => m[1]),
-                ),
+            stylesheets().flatMap((text) =>
+                [...text.matchAll(/@keyframes\s+(jlib-[\w-]+)/g)].map((m) => m[1]),
+            ),
         );
         // Uses anywhere: inline styles and Tailwind arbitrary classes (`animate-[jlib-x_200ms…]`) in
         // TS/TSX, and `animation` declarations in CSS. Excluded: the @keyframes definitions
@@ -42,5 +46,12 @@ describe('keyframes', () => {
 
         expect(used.size).toBeGreaterThan(0);
         expect(missing).toEqual([]);
+    });
+
+    it('does not redefine Tailwind default keyframes (style.css would override animate-spin etc.)', () => {
+        const clashes = stylesheets().flatMap((text) =>
+            [...text.matchAll(/@keyframes\s+(spin|ping|pulse|bounce)\b/g)].map((m) => m[1]),
+        );
+        expect(clashes).toEqual([]);
     });
 });
