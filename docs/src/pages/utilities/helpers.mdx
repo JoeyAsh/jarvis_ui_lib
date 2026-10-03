@@ -1,0 +1,33 @@
+# cx & time helpers
+
+<Lead>
+    Small, dependency-free helpers the components use internally and that are handy in HUD apps: a
+    class name joiner and formatters for clocks, ages and durations.
+</Lead>
+
+```ts
+import { cx, formatTime, relativeTime, formatAge, formatDuration } from 'jarvis-react-ui';
+```
+
+<Demo name="helpers/TimeHelpers" align="stretch" />
+
+## cx
+
+```ts
+cx('base', isActive && 'active', { muted: isMuted }, ['a', 'b']);
+```
+
+Joins strings, numbers, arrays and objects (keys with truthy values) into one class string and skips
+falsy values. It does not merge conflicting Tailwind classes; the last one in the generated
+stylesheet wins.
+
+## Time helpers
+
+| Function               | Example output | Description                                       |
+| ---------------------- | -------------- | ------------------------------------------------- |
+| `formatTime(iso)`      | `14:30`        | 24-hour clock time of an ISO timestamp.           |
+| `relativeTime(iso)`    | `1m`           | Compact age: `now`, `Xs`, `Xm`, `Xh`, `Xd`.       |
+| `formatAge(iso, now?)` | `3m ago`       | Readable age; `now` defaults to the current time. |
+| `formatDuration(ms)`   | `1m 30s`       | Duration in the two largest units.                |
+
+All of them take ISO 8601 strings (or milliseconds) and use the browser's local time zone.

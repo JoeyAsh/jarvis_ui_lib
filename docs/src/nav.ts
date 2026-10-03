@@ -72,11 +72,32 @@ export const PAGES: DocsPage[] = [
 
     { slug: 'components/callout', title: 'Callout', group: 'Compositions' },
     { slug: 'components/code-block', title: 'CodeBlock', group: 'Compositions' },
+    { slug: 'components/glass-card', title: 'GlassCard', group: 'Compositions' },
+    { slug: 'components/hud-shell', title: 'HUDShell', group: 'Compositions' },
     { slug: 'components/nav-list', title: 'NavList', group: 'Compositions' },
+    { slug: 'components/status-badge', title: 'StatusBadge', group: 'Compositions' },
+    { slug: 'components/status-dock', title: 'StatusDock', group: 'Compositions' },
     { slug: 'components/table', title: 'Table', group: 'Compositions' },
     { slug: 'components/tabs', title: 'Tabs', group: 'Compositions' },
     { slug: 'components/toast-provider', title: 'ToastProvider', group: 'Compositions' },
     { slug: 'components/window-manager', title: 'WindowManager', group: 'Compositions' },
+
+    { slug: 'components/window', title: 'Window', group: 'Window' },
+    { slug: 'components/snap-overlay', title: 'SnapOverlay', group: 'Window' },
+    { slug: 'components/swap-overlay', title: 'SwapOverlay', group: 'Window' },
+    { slug: 'components/slot-ghost', title: 'SlotGhost', group: 'Window' },
+
+    { slug: 'components/css-orb', title: 'CssOrb', group: 'Orb' },
+    { slug: 'components/three-orb', title: 'ThreeOrb', group: 'Orb' },
+
+    { slug: 'hooks/sound-hooks', title: 'Sound hooks', group: 'Hooks' },
+    { slug: 'hooks/use-audio-engine', title: 'useAudioEngine', group: 'Hooks' },
+    { slug: 'hooks/use-draggable', title: 'useDraggable', group: 'Hooks' },
+    { slug: 'hooks/use-resizable', title: 'useResizable', group: 'Hooks' },
+    { slug: 'hooks/use-slot-drag', title: 'useSlotDrag', group: 'Hooks' },
+
+    { slug: 'utilities/slot-grid', title: 'Slot grid', group: 'Utilities' },
+    { slug: 'utilities/helpers', title: 'cx & time helpers', group: 'Utilities' },
 
     { slug: 'components/state-simulator', title: 'StateSimulator', group: 'Dev tools' },
     { slug: 'components/tweaks', title: 'Tweaks', group: 'Dev tools' },

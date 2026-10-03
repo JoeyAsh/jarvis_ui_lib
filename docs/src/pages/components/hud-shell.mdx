@@ -1,0 +1,86 @@
+# HUDShell
+
+<Lead>
+    HUDShell is the full-screen frame of a JARVIS app. It draws the complete backdrop and gives you
+    slots for the top bar, the orb, your panels and the voice dock, layered in the right order.
+    Start every app with it.
+</Lead>
+
+<ComponentMeta component="HUDShell" />
+
+## Starting an app
+
+Wrap the app in [JarvisProvider](/components/jarvis-provider) for sound and toasts, then render
+HUDShell as its root element and fill the slots.
+
+```tsx
+import 'jarvis-react-ui/style.css';
+import { createRoot } from 'react-dom/client';
+import { JarvisProvider } from 'jarvis-react-ui';
+import { App } from './App'; // renders <HUDShell ...> like the demo below
+
+createRoot(document.getElementById('root') as HTMLElement).render(
+    <JarvisProvider>
+        <App />
+    </JarvisProvider>,
+);
+```
+
+The demo shows a typical `App`: a [TopBar](/components/top-bar) with a
+[StatusBadge](/components/status-badge), a [CssOrb](/components/css-orb), two panels and a
+[StatusDock](/components/status-dock) that share one `AppOrbState`. Click the microphone to switch
+between `idle` and `listening`. The demo shrinks the orb with `scale-[0.6]` to fit the frame; drop
+that class in a full-screen app.
+
+<Demo name="hud-shell/AppShell" height="tall" />
+
+## Layers
+
+HUDShell is a `position: fixed; inset: 0` element. From back to front it renders:
+
+| Layer                                            | Rendered   | Toggle                           |
+| ------------------------------------------------ | ---------- | -------------------------------- |
+| [Scene](/components/scene) background            | always     | `scene` (grid, stars, scanlines) |
+| [Reactor](/components/reactor) glow              | by default | `reactor={false}`                |
+| [ViewportCorners](/components/viewport-corners)  | by default | `viewportCorners={false}`        |
+| `orb` slot, full-screen and click-through (z 0)  | when set   | —                                |
+| `children` in a relative layer (z 10)            | when set   | —                                |
+| `dock` slot, rendered as is (StatusDock is z 25) | when set   | —                                |
+| `topbar` slot (z 30)                             | when set   | —                                |
+
+The `children` layer starts at the top of the screen, spans its width and is only as tall as its
+content. Lay out your panels inside it, or use [WindowManager](/components/window-manager) for draggable windows.
+
+<Demo name="hud-shell/Basic" height="tall" />
+
+`scene` switches off single Scene layers; the dark background, vignette, grain and horizon glow
+always stay. `reactor` and `viewportCorners` remove the glow and the corner marks.
+
+<Demo name="hud-shell/Layers" height="tall" />
+
+## Idle mode
+
+`idle` dims and blurs every [Panel](/components/panel) inside `children`, makes them click-through
+and fades the top bar, so only the orb remains in focus. Use it when the assistant has been
+inactive for a while. The top bar stays clickable, which is where this demo puts the toggle.
+
+<Demo name="hud-shell/Idle" height="tall" />
+
+## Working state
+
+`working` adds an `is-working` class to the root element as a hook for your own styles while a tool
+call runs. The library ships no styles for it; the amber working look of the orb comes from passing
+`state="working"` to the orb itself.
+
+## Accessibility
+
+- HUDShell renders plain `<div>`s without landmark roles. Give your content its own structure, for
+  example a `<main>` around the panels and a `<nav>` in the top bar.
+- The Scene, Reactor and ViewportCorners layers are `aria-hidden` and ignore pointer events; the
+  orb layer ignores pointer events as well.
+- Idle mode makes panels click-through but does not hide them from assistive technology or remove
+  them from the tab order.
+
+## API
+
+<ApiTable component="HUDShell" />

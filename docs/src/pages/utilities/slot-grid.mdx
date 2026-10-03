@@ -1,0 +1,40 @@
+# Slot grid
+
+<Lead>
+    The geometry behind the window system: nine fixed slots around the edges of the viewport,
+    leaving the center free for the orb.
+</Lead>
+
+```ts
+import {
+    computeSlot,
+    computeAllSlots,
+    slotAtPoint,
+    SLOT_IDS,
+    TOP_BAR_HEIGHT,
+    SLOT_MARGIN,
+    COLUMN_WIDTH,
+    BOTTOM_STRIP_HEIGHT,
+} from 'jarvis-react-ui';
+import type { SlotId, SlotRect } from 'jarvis-react-ui';
+```
+
+## Layout
+
+- Left column `L1`–`L3` and right column `R1`–`R3`, each `COLUMN_WIDTH` (316px) wide.
+- Bottom strip `B1`–`B3`, `BOTTOM_STRIP_HEIGHT` (140px) high.
+- `TOP_BAR_HEIGHT` (60px) stays free for a [TopBar](/components/top-bar); `SLOT_MARGIN` (12px) is the
+  gap between slots and edges.
+
+<Demo name="slot-grid/SlotMap" />
+
+## Functions
+
+| Function                         | Returns                    | Description                                    |
+| -------------------------------- | -------------------------- | ---------------------------------------------- |
+| `computeSlot(id, width, height)` | `SlotRect`                 | Rectangle of one slot for a viewport size.     |
+| `computeAllSlots(width, height)` | `Record<SlotId, SlotRect>` | All nine rectangles.                           |
+| `slotAtPoint(x, y, rects)`       | `SlotId \| null`           | The slot containing a point, e.g. the pointer. |
+
+`SlotRect` is `{ x, y, w, h }` in pixels relative to the viewport (or the container the window
+system fills). `SLOT_IDS` lists the ids in visual order.

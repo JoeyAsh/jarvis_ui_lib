@@ -1,0 +1,50 @@
+# useSlotDrag
+
+<Lead>
+    A drag hook for the 9-slot grid. While dragging it reports which slot is under the pointer and
+    whether a window already sits there, so you can show snap and swap previews. `WindowManager` is
+    built on it.
+</Lead>
+
+```ts
+import { useSlotDrag } from 'jarvis-react-ui';
+
+const { onPointerDown, slotDragState } = useSlotDrag({
+    windowId: 'system',
+    assignments, // Record<windowId, SlotId>
+    viewportW,
+    viewportH,
+    onDragEnd: (id, state) => {
+        if (state.snapTarget) moveOrSwap(id, state.snapTarget, state.swapTarget);
+    },
+});
+```
+
+## When to use it
+
+Use [WindowManager](/components/window-manager) for the complete behavior. Reach for `useSlotDrag`
+when you build your own window layout on the same grid, together with
+[SnapOverlay](/components/snap-overlay), [SwapOverlay](/components/swap-overlay) and
+[SlotGhost](/components/slot-ghost) for the visual feedback.
+
+## Options
+
+| Option                    | Type                     | Description                                        |
+| ------------------------- | ------------------------ | -------------------------------------------------- |
+| `windowId`                | `string`                 | Id of the dragged window.                          |
+| `assignments`             | `Record<string, SlotId>` | Current window → slot mapping.                     |
+| `viewportW` / `viewportH` | `number`                 | Size the slot grid is computed for.                |
+| `onDragStart`             | `(id, e) => void`        | Called when the drag begins.                       |
+| `onDragMove`              | `(id, state, e) => void` | Called on every move with the live targets.        |
+| `onDragEnd`               | `(id, state, e) => void` | Called on release; `state.snapTarget` is the drop. |
+| `disabled`                | `boolean`                | Disables dragging.                                 |
+
+## State
+
+`slotDragState` is `{ dragging, snapTarget, swapTarget, dx, dy }`:
+
+- `snapTarget`: the slot under the pointer, or `null` outside the grid.
+- `swapTarget`: the id of the window already in `snapTarget`, or `null` when it is free.
+
+The grid geometry comes from [computeAllSlots](/utilities/slot-grid). Drag sounds come from
+[useDraggable](/hooks/use-draggable).

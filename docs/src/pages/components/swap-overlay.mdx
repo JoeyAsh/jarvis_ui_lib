@@ -1,0 +1,45 @@
+# SwapOverlay
+
+<Lead>
+    SwapOverlay draws a dashed ghost over the window that a drop would swap with.
+    [WindowManager](/components/window-manager) shows it while a docked window is dragged onto an
+    occupied slot.
+</Lead>
+
+<ComponentMeta component="SwapOverlay" />
+
+## Swap ghost
+
+When `active` is on and `ghostRect` is set, a dashed outline covers that rect; `hovered` gives it a
+stronger fill and glow. Like [SnapOverlay](/components/snap-overlay), the overlay is a
+`position: fixed` layer over its containing block and ignores the pointer.
+
+<Demo name="swap-overlay/Basic" />
+
+## In WindowManager
+
+During a drag of a `compact` window, WindowManager checks whether the slot under the pointer holds
+another window. If it does, SwapOverlay is turned on with `hovered`, and `ghostRect` is that
+window's slot, so the user sees which window will trade places. SnapOverlay keeps highlighting the
+target slot at the same time.
+
+## Standalone use
+
+With [useSlotDrag](/hooks/use-slot-drag), `slotDragState.swapTarget` is the id of the window in the
+hovered slot. Look up its slot rect (see the [slot grid helpers](/utilities/slot-grid)) and pass it
+as `ghostRect`:
+
+```tsx
+const { swapTarget } = slotDragState;
+const swapRect = swapTarget !== null ? slotRects[assignments[swapTarget]] : null;
+
+<SwapOverlay active={swapRect !== null} ghostRect={swapRect} hovered />;
+```
+
+## Accessibility
+
+The overlay is decorative: its root is `aria-hidden` and it takes no pointer events.
+
+## API
+
+<ApiTable component="SwapOverlay" />

@@ -37,6 +37,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `ProgressBar`, `Sparkline`, `Icon`, `Hint`, `BrandMark`, the HUD decoration layers,
   `PushToTalkButton`, `WaveformMeter`, `WaveStrip`, `StatusLabel`, `StateSimulator`, `Tweaks`),
   with documentation pages and live demos for each.
+- JSDoc descriptions for the props of `Window`, `SnapOverlay`, `SwapOverlay`, `SlotGhost`, `CssOrb`,
+  `ThreeOrb`, `GlassCard`, `StatusBadge`, `StatusDock` and `HUDShell`. Every public component is now
+  documented on the docs site, plus pages for the hooks and the slot-grid and time helpers.
 - `TopBar`: new `position` prop (`'fixed'` default, `'sticky'`, `'static'`) so the bar can be used
   inside a page layout; new `TopBarPosition` type.
 

@@ -1,0 +1,50 @@
+# useAudioEngine
+
+<Lead>
+    The React binding of the Web Audio engine that plays all UI sounds. `JarvisProvider` calls it
+    for you; use it directly only for a custom setup.
+</Lead>
+
+```ts
+import { useAudioEngine } from 'jarvis-react-ui';
+
+const { isMuted, toggleMute, playOneShot, play, stop, engine } = useAudioEngine(
+    orbState, // AppOrbState: 'idle' | 'listening' | 'thinking' | 'speaking' | 'working' | 'follow_up'
+    connected, // boolean
+    heartbeatEnabled, // boolean, default false
+    { soundBaseUrl, initialMuted }, // optional
+);
+```
+
+## What it does
+
+- Loads the sound files from `soundBaseUrl` (default `/sounds/`) and plays them through one shared
+  `AudioContext`.
+- Starts audio on the first pointer or key press (browsers block audio before a user gesture), then
+  plays `boot` and the ambient loop.
+- Follows `orbState`: scan loop and ducking while listening, thinking/working loops, speech start and
+  end, barge-in, and an idle pulse after 30 seconds.
+- Follows `connected`: plays the disconnect and offline sounds after a short grace period.
+- Stores the mute choice in `localStorage` (`jarvis.sfx.muted`).
+
+## Options
+
+| Option         | Type      | Default      | Description                                                    |
+| -------------- | --------- | ------------ | -------------------------------------------------------------- |
+| `soundBaseUrl` | `string`  | `'/sounds/'` | Path or CDN URL of the sound files; a trailing slash is added. |
+| `initialMuted` | `boolean` | `false`      | Mute state when the user has no stored preference yet.         |
+
+## Return value
+
+| Field                         | Description                                               |
+| ----------------------------- | --------------------------------------------------------- |
+| `isMuted`                     | Current mute state.                                       |
+| `toggleMute()`                | Mutes or unmutes and stores the choice.                   |
+| `playOneShot(event)`          | Plays a sound once.                                       |
+| `play(event)` / `stop(event)` | Starts and stops looping sounds.                          |
+| `engine`                      | The shared `AudioEngine` singleton, for advanced control. |
+
+Pass `playOneShot`, `play` and `stop` to `SfxProvider` so components can use them, see
+[Sound effects](/getting-started/sound).
+
+> The engine is a process-wide singleton. Mount `useAudioEngine` once, high in the tree.

@@ -1,0 +1,85 @@
+# ThreeOrb
+
+<Lead>
+    ThreeOrb renders the JARVIS orb as a Three.js particle cloud on a full-screen, transparent
+    canvas. It ships in its own entry point, `jarvis-react-ui/orb`, so Three.js only loads when you
+    use it. For a lightweight CSS version see [CssOrb](/components/css-orb).
+</Lead>
+
+<ComponentMeta component="ThreeOrb" />
+
+## Installation
+
+`three` is an optional peer dependency of `jarvis-react-ui`. Install it next to the library when
+you use ThreeOrb or `createOrb`:
+
+```bash
+npm install three
+```
+
+ThreeOrb, `createOrb` and the `OrbEngine` type are not exported from `jarvis-react-ui`; import them
+from `jarvis-react-ui/orb`.
+
+## Lazy loading
+
+Load ThreeOrb with `React.lazy` and wrap it in `Suspense`, so Three.js is split into its own chunk
+and fetched on first render. Changing `state` makes the particles transition to the new state;
+`working` is shown as `thinking`.
+
+<Demo name="three-orb/LazyLoaded" height="tall" align="start" />
+
+```tsx
+import { Suspense, lazy } from 'react';
+
+const ThreeOrb = lazy(() => import('jarvis-react-ui/orb').then((m) => ({ default: m.ThreeOrb })));
+
+<Suspense fallback={null}>
+    <ThreeOrb state="listening" />
+</Suspense>;
+```
+
+## Canvas and layout
+
+The canvas is `position: fixed` at the top-left corner, sized to the window (it follows window
+resizes), sits at `z-index: 0` and ignores the pointer, so it works as a background layer behind
+the HUD. It is transparent, so put your background color or
+[GridBackground](/components/grid-background) behind it. Inside an ancestor with a `transform`, the
+fixed canvas is positioned relative to that ancestor instead of the viewport; the demo above uses
+`className="h-full! w-full!"` to fit it into the demo frame.
+
+## Without React
+
+`createOrb(canvas, options)` drives the same engine on any `<canvas>`. It returns an `OrbEngine`
+with the full API, including audio reactivity, which ThreeOrb does not expose:
+
+```ts
+import { createOrb } from 'jarvis-react-ui/orb';
+import type { OrbEngine } from 'jarvis-react-ui/orb';
+
+const canvas = document.querySelector('canvas');
+if (canvas) {
+    const orb: OrbEngine = createOrb(canvas, { alpha: true }); // alpha: transparent background
+
+    orb.setState('listening'); // 'idle' | 'listening' | 'thinking' | 'speaking' | 'follow_up'
+    orb.setAnalyser(analyserNode); // react to a Web Audio AnalyserNode, or null
+    orb.setMockMode('speaking'); // fake audio levels for previews; null turns it off
+    orb.setFollowUp(true, 12); // follow-up pulse and countdown ring (seconds left)
+
+    // Later: stop rendering and remove the resize listener.
+    orb.destroy();
+}
+```
+
+The engine renders at window size and listens for window resizes, like ThreeOrb.
+
+## Accessibility
+
+The orb is decorative: the canvas has no content or label for assistive technology and takes no
+pointer events. Show the assistant's state as text too, for example with a
+[StatusLabel](/components/status-label). The engine does not check `prefers-reduced-motion`; render
+a static alternative such as `<CssOrb>` (whose CSS animations stop under reduced motion) when the
+user asks for less motion.
+
+## API
+
+<ApiTable component="ThreeOrb" />

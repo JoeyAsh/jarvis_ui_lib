@@ -1,0 +1,61 @@
+# Sound hooks
+
+<Lead>
+    `useClickSfx`, `useHoverSfx` and `useSfx` give your own components the same UI sounds as the
+    library components. They read the nearest `SfxProvider`, which `JarvisProvider` sets up.
+</Lead>
+
+```ts
+import { useClickSfx, useHoverSfx, useSfx } from 'jarvis-react-ui';
+```
+
+## Usage
+
+<Demo name="sound-hooks/CustomControl" />
+
+## useClickSfx
+
+```ts
+function useClickSfx<E>(handler?: (event: E) => void): (event: E) => void;
+```
+
+Wraps a click handler: plays `click`, then calls yours. Pass the result to `onClick`. The returned
+function is memoized on `handler`.
+
+## useHoverSfx
+
+```ts
+function useHoverSfx(
+    target: 'button' | 'panel',
+    options?: { throttleMs?: number },
+): (e: MouseEvent) => void;
+```
+
+Returns an `onMouseEnter` handler that plays `hover_button` or `hover_panel`, throttled to one sound
+per 150ms by default. With `'panel'` it stays silent while the pointer enters a child marked
+`data-sfx-hover="button"`, so a button inside a panel does not play both sounds. Mark your own
+buttons with that attribute.
+
+## useSfx
+
+```ts
+function useSfx(): {
+    playOneShot: (event: SfxEvent) => void;
+    play: (event: SfxEvent) => void; // looping sounds
+    stop: (event: SfxEvent) => void;
+};
+```
+
+Plays any sound event directly, e.g. `confirm`, `error`, `transition` or `scan`. The full list is the
+`SfxEvent` type and `SFX_CONFIG`.
+
+## Without a provider
+
+All three hooks work outside a provider; they simply play nothing. Components therefore never break
+in tests or in apps that do not want sound.
+
+## SfxProvider
+
+`SfxProvider` takes `playOneShot`, `play` and `stop` and passes them down. Use it directly to plug in
+your own audio implementation, or let [JarvisProvider](/components/jarvis-provider) wire it to the
+built-in [audio engine](/hooks/use-audio-engine).

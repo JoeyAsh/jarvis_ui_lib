@@ -1,0 +1,56 @@
+# SnapOverlay
+
+<Lead>
+    SnapOverlay draws the nine slots of the window grid as glowing drop zones and highlights the one
+    under the pointer. [WindowManager](/components/window-manager) shows it while a docked window is
+    dragged.
+</Lead>
+
+<ComponentMeta component="SnapOverlay" />
+
+## Drop zones
+
+While `active`, every slot in `slotRects` is drawn as an outlined zone, and `hoveredSlot` gets a
+stronger fill and a pulse. The overlay is a `position: fixed` layer over its containing block (the
+viewport, or the nearest ancestor with a `transform`) and ignores the pointer, so it never blocks
+the drag below it. Move the pointer over the stage.
+
+<Demo name="snap-overlay/HoverSlots" height="tall" align="stretch" />
+
+## In WindowManager
+
+WindowManager renders SnapOverlay for every drag of a `compact` window: `active` is on for the whole
+drag, `slotRects` is the grid computed from the WindowManager's size, and `hoveredSlot` is the slot
+under the pointer. When that slot is occupied, [SwapOverlay](/components/swap-overlay) also marks
+the window that would be swapped. Expanded windows drag freely and show no overlay.
+
+## Standalone use
+
+Use SnapOverlay when you lay out [Window](/components/window) elements yourself:
+
+- Compute the rects with `computeAllSlots(width, height)` from the
+  [slot grid helpers](/utilities/slot-grid).
+- Track the drag with [useSlotDrag](/hooks/use-slot-drag): pass `slotDragState.dragging` to
+  `active` and `slotDragState.snapTarget` to `hoveredSlot`.
+- On drop, assign the window to the final `snapTarget`.
+
+```tsx
+import { SnapOverlay, computeAllSlots } from 'jarvis-react-ui';
+
+const slotRects = computeAllSlots(window.innerWidth, window.innerHeight);
+
+<SnapOverlay
+    active={slotDragState.dragging}
+    slotRects={slotRects}
+    hoveredSlot={slotDragState.snapTarget}
+/>;
+```
+
+## Accessibility
+
+The overlay is decorative: its root is `aria-hidden` and it takes no pointer events. Announce the
+result of a drop elsewhere if it matters, and offer a keyboard alternative to dragging.
+
+## API
+
+<ApiTable component="SnapOverlay" />
