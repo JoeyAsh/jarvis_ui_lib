@@ -1,9 +1,10 @@
 # ThreeOrb
 
 <Lead>
-    ThreeOrb renders the JARVIS orb as a Three.js particle cloud on a full-screen, transparent
-    canvas. It ships in its own entry point, `jarvis-react-ui/orb`, so Three.js only loads when you
-    use it. For a lightweight CSS version see [CssOrb](/components/css-orb).
+    ThreeOrb renders the JARVIS orb in WebGL with Three.js, in six visual designs, either as a
+    full-screen background layer or inside a container. It ships in its own entry point,
+    `jarvis-react-ui/orb`, so Three.js only loads when you use it. For a lightweight CSS version see
+    [CssOrb](/components/css-orb).
 </Lead>
 
 <ComponentMeta component="ThreeOrb" />
@@ -38,9 +39,55 @@ const ThreeOrb = lazy(() => import('jarvis-react-ui/orb').then((m) => ({ default
 </Suspense>;
 ```
 
+## Variants
+
+`variant` picks the design. `constellation` (the default) is the original particle cloud; `particle`,
+`halo`, `signal`, `reactor` and `lattice` are bloom-lit holographic designs, each loaded as its own
+chunk the first time it is used. Try them in the playground: switch the design and the state, drag to
+rotate and scroll to zoom, turn on the microphone (processed locally in your browser) or let the demo
+cycle through the states.
+
+<Demo name="three-orb/VariantPlayground" height="tall" align="stretch" />
+
+```tsx
+<div className="h-96">
+    <ThreeOrb state="listening" variant="reactor" fill="container" interactive />
+</div>
+```
+
+The variant designs know four states. `thinking` and `working` show as `working`, `follow_up` as
+`listening`.
+
+## Audio input
+
+Pass a Web Audio `AnalyserNode` as `analyser`, for example from the microphone or from your TTS
+playback. In `listening` and `speaking` the variant designs read its level and 16 frequency bands
+(80 Hz – 8 kHz) every frame; without an analyser they animate with a simulated voice.
+`constellation` reacts to the analyser in every state.
+
+```tsx
+const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+const ctx = new AudioContext();
+const analyser = ctx.createAnalyser();
+analyser.fftSize = 1024;
+analyser.smoothingTimeConstant = 0.55;
+ctx.createMediaStreamSource(stream).connect(analyser);
+
+<ThreeOrb state="listening" variant="lattice" analyser={analyser} />;
+```
+
+## Quality and interaction
+
+`quality="low"` renders the variant designs with fewer particles, pixel ratio 1 and half-resolution
+bloom, for integrated or mobile GPUs. `interactive` lets the user rotate (drag) and zoom (scroll) the
+variant designs; it also makes a `viewport` orb take pointer events, so use it with
+`fill="container"` or when nothing has to be clicked behind the orb. Both are ignored by
+`constellation`.
+
 ## Canvas and layout
 
-The canvas is `position: fixed` at the top-left corner, sized to the window (it follows window
+With `fill="container"` the orb fills its parent element, which needs a size. With the default
+`fill="viewport"` the canvas is `position: fixed` at the top-left corner, sized to the window (it follows window
 resizes), sits at `z-index: 0` and ignores the pointer, so it works as a background layer behind
 the HUD. It is transparent, so put your background color or
 [GridBackground](/components/grid-background) behind it. Inside an ancestor with a `transform`, the
@@ -50,7 +97,7 @@ fixed canvas is positioned relative to that ancestor instead of the viewport; th
 ## Without React
 
 `createOrb(canvas, options)` drives the same engine on any `<canvas>`. It returns an `OrbEngine`
-with the full API, including audio reactivity, which ThreeOrb does not expose:
+with the full API, including mock audio and the follow-up ring, which ThreeOrb does not expose:
 
 ```ts
 import { createOrb } from 'jarvis-react-ui/orb';
@@ -70,14 +117,27 @@ if (canvas) {
 }
 ```
 
-The engine renders at window size and listens for window resizes, like ThreeOrb.
+The engine renders at window size and listens for window resizes.
+
+The variant designs work the same way with `createVariantOrb(variant, container, { quality })`. It
+resolves to an `OrbRenderer` whose canvas fills `container` (a `ResizeObserver` follows its size):
+
+```ts
+import { createVariantOrb } from 'jarvis-react-ui/orb';
+
+const orb = await createVariantOrb('halo', container, { quality: 'high' });
+orb.setState('speaking'); // 'idle' | 'listening' | 'working' | 'speaking'
+orb.onFrame = () => orb.setAudio(level, bands); // per frame: level 0..1, 16 bands 0..1
+orb.dispose(); // stop rendering, free GPU resources, remove the canvas
+```
 
 ## Accessibility
 
-By default the orb is decorative: the canvas is `aria-hidden="true"` and takes no pointer events.
+By default the orb is decorative: its root is `aria-hidden="true"` and, unless `interactive`, takes no
+pointer events.
 Show the assistant's state as text too, for example with a
 [StatusLabel](/components/status-label). Pass `aria-label` when the orb itself should be announced;
-the canvas then gets `role="img"` and that label. The engine does not check `prefers-reduced-motion`; render
+the root then gets `role="img"` and that label. The orbs do not check `prefers-reduced-motion`; render
 a static alternative such as `<CssOrb>` (whose CSS animations stop under reduced motion) when the
 user asks for less motion.
 

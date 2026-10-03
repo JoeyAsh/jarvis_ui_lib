@@ -1,0 +1,45 @@
+/* ================================================================
+   ThreeOrb — sizing of the WebGL canvas. Custom CSS because the
+   canvas is created by three.js (variants append their own canvas)
+   and the original engine always renders at viewport size, which
+   has to be centered and cropped inside a container.
+   ================================================================ */
+
+.lib-three-orb {
+    display: block;
+}
+
+.lib-three-orb canvas {
+    display: block;
+}
+
+/* Full-screen layer behind the UI (default). */
+.lib-three-orb--viewport {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.lib-three-orb--viewport.lib-three-orb--interactive {
+    pointer-events: auto;
+}
+
+/* Fills the parent element (the parent needs a size). */
+.lib-three-orb--container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* The original engine renders at viewport size: center it and crop the rest. */
+.lib-three-orb__engine {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100vw;
+    height: 100vh;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}

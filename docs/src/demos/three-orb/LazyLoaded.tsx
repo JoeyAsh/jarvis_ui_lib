@@ -11,8 +11,10 @@ export default function LazyLoaded() {
     return (
         <>
             <Suspense fallback={<Mono muted>Loading orb…</Mono>}>
-                {/* The canvas is fixed and viewport-sized; here it is fitted to the demo frame. */}
-                <ThreeOrb state={state} className="h-full! w-full!" />
+                {/* fill="container": fills the demo frame instead of the viewport. */}
+                <div className="absolute inset-0">
+                    <ThreeOrb state={state} fill="container" />
+                </div>
             </Suspense>
             <StateSimulator
                 state={state}

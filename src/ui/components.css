@@ -26,6 +26,7 @@
 
 /* ── orb ── */
 @import './orb/CssOrb/CssOrb.css';
+@import './orb/ThreeOrb/ThreeOrb.css';
 
 /* ── window subsystem ── */
 @import './window/Window/Window.css';

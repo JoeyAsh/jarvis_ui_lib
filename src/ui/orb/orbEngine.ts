@@ -10,6 +10,7 @@
 
 import * as THREE from 'three';
 import type { OrbState } from '@common/types';
+import { createFrameClock } from './frameClock';
 
 export interface Orb {
     setState(s: OrbState): void;
@@ -307,7 +308,8 @@ export function createOrb(canvas: HTMLCanvasElement, options: CreateOrbOptions =
     /** Current ring opacity — lerps toward ringOpacityTarget at ~180 ms rate. */
     let ringOpacityCurrent = 0;
 
-    const clock = new THREE.Clock();
+    // performance.now()-based timing: THREE.Clock is deprecated since three r183.
+    const clock = createFrameClock();
 
     // Lerp rate constants — centralised for easy tweaking.
     const LERP_RATE = 0.012;
@@ -326,7 +328,7 @@ export function createOrb(canvas: HTMLCanvasElement, options: CreateOrbOptions =
     function animate() {
         if (destroyed) return;
         requestAnimationFrame(animate);
-        const t = clock.getElapsedTime();
+        const t = clock.elapsed();
 
         switch (state) {
             case 'idle':

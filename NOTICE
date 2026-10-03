@@ -10,3 +10,8 @@ license as the rest of this package.
 Fonts
 The stylesheet loads JetBrains Mono from Google Fonts (SIL Open Font License 1.1).
 The font files are not part of this package.
+
+Simplex noise (src/ui/orb/variants/glsl.ts)
+The GLSL 3D simplex noise used by the orb variants is from webgl-noise by
+Ian McEwan and Ashima Arts (Copyright (c) 2011 Ashima Arts, Copyright (c) 2011-2016
+Stefan Gustavson), distributed under the MIT License.
