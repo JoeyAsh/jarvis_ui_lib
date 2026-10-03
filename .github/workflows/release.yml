@@ -23,10 +23,22 @@ jobs:
             - run: npm ci
             - name: Verify tag matches package version
               run: test "v$(node -p "require('./package.json').version")" = "${{ github.event.release.tag_name }}"
+            - name: Check if version is already on npm
+              id: npm_check
+              run: |
+                  VERSION="$(node -p "require('./package.json').version")"
+                  if OUT="$(npm view "jarvis-react-ui@${VERSION}" version 2>/dev/null)" && [ -n "$OUT" ]; then
+                      echo "published=true" >> "$GITHUB_OUTPUT"
+                      echo "::notice::jarvis-react-ui@${VERSION} is already on npm, skipping publish."
+                  else
+                      echo "published=false" >> "$GITHUB_OUTPUT"
+                  fi
             - run: npm run typecheck
             - run: npm run lint
             - run: npm run format:check
             - run: npm test
             - run: npm run build
             - run: npm run build:showcase
-            - run: npm publish --provenance --access public
+            - name: Publish to npm
+              if: steps.npm_check.outputs.published == 'false'
+              run: npm publish --provenance --access public
