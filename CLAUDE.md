@@ -31,9 +31,9 @@ lucide-react, Vitest 5 + React Testing Library (jsdom), ESLint 10 (type-checked)
 
 ```bash
 npm run dev            # showcase dev server (:5173)
-npm run typecheck      # tsc --noEmit
+npm run typecheck      # tsc --noEmit (TS 7 via @typescript/native; plain `tsc` bin is ambiguous)
 npm run build          # library build → dist/ (JS, .d.ts, style.css) via vite.config.lib.ts
-npm run build:showcase # tsc --noEmit && vite build (showcase app)
+npm run build:showcase # typecheck && vite build (showcase app)
 npm test               # vitest run (single pass); npm run test:watch for watch mode
 npm run lint           # eslint . — must be 0 errors AND 0 warnings
 npm run lint:fix
