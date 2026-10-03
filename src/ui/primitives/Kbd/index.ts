@@ -1,0 +1,3 @@
+export { Kbd } from './Kbd';
+export type { KbdProps, KbdSize } from './Kbd.types';
+export { default } from './Kbd';

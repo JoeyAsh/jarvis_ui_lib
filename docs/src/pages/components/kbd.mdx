@@ -1,0 +1,33 @@
+# Kbd
+
+<Lead>
+    A keyboard key chip. Use it to show shortcuts in hints, menus, tooltips and docs. It renders a
+    semantic `<kbd>` element.
+</Lead>
+
+<ComponentMeta component="Kbd" />
+
+## Shortcuts
+
+Use one `Kbd` per key for combinations, or a single one with the whole combo (`<Kbd>Ctrl K</Kbd>`).
+
+<Demo name="kbd/Shortcuts" />
+
+## Sizes
+
+`sm` (default) fits inline text and inputs; `md` suits headings and larger hints.
+
+<Demo name="kbd/Sizes" />
+
+`Kbd` also works as an end adornment of [Input](/components/input), as the search field of this
+site does.
+
+## Accessibility
+
+The `<kbd>` element tells assistive technology that the text is keyboard input. Write key names as
+words (`Ctrl`, `Esc`) rather than symbols only, and give platform variants (`Ctrl` / `⌘`) where
+they differ.
+
+## API
+
+<ApiTable component="Kbd" />

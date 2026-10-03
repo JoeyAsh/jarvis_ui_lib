@@ -9,6 +9,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- `Dialog`: modal dialog rendered into `document.body` with focus trap, Escape and backdrop closing,
+  focus return, scroll lock, `initialFocusRef`, three sizes and `menu_open` / `menu_close` sounds.
+- `Kbd`: keyboard key chip (`<kbd>`) in two sizes.
 - `JarvisProvider`: root provider that mounts the audio engine (UI sounds, on by default, `sfx={false}`
   starts muted), the toast system and `useJarvis()` (`isMuted`, `toggleMute`).
 - Toast notifications: `Toast` element, `ToastProvider` and `useToast()` (`toast`, `dismiss`,

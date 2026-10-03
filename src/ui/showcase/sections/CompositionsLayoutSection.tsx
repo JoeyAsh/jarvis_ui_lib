@@ -13,6 +13,8 @@ import { Button } from '../../primitives/Button';
 import { Toast } from '../../primitives/Toast';
 import { ShowcaseCard } from '../ShowcaseCard';
 import { ToastTriggers } from './ToastTriggers';
+import { DialogDemo } from './DialogDemo';
+import { Kbd } from '../../primitives/Kbd';
 
 interface DemoPropRow {
     name: string;
@@ -69,7 +71,8 @@ export function CompositionsLayoutSection(): ReactElement {
             <div>
                 <h2 className="text-[12px] text-text font-mono mb-1">COMPOSITIONS — Layout</h2>
                 <p className="text-[10px] text-text-secondary font-mono">
-                    NavList · Tabs · Table · CodeBlock · Callout · Toast · TopBar position
+                    NavList · Tabs · Table · CodeBlock · Callout · Toast · Dialog · Kbd · TopBar
+                    position
                 </p>
             </div>
             <div className="grid grid-cols-3 gap-3">
@@ -211,6 +214,30 @@ toast({ variant: 'success', title: 'Diagnostics passed' });`}
                     dark
                 >
                     <ToastTriggers />
+                </ShowcaseCard>
+                <ShowcaseCard
+                    label="DIALOG (click)"
+                    code={`<Dialog open={open} onOpenChange={setOpen} title="Purge cache" actions={…}>
+  …
+</Dialog>`}
+                    dark
+                >
+                    <DialogDemo />
+                </ShowcaseCard>
+
+                <ShowcaseCard
+                    label="KBD"
+                    code={`<Kbd>Ctrl</Kbd> <Kbd>K</Kbd>
+<Kbd size="md">Esc</Kbd>`}
+                    dark
+                >
+                    <div className="flex items-center gap-2 text-[10px] text-text-secondary">
+                        <Kbd>Ctrl</Kbd>
+                        <Kbd>K</Kbd>
+                        <span>search ·</span>
+                        <Kbd size="md">Esc</Kbd>
+                        <span>close</span>
+                    </div>
                 </ShowcaseCard>
             </div>
         </section>
