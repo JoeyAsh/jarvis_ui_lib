@@ -1,0 +1,53 @@
+# Dialog
+
+<Lead>
+    A modal dialog for confirmations and short forms. It renders above the page, keeps keyboard
+    focus inside, and returns focus to the trigger when it closes.
+</Lead>
+
+<ComponentMeta component="Dialog" />
+
+## Confirmation
+
+The dialog is controlled: keep `open` in state and update it in `onOpenChange`. Put the buttons in
+`actions`; they appear in the footer, right-aligned.
+
+<Demo name="dialog/Confirm" />
+
+## Form
+
+`initialFocusRef` chooses the element that gets focus when the dialog opens, here the input. Without
+it, the first focusable element (usually the close button) gets focus.
+
+<Demo name="dialog/Form" />
+
+## Sizes
+
+`sm`, `md` (default) and `lg` cap the width at 360, 520 and 720px. Long content scrolls inside the
+body while the header and footer stay visible.
+
+<Demo name="dialog/Sizes" />
+
+## Closing
+
+The dialog calls `onOpenChange(false)` when the user presses **Escape**, clicks the backdrop or uses
+the close button. Set `closeOnBackdrop={false}` for dialogs that must be answered explicitly, and
+`showClose={false}` to hide the close button.
+
+## Accessibility
+
+- `role="dialog"` with `aria-modal="true"`, named by `title` (`aria-labelledby`) and described by
+  `description` (`aria-describedby`). Use `hideTitle` to keep the name while hiding the heading.
+- Focus moves into the dialog on open, **Tab** and **Shift+Tab** cycle inside it, and focus returns to
+  the previously focused element on close.
+- Page scrolling is locked while the dialog is open.
+- The dialog is portaled to `document.body`, so ancestors with `overflow: hidden` or `transform`
+  cannot clip it.
+
+## Sound
+
+Opening plays `menu_open`, closing plays `menu_close`.
+
+## API
+
+<ApiTable component="Dialog" />

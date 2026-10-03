@@ -123,6 +123,9 @@ export type { DividerProps, DividerOrientation, DividerVariant } from './primiti
 export { Link } from './primitives/Link';
 export type { LinkProps, LinkVariant } from './primitives/Link';
 
+export { Kbd } from './primitives/Kbd';
+export type { KbdProps, KbdSize } from './primitives/Kbd';
+
 export { Toast } from './primitives/Toast';
 export type { ToastProps, ToastVariant, ToastAction } from './primitives/Toast';
 
@@ -201,6 +204,9 @@ export type { CodeBlockProps } from './compositions/CodeBlock';
 
 export { Callout } from './compositions/Callout';
 export type { CalloutProps, CalloutVariant } from './compositions/Callout';
+
+export { Dialog } from './compositions/Dialog';
+export type { DialogProps, DialogSize } from './compositions/Dialog';
 
 export { ToastProvider, useToast } from './compositions/ToastProvider';
 export type {
