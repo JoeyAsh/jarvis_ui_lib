@@ -1,5 +1,19 @@
 # CLAUDE.md — jarvis-ui-lib
 
+## Rules are mandatory
+
+All rules in `.claude/rules/` are binding. Every single rule MUST ALWAYS be followed, without
+exception. If a rule conflicts with a request or cannot be met, stop and ask instead of deviating.
+
+- `components.md` — component structure and conventions
+- `styling.md` — Tailwind first, per-component CSS, no inline styles
+- `typescript.md` — strict typing, no `any` / `!` / `@ts-ignore`
+- `testing.md` — test conventions
+- `showcase.md` — every public component needs a showcase demo
+- `audio.md` — SFX hooks, events and sound assets
+- `protected.md` — protected files (orbEngine, sounds, aliases, ESLint config)
+- `changelog.md` — every user-facing change adds a `CHANGELOG.md` entry under `[Unreleased]`
+
 ## What this is
 
 Standalone React component library for the JARVIS HUD interface (sharp, dark, JetBrains Mono,
@@ -70,11 +84,11 @@ A change is done only when ALL hold:
 3. New/changed components have tests and a showcase demo (section updated, nav item if new section).
 4. Affected showcase sections were checked visually in a browser (`/verify` skill).
 5. No rule in `.claude/rules/` is violated; no `any`, `!`, `@ts-ignore`, `eslint-disable`.
+6. `CHANGELOG.md` updated per `.claude/rules/changelog.md` (user-facing changes).
 
 ## Rules (path-scoped, auto-loaded) — `.claude/rules/`
 
-`components.md` · `styling.md` · `typescript.md` · `testing.md` · `showcase.md` · `audio.md` ·
-`protected.md`.
+See the list under "Rules are mandatory" above (loaded automatically; `changelog.md` always).
 
 ## Skills — `.claude/skills/`
 
@@ -82,6 +96,7 @@ A change is done only when ALL hold:
 - `/showcase-section` — add or extend a showcase section and nav item
 - `/add-sound` — add an SFX event (file, config entry, hook usage)
 - `/verify` — run all checks, then visually check the showcase with Playwright
+- `/changelog` — add a CHANGELOG entry or cut a release
 - `/review-ui` — review a change against the rules; PASS / NEEDS_CHANGES
 
 ## Working notes

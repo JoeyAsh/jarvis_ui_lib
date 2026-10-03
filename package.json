@@ -97,6 +97,7 @@
         "!public/sounds/generated",
         "LICENSE",
         "NOTICE",
+        "CHANGELOG.md",
         "README.md"
     ],
     "sideEffects": [

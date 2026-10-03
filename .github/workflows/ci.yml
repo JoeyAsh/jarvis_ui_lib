@@ -29,3 +29,19 @@ jobs:
             - run: npm test
             - run: npm run build
             - run: npm run build:showcase
+
+    changelog:
+        name: changelog
+        if: github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'skip-changelog')
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Require CHANGELOG.md update when src/ or public/ changed
+              run: |
+                  files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+                  if echo "$files" | grep -qE '^(src|public)/' && ! echo "$files" | grep -qx 'CHANGELOG.md'; then
+                      echo "::error::src/ or public/ changed but CHANGELOG.md did not. Add an entry under [Unreleased] or apply the 'skip-changelog' label."
+                      exit 1
+                  fi
