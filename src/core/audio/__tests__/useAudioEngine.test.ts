@@ -27,6 +27,7 @@ function createSpies() {
         stop: vi.fn<(event: string) => void>(),
         setMuted: vi.fn<(muted: boolean) => void>(),
         setDucking: vi.fn<(ducked: boolean) => void>(),
+        setSoundBaseUrl: vi.fn<(url: string) => void>(),
         destroy: vi.fn<() => void>(),
     };
 }
@@ -54,6 +55,9 @@ vi.mock('@core/audio/audioEngine', () => {
         }
         setDucking(ducked: boolean): void {
             spies.setDucking(ducked);
+        }
+        setSoundBaseUrl(url: string): void {
+            spies.setSoundBaseUrl(url);
         }
         destroy(): void {
             spies.destroy();
@@ -625,5 +629,30 @@ describe('useAudioEngine — play/stop passthrough', () => {
         });
 
         expect(spies.stop).toHaveBeenCalledWith('drag_move');
+    });
+});
+
+describe('useAudioEngine soundBaseUrl option', () => {
+    it('does not touch the engine base URL when the option is omitted', () => {
+        renderHook(() => useAudioEngine('idle', true));
+        expect(spies.setSoundBaseUrl).not.toHaveBeenCalled();
+    });
+
+    it('applies soundBaseUrl to the engine', () => {
+        renderHook(() =>
+            useAudioEngine('idle', true, false, { soundBaseUrl: 'https://cdn.example.com/s/' }),
+        );
+        expect(spies.setSoundBaseUrl).toHaveBeenCalledWith('https://cdn.example.com/s/');
+    });
+
+    it('re-applies when the option changes', () => {
+        const { rerender } = renderHook(
+            ({ url }: { url: string }) =>
+                useAudioEngine('idle', true, false, { soundBaseUrl: url }),
+            { initialProps: { url: '/a/' } },
+        );
+        rerender({ url: '/b/' });
+        expect(spies.setSoundBaseUrl).toHaveBeenLastCalledWith('/b/');
+        expect(spies.setSoundBaseUrl).toHaveBeenCalledTimes(2);
     });
 });

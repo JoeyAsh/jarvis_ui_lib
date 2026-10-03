@@ -7,7 +7,8 @@
  *   duckable loops → loopGain → sfxGain ──↗
  */
 
-import { SFX_CONFIG, DUCK_VOLUME, DUCK_RAMP_MS } from './config';
+import { SFX_CONFIG, DUCK_VOLUME, DUCK_RAMP_MS, DEFAULT_SOUND_BASE_URL } from './config';
+import { normalizeSoundBaseUrl } from './soundUrl';
 import type { SfxEvent } from './config';
 
 interface ActiveLoop {
@@ -26,6 +27,12 @@ export class AudioEngine {
 
     /** Currently playing loops. */
     private readonly activeLoops = new Map<SfxEvent, ActiveLoop>();
+
+    /** Base URL (always ends with `/`) that SFX files are resolved against. */
+    private soundBaseUrl = DEFAULT_SOUND_BASE_URL;
+
+    /** Bumped on every base-URL change so in-flight loads from the old URL are not cached. */
+    private cacheGeneration = 0;
 
     private _isMuted = false;
     private _isDucked = false;
@@ -54,6 +61,24 @@ export class AudioEngine {
             window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     }
 
+    /**
+     * Set the base URL SFX files are loaded from. Accepts relative paths (`/audio/`) and absolute
+     * URLs (`https://cdn.example.com/sounds/`); a trailing slash is added if missing. An empty
+     * value restores the default. Changing the URL drops the decoded-buffer cache.
+     */
+    setSoundBaseUrl(url: string): void {
+        const next = normalizeSoundBaseUrl(url);
+        if (next === this.soundBaseUrl) return;
+        this.soundBaseUrl = next;
+        this.cacheGeneration += 1;
+        this.bufferCache.clear();
+    }
+
+    /** Current (normalized) base URL. */
+    getSoundBaseUrl(): string {
+        return this.soundBaseUrl;
+    }
+
     async resumeContext(): Promise<void> {
         if (this.ctx.state === 'suspended') {
             try {
@@ -69,22 +94,26 @@ export class AudioEngine {
         if (cached !== undefined) return cached;
 
         const entry = SFX_CONFIG[event];
-        const url = `/sounds/${entry.file}`;
+        const url = `${this.soundBaseUrl}${entry.file}`;
+        const generation = this.cacheGeneration;
+        const remember = (value: AudioBuffer | null): void => {
+            if (generation === this.cacheGeneration) this.bufferCache.set(event, value);
+        };
 
         try {
             const response = await fetch(url);
             if (!response.ok) {
                 console.warn(`[AudioEngine] 404 for SFX "${event}" at ${url}`);
-                this.bufferCache.set(event, null);
+                remember(null);
                 return null;
             }
             const arrayBuffer = await response.arrayBuffer();
             const decoded = await this.ctx.decodeAudioData(arrayBuffer);
-            this.bufferCache.set(event, decoded);
+            remember(decoded);
             return decoded;
         } catch (err) {
             console.warn(`[AudioEngine] Failed to load SFX "${event}":`, err);
-            this.bufferCache.set(event, null);
+            remember(null);
             return null;
         }
     }
@@ -131,9 +160,10 @@ export class AudioEngine {
         let buffer: AudioBuffer | null;
         if (overrideFile !== undefined) {
             try {
-                const response = await fetch(`/sounds/${overrideFile}`);
+                const overrideUrl = `${this.soundBaseUrl}${overrideFile}`;
+                const response = await fetch(overrideUrl);
                 if (!response.ok) {
-                    console.warn(`[AudioEngine] 404 override at /sounds/${overrideFile}`);
+                    console.warn(`[AudioEngine] 404 override at ${overrideUrl}`);
                     return;
                 }
                 const ab = await response.arrayBuffer();
