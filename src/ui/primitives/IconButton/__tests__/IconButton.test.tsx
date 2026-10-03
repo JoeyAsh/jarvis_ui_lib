@@ -65,4 +65,20 @@ describe('IconButton', () => {
         fireEvent.mouseEnter(screen.getByRole('button'));
         expect(sfx.playOneShot).toHaveBeenCalledWith('hover_button');
     });
+
+    it('calls a consumer onMouseEnter and still plays the hover sound', () => {
+        const sfx = makeSfx();
+        const onMouseEnter = vi.fn();
+        renderWithSfx(sfx, <IconButton icon={Copy} label="Copy" onMouseEnter={onMouseEnter} />);
+        fireEvent.mouseEnter(screen.getByRole('button'));
+        expect(onMouseEnter).toHaveBeenCalledTimes(1);
+        expect(sfx.playOneShot).toHaveBeenCalledWith('hover_button');
+    });
+
+    it('pressed primary keeps its fill instead of the ghost pressed colors', () => {
+        render(<IconButton icon={Copy} label="Copy" variant="primary" pressed />);
+        const cls = screen.getByRole('button').className;
+        expect(cls).toContain('bg-accent');
+        expect(cls).not.toContain('border-accent-dim');
+    });
 });

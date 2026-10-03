@@ -28,6 +28,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
         size = 'md',
         className,
         onClick,
+        onMouseEnter,
         type = 'button',
         ...rest
     },
@@ -36,6 +37,11 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
     const [internal, setInternal] = useState(defaultChecked);
     const isOn = checked ?? internal;
     const hoverSfx = useHoverSfx('button');
+
+    function handleMouseEnter(e: MouseEvent<HTMLButtonElement>): void {
+        hoverSfx(e);
+        onMouseEnter?.(e);
+    }
 
     function handleClick(e: MouseEvent<HTMLButtonElement>): void {
         onClick?.(e);
@@ -50,6 +56,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
     return (
         <button
             ref={ref}
+            {...rest}
             type={type}
             role="switch"
             aria-checked={isOn}
@@ -60,10 +67,9 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
                 'disabled:opacity-40 disabled:cursor-not-allowed',
                 className,
             )}
-            onMouseEnter={hoverSfx}
+            onMouseEnter={handleMouseEnter}
             onClick={clickSfx}
             data-sfx-hover="button"
-            {...rest}
         >
             <span
                 aria-hidden="true"

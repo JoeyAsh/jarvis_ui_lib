@@ -67,4 +67,9 @@ describe('Switch', () => {
         expect(sfx.playOneShot).toHaveBeenCalledWith('hover_button');
         expect(sfx.playOneShot).toHaveBeenCalledWith('click');
     });
+
+    it('aria-checked always reflects the state and cannot be overridden', () => {
+        render(<Switch label="S" aria-checked="mixed" />);
+        expect(screen.getByRole('switch').getAttribute('aria-checked')).toBe('false');
+    });
 });

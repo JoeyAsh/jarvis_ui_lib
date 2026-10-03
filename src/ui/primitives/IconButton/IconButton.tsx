@@ -1,4 +1,5 @@
 import { forwardRef } from 'react';
+import type { MouseEvent } from 'react';
 import { cx } from '@common/utils/cx';
 import { useClickSfx, useHoverSfx } from '@core/audio';
 import type { IconButtonProps } from './IconButton.types';
@@ -31,17 +32,24 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
         pressed,
         className,
         onClick,
+        onMouseEnter,
         type = 'button',
         ...rest
     },
     ref,
 ) {
     const hoverSfx = useHoverSfx('button');
+
+    function handleMouseEnter(e: MouseEvent<HTMLButtonElement>): void {
+        hoverSfx(e);
+        onMouseEnter?.(e);
+    }
     const clickSfx = useClickSfx(onClick);
 
     return (
         <button
             ref={ref}
+            {...rest}
             type={type}
             aria-label={label}
             aria-pressed={pressed}
@@ -52,13 +60,16 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
                 'disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none',
                 VARIANT_CLASSES[variant],
                 SIZE_CLASSES[size],
-                pressed === true && 'text-accent border-accent-dim bg-[rgba(76,168,232,0.08)]',
+                pressed === true &&
+                    (variant === 'ghost' || variant === 'secondary') &&
+                    'text-accent border-accent-dim bg-[rgba(76,168,232,0.08)]',
+                pressed === true && variant === 'primary' && 'shadow-glow-strong',
+                pressed === true && variant === 'danger' && 'shadow-glow-error',
                 className,
             )}
-            onMouseEnter={hoverSfx}
+            onMouseEnter={handleMouseEnter}
             onClick={clickSfx}
             data-sfx-hover="button"
-            {...rest}
         >
             <IconComponent
                 width={ICON_PX[size]}

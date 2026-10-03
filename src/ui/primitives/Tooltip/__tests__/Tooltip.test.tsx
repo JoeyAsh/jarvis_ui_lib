@@ -79,4 +79,19 @@ describe('Tooltip', () => {
         expect(tip.className).toContain('top-full');
         expect(tip.className).toContain('tip-x');
     });
+
+    it('keeps the own aria-describedby of the trigger and appends its id', () => {
+        render(
+            <Tooltip content="Copy">
+                <button type="button" aria-describedby="hint">
+                    C
+                </button>
+            </Tooltip>,
+        );
+        const trigger = screen.getByRole('button');
+        expect(trigger.getAttribute('aria-describedby')).toBe('hint');
+        fireEvent.focus(trigger);
+        const tip = screen.getByRole('tooltip');
+        expect(trigger.getAttribute('aria-describedby')).toBe(`hint ${tip.id}`);
+    });
 });
