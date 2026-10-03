@@ -33,6 +33,37 @@ describe('StatusLabel', () => {
         expect(getByText('working...')).toBeDefined();
     });
 
+    it('shows its own follow-up... text for follow_up state', () => {
+        const { getByText, queryByText } = render(<StatusLabel state="follow_up" />);
+        expect(getByText('follow-up...')).toBeDefined();
+        expect(queryByText('listening...')).toBeNull();
+    });
+
+    it('uses custom labels and falls back to built-in texts', () => {
+        const labels = { idle: 'BEREIT', listening: 'hoere zu...' };
+        const { getByText, rerender } = render(<StatusLabel state="idle" labels={labels} />);
+        expect(getByText('BEREIT')).toBeDefined();
+        rerender(<StatusLabel state="listening" labels={labels} />);
+        expect(getByText('hoere zu...')).toBeDefined();
+        rerender(<StatusLabel state="thinking" labels={labels} />);
+        expect(getByText('thinking...')).toBeDefined();
+    });
+
+    it('is not a live region by default', () => {
+        const { queryByRole, getByText } = render(<StatusLabel state="idle" />);
+        expect(queryByRole('status')).toBeNull();
+        expect(getByText('READY').hasAttribute('aria-live')).toBe(false);
+    });
+
+    it('becomes a polite live region with live', () => {
+        const { getByRole, rerender } = render(<StatusLabel state="idle" live />);
+        const region = getByRole('status');
+        expect(region.getAttribute('aria-live')).toBe('polite');
+        expect(region?.textContent).toContain('READY');
+        rerender(<StatusLabel state="speaking" live />);
+        expect(getByRole('status')?.textContent).toContain('speaking...');
+    });
+
     it('state text does not have active class when idle', () => {
         const { container } = render(<StatusLabel state="idle" />);
         expect(

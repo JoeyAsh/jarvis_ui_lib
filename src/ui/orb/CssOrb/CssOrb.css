@@ -3,6 +3,13 @@
    Values ported verbatim from handoff prototype (lines 75-153).
    All selectors are scoped under .orb-wrap / .orb / .pulse / .particle.
    No global selectors. No Tailwind @apply. Safe to import independently.
+   Blue tints use the accent tokens (--accent, --accent-bright,
+   --accent-speak). The white/ice highlight stops and the amber `working`
+   palette (#e8a84c family, not equal to --warning) stay literal.
+   Per-element values arrive as CSS variables (--tick-angle,
+   --particle-size, --particle-color); particle positions are set by
+   the component's requestAnimationFrame loop, which is skipped under
+   prefers-reduced-motion.
    ================================================================ */
 
 /* ---- Core animations ---- */
@@ -27,14 +34,14 @@
     0%,
     100% {
         box-shadow:
-            0 0 70px #5ab8f0cc,
-            0 0 180px #5ab8f066,
+            0 0 70px color-mix(in srgb, var(--accent-speak) 80%, transparent),
+            0 0 180px color-mix(in srgb, var(--accent-speak) 40%, transparent),
             inset 0 0 50px #e8f4ff33;
     }
     50% {
         box-shadow:
-            0 0 110px #6ec4ffee,
-            0 0 260px #6ec4ff88,
+            0 0 110px color-mix(in srgb, var(--accent-bright) 93.3%, transparent),
+            0 0 260px color-mix(in srgb, var(--accent-bright) 53.3%, transparent),
             inset 0 0 70px #e8f4ff55;
     }
 }
@@ -115,35 +122,35 @@
 .orb-wrap .orb-ring.r1 {
     width: 360px;
     height: 360px;
-    border: 1px dashed rgba(76, 168, 232, 0.55);
+    border: 1px dashed color-mix(in srgb, var(--accent) 55%, transparent);
     animation: orbSpin 32s linear infinite;
 }
 
 .orb-wrap .orb-ring.r2 {
     width: 460px;
     height: 460px;
-    border: 1px solid rgba(76, 168, 232, 0.35);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
     animation: orbSpin 48s linear infinite reverse;
 }
 
 .orb-wrap .orb-ring.r3 {
     width: 580px;
     height: 580px;
-    border: 1px dotted rgba(110, 196, 255, 0.35);
+    border: 1px dotted color-mix(in srgb, var(--accent-bright) 35%, transparent);
     animation: orbSpin 70s linear infinite;
 }
 
 .orb-wrap .orb-ring.r4 {
     width: 740px;
     height: 740px;
-    border: 1px solid rgba(76, 168, 232, 0.15);
+    border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
     animation: orbSpin 120s linear infinite reverse;
 }
 
 .orb-wrap .orb-ring.r5 {
     width: 920px;
     height: 920px;
-    border: 1px dashed rgba(110, 196, 255, 0.1);
+    border: 1px dashed color-mix(in srgb, var(--accent-bright) 10%, transparent);
     animation: orbSpin 180s linear infinite;
 }
 
@@ -168,6 +175,7 @@
     height: 8px;
     background: var(--accent);
     box-shadow: 0 0 4px var(--accent);
+    transform: translateX(-50%) rotate(var(--tick-angle, 0deg));
     transform-origin: 0 230px;
     display: block;
 }
@@ -188,13 +196,13 @@
         #ffffff 0%,
         #d9efff 6%,
         #7ecbff 18%,
-        #4ca8e8 34%,
-        rgba(76, 168, 232, 0.4) 58%,
-        rgba(76, 168, 232, 0) 82%
+        var(--accent) 34%,
+        color-mix(in srgb, var(--accent) 40%, transparent) 58%,
+        transparent 82%
     );
     box-shadow:
-        0 0 70px #4ca8e8cc,
-        0 0 180px #4ca8e866,
+        0 0 70px color-mix(in srgb, var(--accent) 80%, transparent),
+        0 0 180px color-mix(in srgb, var(--accent) 40%, transparent),
         inset 0 0 50px #e8f4ff33;
     animation: orbFloat 6.5s ease-in-out infinite;
     filter: saturate(1.1);
@@ -210,8 +218,8 @@
         circle at 45% 40%,
         #ffffff 0%,
         #e8f4ff 35%,
-        #6ec4ff 85%,
-        #4ca8e8 100%
+        var(--accent-bright) 85%,
+        var(--accent) 100%
     );
     box-shadow: 0 0 28px #e8f4ffcc;
 }
@@ -316,6 +324,10 @@
     left: 50%;
     top: 50%;
     border-radius: 50%;
+    width: var(--particle-size, 2px);
+    height: var(--particle-size, 2px);
+    background: var(--particle-color, var(--accent));
+    box-shadow: 0 0 calc(var(--particle-size, 2px) * 3) var(--particle-color, var(--accent));
     transform-origin: 0 0;
     pointer-events: none;
     will-change: transform;
@@ -328,8 +340,8 @@
 }
 
 .orb-wrap.is-working .particle {
-    background: var(--warning) !important;
-    box-shadow: 0 0 8px var(--warning) !important;
+    background: var(--warning);
+    box-shadow: 0 0 8px var(--warning);
 }
 
 .orb-wrap.is-working .orb-ring {

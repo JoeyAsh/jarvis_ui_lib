@@ -23,12 +23,14 @@ export function StatusBadge({
         >
             <span className="relative inline-flex items-center justify-center">
                 <span
-                    className={cx('block w-[6px] h-[6px] rounded-full', DOT_COLOR[state])}
-                    style={
-                        pulse && state === 'online'
-                            ? { animation: 'jlib-status-pulse 0.9s ease-in-out infinite' }
-                            : undefined
-                    }
+                    className={cx(
+                        'block w-[6px] h-[6px] rounded-full',
+                        DOT_COLOR[state],
+                        // Pulse: shared keyframes jlib-status-pulse (ui.css), off for reduced motion.
+                        pulse &&
+                            state === 'online' &&
+                            'animate-[jlib-status-pulse_0.9s_ease-in-out_infinite] motion-reduce:animate-none',
+                    )}
                 />
             </span>
             {label}

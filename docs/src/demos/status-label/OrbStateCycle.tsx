@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { StatusLabel, WaveformMeter } from 'jarvis-react-ui';
 import type { AppOrbState } from 'jarvis-react-ui';
 
-const CYCLE: AppOrbState[] = ['idle', 'listening', 'thinking', 'speaking', 'working'];
+const CYCLE: AppOrbState[] = ['idle', 'listening', 'thinking', 'speaking', 'follow_up', 'working'];
 
 export default function OrbStateCycle() {
     const [index, setIndex] = useState(0);

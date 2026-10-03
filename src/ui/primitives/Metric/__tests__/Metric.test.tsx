@@ -32,4 +32,22 @@ describe('Metric', () => {
         const { container } = render(<Metric value={1} className="custom-metric" />);
         expect(container.querySelector('span')?.className).toContain('custom-metric');
     });
+
+    it('forwards native attributes to the span', () => {
+        const { container } = render(
+            <Metric
+                value={42}
+                unit="%"
+                id="cpu"
+                title="CPU load"
+                aria-label="CPU 42 percent"
+                data-k="1"
+            />,
+        );
+        const el = container.querySelector('span');
+        expect(el?.id).toBe('cpu');
+        expect(el?.getAttribute('title')).toBe('CPU load');
+        expect(el?.getAttribute('aria-label')).toBe('CPU 42 percent');
+        expect(el?.getAttribute('data-k')).toBe('1');
+    });
 });

@@ -97,7 +97,7 @@ export { StatusLabel } from './primitives/StatusLabel';
 export type { StatusLabelProps } from './primitives/StatusLabel';
 
 export { Hint } from './primitives/Hint';
-export type { HintProps, HintKeyProps } from './primitives/Hint';
+export type { HintProps, HintKeyProps, HintPosition } from './primitives/Hint';
 
 export { StateSimulator } from './primitives/StateSimulator';
 export type { StateSimulatorProps } from './primitives/StateSimulator';

@@ -1,4 +1,4 @@
-import type { ReactNode, PointerEvent as ReactPointerEvent } from 'react';
+import type { ReactNode } from 'react';
 import type { ResizeDir } from '../hooks/useResizable';
 
 /** `compact`: docked in a slot. `expanded`: free-floating and resizable. */
@@ -20,7 +20,7 @@ export type WindowState =
 export interface WindowProps {
     /** Unique window id; passed back as the first argument of every callback. */
     id: string;
-    /** Header title. A string title is also the accessible name of the window. */
+    /** Header title. It also names the window region (`aria-labelledby` points at it). */
     title?: ReactNode;
     /** Index glyph shown before the title in the header. */
     ix?: ReactNode;
@@ -49,14 +49,20 @@ export interface WindowProps {
     mode?: PanelMode;
     /** Called with the id on any pointer down inside the window. */
     onFocus?: (id: string) => void;
-    /** Called when a header drag starts (not on the header buttons). */
-    onDragStart?: (id: string, e: ReactPointerEvent) => void;
+    /**
+     * Called with the native `pointerdown` event when a header drag starts (not on the header
+     * buttons).
+     */
+    onDragStart?: (id: string, e: PointerEvent) => void;
     /** Called on every pointer move of a header drag with the offset from the drag start. */
     onDragMove?: (id: string, dx: number, dy: number, e: PointerEvent) => void;
     /** Called when the header drag ends (pointer up or cancel). */
     onDragEnd?: (id: string, e: PointerEvent) => void;
-    /** Called when a resize starts on one of the eight edge and corner handles. */
-    onResizeStart?: (id: string, dir: ResizeDir, e: ReactPointerEvent) => void;
+    /**
+     * Called with the native `pointerdown` event when a resize starts on one of the eight edge and
+     * corner handles.
+     */
+    onResizeStart?: (id: string, dir: ResizeDir, e: PointerEvent) => void;
     /** Called on every pointer move of a resize with the handle direction and offset. */
     onResizeMove?: (id: string, dir: ResizeDir, dx: number, dy: number, e: PointerEvent) => void;
     /** Called when the resize ends. */
@@ -67,7 +73,7 @@ export interface WindowProps {
     onClose?: (id: string) => void;
     /**
      * Shows a dock/undock button in the header; called when it is clicked or the header is
-     * double-clicked.
+     * double-clicked. Both play the `expand` / `collapse` sound.
      */
     onModeToggle?: (id: string) => void;
     /**
@@ -80,7 +86,7 @@ export interface WindowProps {
      * @default true
      */
     resizable?: boolean;
-    /** Extra classes for the root `<div role="dialog">` element. */
+    /** Extra classes for the root `<div role="region">` element. */
     className?: string;
     /** Renders the window body; receives the current `mode`, `focused` and `dragging`. */
     itemRenderer: (props: PanelContentRenderProps) => ReactNode;

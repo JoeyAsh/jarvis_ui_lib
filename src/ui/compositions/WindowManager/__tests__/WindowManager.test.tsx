@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, fireEvent, act } from '@testing-library/react';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { WindowManager } from '../WindowManager';
-import type { ManagedWindow } from '../WindowManager';
+import type { ExpandedRect, ManagedWindow } from '../WindowManager';
 import { SfxProvider } from '@core/audio';
 import type { SlotId } from '../../../window/slotGrid';
 import {
@@ -122,10 +122,10 @@ describe('WindowManager — rendering', () => {
         const rects = computeAllSlots(VW, VH);
         const l1 = rects['L1'];
         const win = container.querySelector<HTMLDivElement>('[data-window-id="win-a"]');
-        expect(win?.style.left).toBe(`${l1.x}px`);
-        expect(win?.style.top).toBe(`${l1.y}px`);
-        expect(win?.style.width).toBe(`${l1.w}px`);
-        expect(win?.style.height).toBe(`${l1.h}px`);
+        expect(win?.style.getPropertyValue('--lib-window-x')).toBe(`${l1.x}px`);
+        expect(win?.style.getPropertyValue('--lib-window-y')).toBe(`${l1.y}px`);
+        expect(win?.style.getPropertyValue('--lib-window-w')).toBe(`${l1.w}px`);
+        expect(win?.style.getPropertyValue('--lib-window-h')).toBe(`${l1.h}px`);
     });
 
     it('renders titles of each window', () => {
@@ -559,10 +559,10 @@ describe('WindowManager — expanded mode: free drag', () => {
             />,
         );
         const win = container.querySelector<HTMLDivElement>('[data-window-id="win-a"]');
-        expect(win?.style.left).toBe('200px');
-        expect(win?.style.top).toBe('150px');
-        expect(win?.style.width).toBe('500px');
-        expect(win?.style.height).toBe('350px');
+        expect(win?.style.getPropertyValue('--lib-window-x')).toBe('200px');
+        expect(win?.style.getPropertyValue('--lib-window-y')).toBe('150px');
+        expect(win?.style.getPropertyValue('--lib-window-w')).toBe('500px');
+        expect(win?.style.getPropertyValue('--lib-window-h')).toBe('350px');
     });
 });
 
@@ -605,7 +605,148 @@ describe('WindowManager — viewport resize', () => {
         expect(l1.w).toBe(COLUMN_WIDTH);
 
         const win = container.querySelector<HTMLDivElement>('[data-window-id="win-a"]');
-        expect(win?.style.left).toBe(`${l1.x}px`);
-        expect(win?.style.top).toBe(`${l1.y}px`);
+        expect(win?.style.getPropertyValue('--lib-window-x')).toBe(`${l1.x}px`);
+        expect(win?.style.getPropertyValue('--lib-window-y')).toBe(`${l1.y}px`);
+    });
+});
+
+// ── 9. Controlled expandedRects + onExpandedRectsChange ───────────────────────
+
+/** Parent that owns expandedRects and applies every change, as a consumer would. */
+function ControlledRects({
+    initial,
+    onChange,
+}: {
+    initial: Record<string, ExpandedRect>;
+    onChange: (next: Record<string, ExpandedRect>) => void;
+}): ReactNode {
+    const [rects, setRects] = useState(initial);
+    return (
+        <WindowManager
+            windows={[WIN_A]}
+            assignments={{ 'win-a': 'L1' }}
+            onAssignmentsChange={noop}
+            modes={{ 'win-a': 'expanded' }}
+            onModesChange={noop}
+            expandedRects={rects}
+            onExpandedRectsChange={(next) => {
+                onChange(next);
+                setRects(next);
+            }}
+        />
+    );
+}
+
+describe('WindowManager — onExpandedRectsChange', () => {
+    it('reports the moved rect on drag end and the controlled window follows it', () => {
+        const onChange = vi.fn();
+        const { container } = renderWithSfx(
+            <ControlledRects
+                initial={{ 'win-a': { x: 200, y: 150, w: 400, h: 300 } }}
+                onChange={onChange}
+            />,
+        );
+        const handle = container.querySelector('[data-testid="window-drag-handle"]') as HTMLElement;
+        fireEvent.pointerDown(handle, { button: 0, clientX: 200, clientY: 150 });
+        act(() => {
+            windowPointerEvent('pointermove', { clientX: 300, clientY: 250 });
+        });
+        act(() => {
+            windowPointerEvent('pointerup', { clientX: 300, clientY: 250 });
+        });
+
+        expect(onChange).toHaveBeenCalledTimes(1);
+        expect(onChange).toHaveBeenLastCalledWith({ 'win-a': { x: 300, y: 250, w: 400, h: 300 } });
+        const win = container.querySelector<HTMLDivElement>('[data-window-id="win-a"]');
+        expect(win?.style.getPropertyValue('--lib-window-x')).toBe('300px');
+        expect(win?.style.getPropertyValue('--lib-window-y')).toBe('250px');
+    });
+
+    it('reports resized rects and the controlled window does not snap back', () => {
+        const onChange = vi.fn();
+        const { container } = renderWithSfx(
+            <ControlledRects
+                initial={{ 'win-a': { x: 200, y: 150, w: 400, h: 300 } }}
+                onChange={onChange}
+            />,
+        );
+        const handle = container.querySelector('[data-testid="resize-se"]') as HTMLElement;
+        fireEvent.pointerDown(handle, { button: 0, clientX: 600, clientY: 450 });
+        act(() => {
+            windowPointerEvent('pointermove', { clientX: 650, clientY: 500 });
+        });
+        act(() => {
+            windowPointerEvent('pointerup', { clientX: 650, clientY: 500 });
+        });
+
+        expect(onChange).toHaveBeenLastCalledWith({ 'win-a': { x: 200, y: 150, w: 450, h: 350 } });
+        const win = container.querySelector<HTMLDivElement>('[data-window-id="win-a"]');
+        expect(win?.style.getPropertyValue('--lib-window-w')).toBe('450px');
+        expect(win?.style.getPropertyValue('--lib-window-h')).toBe('350px');
+    });
+
+    it('fires in uncontrolled mode when a window is undocked', () => {
+        const onChange = vi.fn();
+        const { container } = renderWithSfx(
+            <WindowManager
+                windows={[WIN_A]}
+                assignments={{ 'win-a': 'L1' }}
+                onAssignmentsChange={noop}
+                onExpandedRectsChange={onChange}
+            />,
+        );
+        const btn = container.querySelector(
+            '[data-window-id="win-a"] button[aria-label="Undock window"]',
+        ) as HTMLElement;
+        fireEvent.click(btn);
+        expect(onChange).toHaveBeenCalledTimes(1);
+        const next = onChange.mock.calls[0]?.[0] as Record<string, ExpandedRect>;
+        expect(Object.keys(next)).toEqual(['win-a']);
+        expect(container.querySelector('[data-window-id="win-a"]')?.getAttribute('data-mode')).toBe(
+            'expanded',
+        );
+    });
+});
+
+// ── 10. homeAssignments follows prop changes ──────────────────────────────────
+
+describe('WindowManager — homeAssignments', () => {
+    it('Reset uses the latest homeAssignments prop', () => {
+        const onAssignmentsChange = vi.fn();
+        const ui = (home: Record<string, SlotId>): ReactNode => (
+            <WindowManager
+                windows={[WIN_A]}
+                assignments={{ 'win-a': 'R2' }}
+                onAssignmentsChange={onAssignmentsChange}
+                homeAssignments={home}
+            />
+        );
+        const { container, rerender } = renderWithSfx(ui({ 'win-a': 'L1' }));
+        rerender(<SfxWrapper>{ui({ 'win-a': 'B3' })}</SfxWrapper>);
+
+        const btn = container.querySelector(
+            '[data-window-id="win-a"] button[aria-label="Reset window"]',
+        ) as HTMLElement;
+        fireEvent.click(btn);
+        expect(onAssignmentsChange).toHaveBeenLastCalledWith({ 'win-a': 'B3' });
+    });
+
+    it('without homeAssignments, Reset keeps using the assignments from mount', () => {
+        const onAssignmentsChange = vi.fn();
+        const ui = (assignments: Record<string, SlotId>): ReactNode => (
+            <WindowManager
+                windows={[WIN_A]}
+                assignments={assignments}
+                onAssignmentsChange={onAssignmentsChange}
+            />
+        );
+        const { container, rerender } = renderWithSfx(ui({ 'win-a': 'L1' }));
+        rerender(<SfxWrapper>{ui({ 'win-a': 'R3' })}</SfxWrapper>);
+
+        const btn = container.querySelector(
+            '[data-window-id="win-a"] button[aria-label="Reset window"]',
+        ) as HTMLElement;
+        fireEvent.click(btn);
+        expect(onAssignmentsChange).toHaveBeenLastCalledWith({ 'win-a': 'L1' });
     });
 });

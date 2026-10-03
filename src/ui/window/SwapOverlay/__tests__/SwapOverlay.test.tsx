@@ -66,9 +66,10 @@ describe('SwapOverlay', () => {
     it('ghost div is positioned at ghostRect coords', () => {
         const { container } = render(<SwapOverlay active={true} ghostRect={GHOST_RECT} />);
         const ghost = container.querySelector<HTMLDivElement>('.lib-swap__ghost');
-        expect(ghost?.style.left).toBe('100px');
-        expect(ghost?.style.top).toBe('200px');
-        expect(ghost?.style.width).toBe('316px');
-        expect(ghost?.style.height).toBe('250px');
+        expect(ghost?.style.getPropertyValue('--lib-swap-ghost-x')).toBe('100px');
+        expect(ghost?.style.getPropertyValue('--lib-swap-ghost-y')).toBe('200px');
+        expect(ghost?.style.getPropertyValue('--lib-swap-ghost-w')).toBe('316px');
+        expect(ghost?.style.getPropertyValue('--lib-swap-ghost-h')).toBe('250px');
+        expect(ghost?.style.left).toBe('');
     });
 });

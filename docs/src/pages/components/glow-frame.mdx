@@ -16,7 +16,7 @@ frame is a `<div>` with a 1px `--accent-dim` border and 2px radius; add padding 
 
 ## Breathe
 
-`breathe` replaces the static glow with a slow pulse.
+`breathe` replaces the static glow with a slow pulse between `--glow` and `--glow-strong`.
 
 <Demo name="glow-frame/Breathe" />
 
@@ -24,6 +24,8 @@ frame is a `<div>` with a 1px `--accent-dim` border and 2px radius; add padding 
 
 - GlowFrame is a plain `<div>` without a role; the glow is purely visual. Do not rely on it alone
   to convey state, also put the state into text.
+- With `prefers-reduced-motion: reduce` the `breathe` pulse stops and the static glow (`--glow`, or
+  `--glow-strong` with `strong`) is shown instead.
 
 ## API
 

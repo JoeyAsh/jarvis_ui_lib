@@ -126,8 +126,8 @@ describe('WindowManager — container-relative geometry', () => {
         );
         const r1 = computeAllSlots(900, 600).R1;
         const win = container.querySelector<HTMLDivElement>('[data-window-id="win-a"]');
-        expect(win?.style.left).toBe(`${r1.x}px`);
-        expect(win?.style.top).toBe(`${r1.y}px`);
+        expect(win?.style.getPropertyValue('--lib-window-x')).toBe(`${r1.x}px`);
+        expect(win?.style.getPropertyValue('--lib-window-y')).toBe(`${r1.y}px`);
         // Right column must be fully inside the container.
         expect(r1.x + r1.w).toBeLessThanOrEqual(900);
     });
@@ -153,10 +153,10 @@ describe('WindowManager — container-relative geometry', () => {
         const expected = computeAllSlots(window.innerWidth, window.innerHeight);
         SLOT_IDS.forEach((slot) => {
             const win = container.querySelector<HTMLDivElement>(`[data-window-id="win-${slot}"]`);
-            expect(win?.style.left).toBe(`${expected[slot].x}px`);
-            expect(win?.style.top).toBe(`${expected[slot].y}px`);
-            expect(win?.style.width).toBe(`${expected[slot].w}px`);
-            expect(win?.style.height).toBe(`${expected[slot].h}px`);
+            expect(win?.style.getPropertyValue('--lib-window-x')).toBe(`${expected[slot].x}px`);
+            expect(win?.style.getPropertyValue('--lib-window-y')).toBe(`${expected[slot].y}px`);
+            expect(win?.style.getPropertyValue('--lib-window-w')).toBe(`${expected[slot].w}px`);
+            expect(win?.style.getPropertyValue('--lib-window-h')).toBe(`${expected[slot].h}px`);
         });
     });
 
@@ -231,7 +231,9 @@ describe('WindowManager — container-relative geometry', () => {
         );
         const win = (): HTMLDivElement | null =>
             container.querySelector<HTMLDivElement>('[data-window-id="win-a"]');
-        expect(win()?.style.left).toBe(`${computeAllSlots(900, 600).R1.x}px`);
+        expect(win()?.style.getPropertyValue('--lib-window-x')).toBe(
+            `${computeAllSlots(900, 600).R1.x}px`,
+        );
 
         vi.restoreAllMocks();
         mockRootRect({ w: 1100, h: 700, left: 0, top: 0 });
@@ -240,7 +242,9 @@ describe('WindowManager — container-relative geometry', () => {
                 cb();
             });
         });
-        expect(win()?.style.left).toBe(`${computeAllSlots(1100, 700).R1.x}px`);
+        expect(win()?.style.getPropertyValue('--lib-window-x')).toBe(
+            `${computeAllSlots(1100, 700).R1.x}px`,
+        );
     });
 });
 
@@ -250,10 +254,10 @@ function getWin(container: HTMLElement): HTMLDivElement | null {
 
 function readRect(win: HTMLElement | null): { x: number; y: number; w: number; h: number } {
     return {
-        x: parseFloat(win?.style.left ?? 'NaN'),
-        y: parseFloat(win?.style.top ?? 'NaN'),
-        w: parseFloat(win?.style.width ?? 'NaN'),
-        h: parseFloat(win?.style.height ?? 'NaN'),
+        x: parseFloat(win?.style.getPropertyValue('--lib-window-x') ?? 'NaN'),
+        y: parseFloat(win?.style.getPropertyValue('--lib-window-y') ?? 'NaN'),
+        w: parseFloat(win?.style.getPropertyValue('--lib-window-w') ?? 'NaN'),
+        h: parseFloat(win?.style.getPropertyValue('--lib-window-h') ?? 'NaN'),
     };
 }
 
@@ -472,12 +476,16 @@ describe('WindowManager — lifecycle and window resize', () => {
                 onAssignmentsChange={noop}
             />,
         );
-        expect(getWin(container)?.style.left).toBe(`${computeAllSlots(900, 600).R1.x}px`);
+        expect(getWin(container)?.style.getPropertyValue('--lib-window-x')).toBe(
+            `${computeAllSlots(900, 600).R1.x}px`,
+        );
 
         mockRootRect({ w: 1100, h: 700, left: 0, top: 0 });
         act(() => {
             window.dispatchEvent(new Event('resize'));
         });
-        expect(getWin(container)?.style.left).toBe(`${computeAllSlots(1100, 700).R1.x}px`);
+        expect(getWin(container)?.style.getPropertyValue('--lib-window-x')).toBe(
+            `${computeAllSlots(1100, 700).R1.x}px`,
+        );
     });
 });

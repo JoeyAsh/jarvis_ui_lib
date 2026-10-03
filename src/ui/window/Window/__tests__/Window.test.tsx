@@ -148,3 +148,127 @@ describe('Window — visual', () => {
         expect(screen.queryByRole('button', { name: /close window/i })).toBeNull();
     });
 });
+
+describe('Window — header double-click', () => {
+    it('toggles the mode and plays expand (no click) in compact mode', () => {
+        const sfx = makeSfx();
+        const onModeToggle = vi.fn();
+        renderWindow(sfx, { onModeToggle, mode: 'compact', title: 'Alpha' });
+        const handle = screen.getByTestId('window-drag-handle');
+        fireEvent.click(handle);
+        fireEvent.click(handle);
+        expect(onModeToggle).toHaveBeenCalledTimes(1);
+        expect(onModeToggle).toHaveBeenCalledWith('test-win');
+        expect(sfx.playOneShot).toHaveBeenCalledWith('expand');
+        expect(sfx.playOneShot).not.toHaveBeenCalledWith('click');
+    });
+
+    it('plays collapse when double-clicked in expanded mode', () => {
+        const sfx = makeSfx();
+        const onModeToggle = vi.fn();
+        renderWindow(sfx, { onModeToggle, mode: 'expanded', title: 'Alpha' });
+        const handle = screen.getByTestId('window-drag-handle');
+        fireEvent.click(handle);
+        fireEvent.click(handle);
+        expect(onModeToggle).toHaveBeenCalledTimes(1);
+        expect(sfx.playOneShot).toHaveBeenCalledWith('collapse');
+    });
+
+    it('a single click neither toggles nor plays a sound', () => {
+        const sfx = makeSfx();
+        const onModeToggle = vi.fn();
+        renderWindow(sfx, { onModeToggle });
+        fireEvent.click(screen.getByTestId('window-drag-handle'));
+        expect(onModeToggle).not.toHaveBeenCalled();
+        expect(sfx.playOneShot).not.toHaveBeenCalled();
+    });
+
+    it('plays no sound on double-click without onModeToggle', () => {
+        const sfx = makeSfx();
+        renderWindow(sfx);
+        const handle = screen.getByTestId('window-drag-handle');
+        fireEvent.click(handle);
+        fireEvent.click(handle);
+        expect(sfx.playOneShot).not.toHaveBeenCalled();
+    });
+});
+
+describe('Window — accessibility', () => {
+    it('is a region labelled by its title element', () => {
+        renderWindow(makeSfx(), { title: 'Telemetry' });
+        const region = screen.getByRole('region', { name: 'Telemetry' });
+        const labelId = region.getAttribute('aria-labelledby');
+        expect(labelId).toBeTruthy();
+        expect(document.getElementById(labelId ?? '')?.textContent).toBe('Telemetry');
+        expect(screen.queryByRole('dialog')).toBeNull();
+    });
+
+    it('is named by a non-string title too', () => {
+        renderWindow(makeSfx(), { title: <strong>Systems</strong> });
+        expect(screen.getByRole('region', { name: 'Systems' })).toBeDefined();
+    });
+
+    it('omits aria-labelledby without a title', () => {
+        const { container } = renderWindow(makeSfx());
+        expect(container.querySelector('.lib-window')?.hasAttribute('aria-labelledby')).toBe(false);
+    });
+});
+
+describe('Window — geometry and styling', () => {
+    it('injects the position as CSS variables instead of raw inline geometry', () => {
+        const { container } = renderWindow(makeSfx(), {
+            position: { x: 10, y: 20, w: 300, h: 200 },
+        });
+        const root = container.querySelector<HTMLDivElement>('.lib-window');
+        expect(root?.style.getPropertyValue('--lib-window-x')).toBe('10px');
+        expect(root?.style.getPropertyValue('--lib-window-y')).toBe('20px');
+        expect(root?.style.getPropertyValue('--lib-window-w')).toBe('300px');
+        expect(root?.style.getPropertyValue('--lib-window-h')).toBe('200px');
+        expect(root?.style.left).toBe('');
+    });
+
+    it('renders ix and title with classes, not inline styles', () => {
+        const { container } = renderWindow(makeSfx(), { ix: '01', title: 'Alpha' });
+        const ix = container.querySelector<HTMLElement>('.lib-window__ix');
+        const title = container.querySelector<HTMLElement>('.lib-window__title');
+        expect(ix?.textContent).toBe('01');
+        expect(ix?.getAttribute('style')).toBeNull();
+        expect(title?.getAttribute('style')).toBeNull();
+        expect(container.querySelector('.lib-panel')?.getAttribute('style')).toBeNull();
+    });
+
+    it('merges className onto the root', () => {
+        const { container } = renderWindow(makeSfx(), { className: 'extra' });
+        expect(container.querySelector('.lib-window.extra')).not.toBeNull();
+    });
+});
+
+describe('Window — gesture callbacks', () => {
+    it('passes the native PointerEvent to onDragStart', () => {
+        const onDragStart = vi.fn();
+        renderWindow(makeSfx(), { onDragStart });
+        fireEvent.pointerDown(screen.getByTestId('window-drag-handle'), {
+            button: 0,
+            clientX: 5,
+            clientY: 5,
+        });
+        expect(onDragStart).toHaveBeenCalledTimes(1);
+        expect(onDragStart.mock.calls[0]?.[0]).toBe('test-win');
+        expect(onDragStart.mock.calls[0]?.[1]).toBeInstanceOf(PointerEvent);
+        fireEvent.pointerUp(window, { clientX: 5, clientY: 5 });
+    });
+
+    it('passes the direction and native PointerEvent to onResizeStart', () => {
+        const onResizeStart = vi.fn();
+        renderWindow(makeSfx(), { onResizeStart, mode: 'expanded' });
+        fireEvent.pointerDown(screen.getByTestId('resize-se'), {
+            button: 0,
+            clientX: 5,
+            clientY: 5,
+        });
+        expect(onResizeStart).toHaveBeenCalledTimes(1);
+        expect(onResizeStart.mock.calls[0]?.[1]).toBe('se');
+        expect(onResizeStart.mock.calls[0]?.[2]).toBeInstanceOf(PointerEvent);
+        fireEvent.pointerUp(window, { clientX: 5, clientY: 5 });
+    });
+});

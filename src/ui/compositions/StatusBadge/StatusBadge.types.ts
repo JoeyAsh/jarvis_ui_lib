@@ -12,7 +12,8 @@ export interface StatusBadgeProps {
      */
     state?: StatusBadgeState;
     /**
-     * Lets the dot pulse while `state` is `online`; ignored for the other states.
+     * Lets the dot pulse while `state` is `online`; ignored for the other states and under
+     * `prefers-reduced-motion`.
      * @default true
      */
     pulse?: boolean;

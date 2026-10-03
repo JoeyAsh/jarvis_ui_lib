@@ -1,6 +1,10 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export interface LabelProps {
+/**
+ * Props of `Label`. Native attributes (`id`, `title`, `aria-*`, `data-*`, event handlers, ...) are
+ * forwarded to the root element, so a `<span>` label can name a region via `aria-labelledby`.
+ */
+export interface LabelProps extends HTMLAttributes<HTMLElement> {
     /** Caption text; rendered small and uppercase. */
     children: ReactNode;
     /** Uses the muted text color instead of the secondary one, for less important captions. @default false */

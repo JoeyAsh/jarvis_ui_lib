@@ -1,6 +1,6 @@
 /* ================================================================
    Reactor — bottom radial-gradient hemisphere.
-   Ported from handoff lines 145-153.
+   Ported from handoff lines 145-153. Tints derive from --accent.
    ================================================================ */
 
 .lib-reactor {
@@ -15,8 +15,8 @@
     pointer-events: none;
     background: radial-gradient(
         circle at 50% 0%,
-        rgba(76, 168, 232, 0.14) 0%,
-        rgba(76, 168, 232, 0.03) 35%,
+        color-mix(in srgb, var(--accent) 14%, transparent) 0%,
+        color-mix(in srgb, var(--accent) 3%, transparent) 35%,
         transparent 62%
     );
 }
@@ -29,6 +29,6 @@
     width: 540px;
     height: 540px;
     transform: translateX(-50%);
-    border-top: 1px solid rgba(76, 168, 232, 0.3);
+    border-top: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
     border-radius: 50%;
 }

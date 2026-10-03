@@ -17,8 +17,9 @@ seconds.
 
 ## Color
 
-`color` takes any CSS color and tints the tails of the strips; the bright center stays
-`--accent-bright`. Prefer theme variables such as `var(--warning)`.
+`color` takes any CSS color. It tints the tails of the strips, and the bright center and its glow
+become a lightened mix of the same color, so the whole trace follows it. Without `color` the tails
+use `--accent` and the center `--accent-bright`. Prefer theme variables such as `var(--warning)`.
 
 <Demo name="light-trace/Color" />
 
@@ -34,8 +35,8 @@ Combine them to give your own surfaces the same chrome. Put the layers first and
 ## Accessibility
 
 - The trace is `aria-hidden` and ignores pointer events.
-- The animation runs continuously and does not respond to `prefers-reduced-motion`. Render
-  LightTrace conditionally if your app must honor that setting.
+- With `prefers-reduced-motion: reduce` the strips are not animated and not drawn; the trace is
+  hidden.
 
 ## API
 

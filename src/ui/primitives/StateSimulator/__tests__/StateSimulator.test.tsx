@@ -34,9 +34,29 @@ describe('StateSimulator — visual', () => {
         expect(getByText('◈ CUSTOM')).toBeDefined();
     });
 
-    it('renders 5 state buttons', () => {
-        const { container } = render(<StateSimulator state="idle" onChange={() => undefined} />);
-        expect(container.querySelectorAll('.lib-sim__btn')).toHaveLength(5);
+    it('renders 6 state buttons including follow_up', () => {
+        const { container, getByText } = render(
+            <StateSimulator state="idle" onChange={() => undefined} />,
+        );
+        expect(container.querySelectorAll('.lib-sim__btn')).toHaveLength(6);
+        expect(getByText('FOLLOW UP')).toBeDefined();
+    });
+
+    it('calls onChange with follow_up', () => {
+        const handler = vi.fn();
+        const { getByRole } = render(<StateSimulator state="idle" onChange={handler} />);
+        fireEvent.click(getByRole('button', { name: 'FOLLOW UP' }));
+        expect(handler).toHaveBeenCalledWith('follow_up');
+    });
+
+    it('marks only the current state button aria-pressed', () => {
+        const { getAllByRole } = render(
+            <StateSimulator state="follow_up" onChange={() => undefined} />,
+        );
+        const pressed = getAllByRole('button', { pressed: true });
+        expect(pressed).toHaveLength(1);
+        expect(pressed[0]?.textContent).toContain('FOLLOW UP');
+        expect(getAllByRole('button', { pressed: false })).toHaveLength(5);
     });
 
     it('marks active button with active class', () => {

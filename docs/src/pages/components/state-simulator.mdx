@@ -19,8 +19,8 @@ current `state` and update it in `onChange`.
 
 <Demo name="state-simulator/Inline" />
 
-The toolbar offers `idle`, `listening`, `thinking`, `speaking` and `working`. There is no button for
-`follow_up`; if you pass it as `state`, no button is highlighted.
+The toolbar has one button per `AppOrbState`: `idle`, `listening`, `thinking`, `speaking`,
+`follow_up` (labelled `FOLLOW UP`) and `working`.
 
 ## Drive the orb
 
@@ -46,8 +46,8 @@ Hovering a state button plays `hover_button` and clicking it plays `click` throu
 
 - Every state is a native `<button type="button">` whose text is its accessible name, so the
   toolbar works with Tab, Enter and Space.
-- The current state is shown by color only; the buttons do not set `aria-pressed`. Show the state
-  in text as well (for example with StatusLabel) if that matters for your tooling.
+- The button of the current state has `aria-pressed="true"`, all others `aria-pressed="false"`, so
+  screen readers announce which state is selected, not only the color.
 
 ## API
 

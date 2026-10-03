@@ -1,6 +1,7 @@
 /* ================================================================
    HUDShell — fullscreen root HUD compositor.
-   Ported from handoff App container (lines 1112-1143).
+   Per-component CSS because the idle and working states style
+   descendants (panels, top bar) and draw pseudo-element chrome.
    ================================================================ */
 
 .hud-shell {
@@ -26,15 +27,73 @@
     z-index: 10;
 }
 
-/* Idle-mode: dim panels and fade topbar */
+/* Idle mode: dim panels and fade the top bar. The transitions live on the
+   base selectors so leaving idle animates as smoothly as entering it. Panel's
+   own transitions are repeated so they keep working inside the shell. */
+.hud-shell > .hud-shell__children .lib-panel {
+    transition:
+        border-color 0.25s,
+        box-shadow 0.25s,
+        transform 0.25s,
+        opacity 0.35s var(--ease),
+        filter 0.35s var(--ease);
+}
+
+.hud-shell .lib-topbar {
+    transition: opacity 0.35s var(--ease);
+}
+
 .hud-shell.idle > .hud-shell__children .lib-panel {
     opacity: 0.2;
     filter: blur(1px);
     pointer-events: none;
-    transition: all 0.35s;
 }
 
 .hud-shell.idle .lib-topbar {
     opacity: 0.45;
-    transition: opacity 0.35s;
+}
+
+/* Working mode (tool-call activity): an accent light trace sweeps along the
+   top edge and a soft accent vignette breathes at the screen edges. */
+.hud-shell.is-working::before,
+.hud-shell.is-working::after {
+    content: '';
+    position: fixed;
+    pointer-events: none;
+}
+
+.hud-shell.is-working::before {
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 1px;
+    z-index: 31;
+    background: linear-gradient(90deg, transparent, var(--accent-bright), transparent);
+    box-shadow: var(--glow);
+    animation: jlib-sweep-x 1.8s var(--ease) infinite;
+}
+
+.hud-shell.is-working::after {
+    inset: 0;
+    z-index: 5;
+    box-shadow: inset 0 0 120px color-mix(in srgb, var(--accent) 14%, transparent);
+    animation: blink 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hud-shell > .hud-shell__children .lib-panel,
+    .hud-shell .lib-topbar {
+        transition: none;
+    }
+
+    /* Static cue instead of motion: a full-width accent hairline plus the vignette. */
+    .hud-shell.is-working::before {
+        width: 100%;
+        opacity: 0.6;
+        animation: none;
+    }
+
+    .hud-shell.is-working::after {
+        animation: none;
+    }
 }

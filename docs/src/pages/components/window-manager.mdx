@@ -49,14 +49,18 @@ let WindowManager track modes itself; `onModesChange` fires either way.
 ## Reset
 
 The reset button in each header docks the window, clears any custom size and moves it back to its
-home slot. Home slots come from `homeAssignments`, or from `assignments` on the first render; both
-are read once on mount.
+home slot. Home slots come from `homeAssignments`; changes to the prop are used by the next reset.
+Without `homeAssignments`, the `assignments` of the first render are the home slots.
 
-<Callout variant="warning" title="Controlled expandedRects">
-    When you pass `expandedRects`, WindowManager stops storing the positions of expanded windows and
-    offers no change callback, so dragging and resizing an expanded window has no lasting effect.
-    Omit it unless you want to pin expanded windows in place.
-</Callout>
+## Controlled expanded rects
+
+Pass `expandedRects` to own the positions and sizes of expanded windows, e.g. to persist them.
+WindowManager then stops storing them and reports every change through `onExpandedRectsChange`:
+the default rect when a window is undocked, the final position when a drag ends, each step of a
+resize and the removal on reset. Apply the map you receive, otherwise the window snaps back.
+`onExpandedRectsChange` also fires when `expandedRects` is omitted.
+
+<Demo name="window-manager/ControlledRects" height="tall" align="start" />
 
 ## Windows
 
@@ -65,7 +69,7 @@ Each entry of `windows` is a `ManagedWindow`:
 | Field          | Type                                            | Description                                                   |
 | -------------- | ----------------------------------------------- | ------------------------------------------------------------- |
 | `id`           | `string`                                        | Unique id; the key in `assignments`, `modes` and `focusedId`. |
-| `title`        | `ReactNode`                                     | Header title. A string title is also the accessible name.     |
+| `title`        | `ReactNode`                                     | Header title; also the accessible name of the window region.  |
 | `ix`           | `ReactNode`                                     | Index glyph before the title.                                 |
 | `badge`        | `ReactNode`                                     | Tag at the right end of the header.                           |
 | `itemRenderer` | `(props: PanelContentRenderProps) => ReactNode` | Renders the body; receives `mode`, `focused` and `dragging`.  |
@@ -75,15 +79,16 @@ A window without an entry in `assignments` is not rendered.
 ## Sound
 
 Through the nearest `SfxProvider`, dragging plays `drag_start`, a looping `drag_move` and `drag_end`;
-resizing loops `resize`; the undock and dock buttons play `click` plus `expand` or `collapse`; the
-reset button plays `click` plus `recall`. See [Sound effects](/getting-started/sound).
+resizing loops `resize`; the undock and dock buttons play `click` plus `expand` or `collapse`, and a
+header double-click plays `expand` or `collapse`; the reset button plays `click` plus `recall`. See [Sound effects](/getting-started/sound).
 
 ## Accessibility
 
-- Each window is a `role="dialog"` element named by its string `title`.
-- The reset and dock buttons are native buttons with accessible names.
-- Dragging, swapping and resizing are pointer-only. Offer another way to rearrange content when
-  keyboard users need it.
+- Each window is a non-modal `role="region"` named by its `title` through `aria-labelledby`.
+- The reset and dock buttons are native buttons with accessible names; the dock button is the
+  keyboard equivalent of the header double-click.
+- Dragging, swapping and resizing are pointer-only; there are no keyboard shortcuts for them. Offer
+  another way to rearrange content (e.g. by updating `assignments`) when keyboard users need it.
 
 ## API
 

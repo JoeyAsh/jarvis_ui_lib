@@ -22,7 +22,7 @@ there. In this demo the frame contains it; in an app it sits at the bottom of th
 the [WaveformMeter](/components/waveform-meter)s and marks the
 [PushToTalkButton](/components/push-to-talk-button) as active. The text below comes from
 [StatusLabel](/components/status-label): `READY` when idle, otherwise `listening...`,
-`thinking...`, `speaking...` or `working...` (`follow_up` shows `listening...`).
+`thinking...`, `speaking...`, `working...` or `follow-up...`.
 
 <Demo name="status-dock/States" height="tall" />
 
@@ -42,8 +42,13 @@ function Assistant({ state, onTalk }: { state: AppOrbState; onTalk: () => void }
 
 ## Custom button
 
-`ptt` replaces the built-in button. Pass your own `PushToTalkButton` to change its icon or
-accessible name; `onPTT` is then unused, so wire the click on your button.
+To only rename the built-in button, e.g. for localization, set `pttLabel`; it becomes the
+button's accessible name.
+
+<Demo name="status-dock/Localized" height="tall" />
+
+`ptt` replaces the built-in button. Pass your own `PushToTalkButton` to change its icon or other
+props; `onPTT` and `pttLabel` are then unused, so wire the click on your button.
 
 <Demo name="status-dock/CustomPtt" height="tall" />
 
@@ -54,11 +59,11 @@ nearest `SfxProvider`. The meters and the label are silent.
 
 ## Accessibility
 
-- The push-to-talk button is a native `<button>` named `Push to talk` with `aria-pressed` set while
-  `state` is not `idle`. It works with **Enter** and **Space**.
+- The push-to-talk button is a native `<button>` named `Push to talk` (or `pttLabel`) with
+  `aria-pressed` set while `state` is not `idle`. It works with **Enter** and **Space**.
 - The waveform meters are `aria-hidden`.
-- The state text is not a live region, so state changes are not announced. Mirror the state into
-  your own `aria-live="polite"` element if screen reader users need it.
+- The state text is a polite live region (`role="status"`), so screen readers announce state
+  changes such as `listening...` without interrupting.
 
 ## API
 

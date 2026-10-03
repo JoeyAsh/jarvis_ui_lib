@@ -6,6 +6,7 @@ import {
     useState,
     type ReactElement,
 } from 'react';
+import { cx } from '@common/utils/cx';
 import { Window } from '../../window/Window';
 import type { WindowState } from '../../window/Window';
 import { SnapOverlay } from '../../window/SnapOverlay';
@@ -52,6 +53,7 @@ export function WindowManager({
     modes: modesProp,
     onModesChange,
     expandedRects: expandedRectsProp,
+    onExpandedRectsChange,
     className,
 }: WindowManagerProps): ReactElement {
     const [viewport, setViewport] = useState(getViewport);
@@ -130,9 +132,20 @@ export function WindowManager({
     const [swapTarget, setSwapTarget] = useState<string | null>(null);
 
     // ── Expanded free-drag state ───────────────────────────────────────────────
-    const [freeDrag, setFreeDrag] = useState<FreeDrag | null>(null);
+    const [freeDrag, setFreeDragState] = useState<FreeDrag | null>(null);
     // Live position during free drag (avoids updating expandedRects on every move).
-    const [freeDragPos, setFreeDragPos] = useState<{ x: number; y: number } | null>(null);
+    const [freeDragPos, setFreeDragPosState] = useState<{ x: number; y: number } | null>(null);
+    // Synchronous mirrors so pointer handlers never read stale gesture state.
+    const freeDragRef = useRef<FreeDrag | null>(null);
+    const freeDragPosRef = useRef<{ x: number; y: number } | null>(null);
+    const setFreeDrag = useCallback((next: FreeDrag | null): void => {
+        freeDragRef.current = next;
+        setFreeDragState(next);
+    }, []);
+    const setFreeDragPos = useCallback((next: { x: number; y: number } | null): void => {
+        freeDragPosRef.current = next;
+        setFreeDragPosState(next);
+    }, []);
 
     // ── Expanded resize state ──────────────────────────────────────────────────
     const expandedResizeStartRef = useRef<Record<string, ExpandedRect>>({});
@@ -153,8 +166,12 @@ export function WindowManager({
         expandedRectsRef.current = expandedRects;
     });
 
-    // Home assignments — captured once on mount (or taken from prop).
+    // Home assignments: the `homeAssignments` prop (follows changes) or, without it, the
+    // assignments captured on mount.
     const homeRef = useRef<Record<string, SlotId>>(homeAssignments ?? assignments);
+    useLayoutEffect(() => {
+        if (homeAssignments !== undefined) homeRef.current = homeAssignments;
+    }, [homeAssignments]);
 
     // ── Mode helpers ───────────────────────────────────────────────────────────
 
@@ -173,17 +190,27 @@ export function WindowManager({
         [isModesControlled, onModesChange],
     );
 
+    // Writes an expanded rect: stored internally when uncontrolled, reported through
+    // `onExpandedRectsChange` in both modes. The ref is updated synchronously so several changes
+    // within one gesture build on each other before the next render.
     const setExpandedRect = useCallback(
         (id: string, rect: ExpandedRect): void => {
+            const next = { ...expandedRectsRef.current, [id]: rect };
+            expandedRectsRef.current = next;
             if (!isExpandedControlled) {
                 setInternalExpandedRects((prev) => ({ ...prev, [id]: rect }));
             }
+            if (onExpandedRectsChange) onExpandedRectsChange(next);
         },
-        [isExpandedControlled],
+        [isExpandedControlled, onExpandedRectsChange],
     );
 
     const clearExpandedRect = useCallback(
         (id: string): void => {
+            if (!(id in expandedRectsRef.current)) return;
+            const next = { ...expandedRectsRef.current };
+            delete next[id];
+            expandedRectsRef.current = next;
             if (!isExpandedControlled) {
                 setInternalExpandedRects((prev) => {
                     const copy = { ...prev };
@@ -191,8 +218,9 @@ export function WindowManager({
                     return copy;
                 });
             }
+            if (onExpandedRectsChange) onExpandedRectsChange(next);
         },
-        [isExpandedControlled],
+        [isExpandedControlled, onExpandedRectsChange],
     );
 
     // ── Mode toggle (from button or double-click) ──────────────────────────────
@@ -299,7 +327,7 @@ export function WindowManager({
     // ── Expanded free-drag ─────────────────────────────────────────────────────
 
     const handleExpandedDragStart = useCallback(
-        (id: string, e: React.PointerEvent): void => {
+        (id: string, e: PointerEvent): void => {
             const current = modesRef.current[id] ?? 'compact';
             if (current !== 'expanded') return;
             const rect = expandedRectsRef.current[id];
@@ -314,53 +342,44 @@ export function WindowManager({
             setFreeDragPos({ x: rect.x, y: rect.y });
             if (onFocusChange) onFocusChange(id);
         },
-        [onFocusChange],
+        [onFocusChange, setFreeDrag, setFreeDragPos],
     );
 
     const handleExpandedDragMove = useCallback(
         (id: string, dx: number, dy: number, _e: PointerEvent): void => {
             const current = modesRef.current[id] ?? 'compact';
             if (current !== 'expanded') return;
-            setFreeDrag((prev) => {
-                if (!prev || prev.windowId !== id) return prev;
-                const vp = measureContainer(rootRef.current);
-                const rect = expandedRectsRef.current[id];
-                const w = rect ? rect.w : MIN_EXPANDED_W;
-                const h = rect ? rect.h : MIN_EXPANDED_H;
-                const rawX = prev.originX + dx;
-                const rawY = prev.originY + dy;
-                const x = Math.max(0, Math.min(rawX, Math.max(0, vp.w - w)));
-                const y = Math.max(
-                    TOP_BAR_HEIGHT,
-                    Math.min(rawY, Math.max(TOP_BAR_HEIGHT, vp.h - h)),
-                );
-                setFreeDragPos({ x, y });
-                return prev;
-            });
+            const drag = freeDragRef.current;
+            if (!drag || drag.windowId !== id) return;
+            const vp = measureContainer(rootRef.current);
+            const rect = expandedRectsRef.current[id];
+            const w = rect ? rect.w : MIN_EXPANDED_W;
+            const h = rect ? rect.h : MIN_EXPANDED_H;
+            const rawX = drag.originX + dx;
+            const rawY = drag.originY + dy;
+            const x = Math.max(0, Math.min(rawX, Math.max(0, vp.w - w)));
+            const y = Math.max(TOP_BAR_HEIGHT, Math.min(rawY, Math.max(TOP_BAR_HEIGHT, vp.h - h)));
+            setFreeDragPos({ x, y });
         },
-        [],
+        [setFreeDragPos],
     );
 
     const handleExpandedDragEnd = useCallback(
         (id: string, _e: PointerEvent): void => {
             const current = modesRef.current[id] ?? 'compact';
             if (current !== 'expanded') return;
-            setFreeDrag((prev) => {
-                if (!prev || prev.windowId !== id) return prev;
-                // Commit final position.
-                setFreeDragPos((pos) => {
-                    if (pos) {
-                        const rect = expandedRectsRef.current[id];
-                        if (rect) {
-                            setExpandedRect(id, { ...rect, x: pos.x, y: pos.y });
-                        }
-                    }
-                    return null;
-                });
-                return null;
-            });
+            const drag = freeDragRef.current;
+            if (!drag || drag.windowId !== id) return;
+            // Commit final position.
+            const pos = freeDragPosRef.current;
+            const rect = expandedRectsRef.current[id];
+            if (pos && rect && (pos.x !== rect.x || pos.y !== rect.y)) {
+                setExpandedRect(id, { ...rect, x: pos.x, y: pos.y });
+            }
+            setFreeDrag(null);
+            setFreeDragPos(null);
         },
-        [setExpandedRect],
+        [setExpandedRect, setFreeDrag, setFreeDragPos],
     );
 
     // ── Compact resize handlers ────────────────────────────────────────────────
@@ -436,7 +455,7 @@ export function WindowManager({
     // Click outside windows → clear focus.
     useEffect(() => {
         const onDocPointerDown = (e: PointerEvent): void => {
-            const target = e.target as Element | null;
+            const target = e.target instanceof Element ? e.target : null;
             if (!target) return;
             if (!target.closest('[data-window-id]')) {
                 if (onFocusChange) onFocusChange(null);
@@ -448,7 +467,7 @@ export function WindowManager({
         };
     }, [onFocusChange]);
 
-    const rootCls = ['lib-wm', className].filter(Boolean).join(' ');
+    const rootCls = cx('lib-wm', className);
 
     // Compute ghostRect for SwapOverlay.
     const swapGhostRect: SlotRect | null =

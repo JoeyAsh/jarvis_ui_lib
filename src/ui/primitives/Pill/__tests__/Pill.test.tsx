@@ -38,4 +38,17 @@ describe('Pill', () => {
         expect(container.querySelector('span')?.className).toContain('extra-class');
         expect(container.querySelector('span')?.className).toContain('font-mono');
     });
+
+    it('forwards native attributes to the span', () => {
+        render(
+            <Pill id="link-state" title="Uplink" aria-live="polite" data-state="ok">
+                OK
+            </Pill>,
+        );
+        const el = screen.getByText('OK');
+        expect(el.id).toBe('link-state');
+        expect(el.getAttribute('title')).toBe('Uplink');
+        expect(el.getAttribute('aria-live')).toBe('polite');
+        expect(el.getAttribute('data-state')).toBe('ok');
+    });
 });

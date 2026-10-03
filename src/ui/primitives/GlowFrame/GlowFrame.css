@@ -1,0 +1,25 @@
+/* ================================================================
+   GlowFrame — static or breathing accent halo.
+   The halo uses the multi-layer --glow / --glow-strong tokens and a
+   keyframe animation (jlib-glow-breathe, in ui.css); a stylesheet keeps
+   the reduced-motion fallback next to the animation.
+   ================================================================ */
+
+.lib-glow-frame {
+    box-shadow: var(--glow);
+}
+
+.lib-glow-frame--strong {
+    box-shadow: var(--glow-strong);
+}
+
+/* The animation drives box-shadow; the static glow above is the reduced-motion fallback. */
+.lib-glow-frame--breathe {
+    animation: jlib-glow-breathe 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lib-glow-frame--breathe {
+        animation: none;
+    }
+}

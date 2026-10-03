@@ -30,13 +30,16 @@ export interface HUDShellProps {
      */
     reactor?: boolean;
     /**
-     * Idle mode: dims and blurs the panels in `children`, makes them click-through and fades the
-     * top bar.
+     * Idle mode: dims and blurs the panels in `children`, makes them `inert` (click-through and
+     * removed from the tab order and accessibility tree) and fades the top bar. Entering and
+     * leaving idle both crossfade.
      * @default false
      */
     idle?: boolean;
     /**
-     * Adds the `is-working` class to the root element as a styling hook for tool-call activity.
+     * Working mode for tool-call activity: adds the `is-working` class to the root, which draws an
+     * accent light trace sweeping along the top edge and a soft breathing accent vignette at the
+     * screen edges (static under `prefers-reduced-motion`).
      * @default false
      */
     working?: boolean;

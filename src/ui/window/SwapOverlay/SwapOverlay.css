@@ -1,6 +1,8 @@
 /* ================================================================
    lib-swap — swap-target ghost overlay during drag.
    Class prefix: .lib-swap
+   Per-component CSS for the entrance keyframes and dashed glow chrome.
+   Ghost geometry arrives as CSS variables (--lib-swap-ghost-x/y/w/h).
    ================================================================ */
 
 .lib-swap {
@@ -13,6 +15,10 @@
 /* Ghost rectangle showing where the swap-target window currently lives */
 .lib-swap__ghost {
     position: absolute;
+    left: var(--lib-swap-ghost-x, 0);
+    top: var(--lib-swap-ghost-y, 0);
+    width: var(--lib-swap-ghost-w, 0);
+    height: var(--lib-swap-ghost-h, 0);
     box-sizing: border-box;
     border: 1px dashed var(--accent);
     background: color-mix(in srgb, var(--accent) 6%, transparent);

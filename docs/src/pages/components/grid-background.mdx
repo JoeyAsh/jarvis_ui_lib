@@ -20,7 +20,7 @@ fixed layer; in an app it covers the viewport.
 
 ## Drift
 
-`drift` scrolls the grid slowly in a loop.
+`drift` scrolls the grid slowly in a loop, by one cell every `gridSize / 10` seconds.
 
 <Demo name="grid-background/Drift" height="tall" />
 
@@ -29,7 +29,8 @@ For a complete backdrop with grid, stars, scanlines and vignette use [Scene](/co
 ## Accessibility
 
 - The layer is `aria-hidden` and ignores pointer events.
-- The grid is very low contrast and carries no information.
+- The grid is very low contrast and carries no information. Its lines are tinted from `--accent`.
+- With `prefers-reduced-motion: reduce` the `drift` animation stops and the grid stays still.
 
 ## API
 

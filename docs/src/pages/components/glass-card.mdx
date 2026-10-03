@@ -1,25 +1,26 @@
 # GlassCard
 
 <Lead>
-    GlassCard is a [Panel](/components/panel) framed by an extra set of
-    [CornerBrackets](/components/corner-brackets). Use it for standalone dashboard tiles that should
-    stand out a little more than a plain panel.
+    GlassCard is a [Panel](/components/panel) in an `inline-block` wrapper, framed by the panel's
+    own corner brackets. Use it for standalone dashboard tiles that size themselves to their
+    content.
 </Lead>
 
 <ComponentMeta component="GlassCard" />
 
 ## Basic
 
-The outer bracket wrapper is an `inline-block` and takes the size of the panel inside it. Size the
-panel through `bodyClassName`; `className` goes to the wrapper and suits margins or positioning.
+The outer wrapper is an `inline-block` and takes the size of the panel inside it. Size the panel
+through `bodyClassName`; `className` goes to the wrapper and suits margins or positioning. Only
+one set of corner brackets is drawn: the panel's own, which lengthen on hover.
 
 <Demo name="glass-card/Basic" />
 
 ## Focus
 
-`focused` is passed to both parts: the brackets brighten to the bright accent and the panel switches
-to its focused look with an accent border and an animated bloom. GlassCard does not track focus
-itself, so keep the focused card in state.
+`focused` switches the panel to its focused look: longer corner brackets in the bright accent, an
+accent border and an animated bloom. GlassCard does not track focus itself, so keep the focused card
+in state.
 
 <Demo name="glass-card/Focused" />
 
@@ -38,8 +39,8 @@ provider it stays silent. See [Sound effects](/getting-started/sound).
 
 ## Accessibility
 
-- GlassCard renders presentational `<div>`s without a landmark role; the brackets are
-  `aria-hidden`. Wrap it in a `<section>` with an `aria-label` when it is a distinct region.
+- GlassCard renders presentational `<div>`s without a landmark role; the brackets are decorative
+  empty elements. Wrap it in a `<section>` with an `aria-label` when it is a distinct region.
 - `focused` is purely visual and does not move keyboard focus.
 
 ## API

@@ -8,17 +8,14 @@ export function GlowFrame({
     strong = false,
     className,
 }: GlowFrameProps): ReactElement {
-    const staticShadow = strong ? 'var(--glow-strong)' : 'var(--glow)';
-
     return (
         <div
-            className={cx('border border-[var(--accent-dim)] rounded-[2px]', className)}
-            style={{
-                boxShadow: breathe ? undefined : staticShadow,
-                animation: breathe
-                    ? 'jlib-glow-breathe 2.8s cubic-bezier(.4,0,.2,1) infinite'
-                    : undefined,
-            }}
+            className={cx(
+                'lib-glow-frame border border-[var(--accent-dim)] rounded-[2px]',
+                strong && 'lib-glow-frame--strong',
+                breathe && 'lib-glow-frame--breathe',
+                className,
+            )}
         >
             {children}
         </div>

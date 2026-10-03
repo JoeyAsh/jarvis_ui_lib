@@ -23,11 +23,12 @@ to one or two words.
 
 ## Accessibility
 
-- Renders a plain `<span>`; it has no role and is not focusable.
+- Renders a plain `<span>`; it has no role and is not focusable. Native attributes (`id`, `title`,
+  `aria-*`, `data-*`) are forwarded to it.
 - The text is the only status information for screen readers. Do not rely on color alone: the word
   inside the pill must name the state.
-- For a status that changes live and must be announced, wrap the readout in an element with
-  `aria-live="polite"`.
+- For a status that changes live and must be announced, set `aria-live="polite"` on the pill or
+  wrap the readout in an element with it.
 
 ## API
 

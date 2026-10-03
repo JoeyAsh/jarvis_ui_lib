@@ -36,4 +36,32 @@ describe('Label', () => {
         const { container } = render(<Label className="my-extra">X</Label>);
         expect(container.querySelector('span')?.className).toContain('my-extra');
     });
+
+    it('forwards native attributes on the span', () => {
+        render(
+            <>
+                <Label id="cpu-label" title="Processor" data-testid="lbl">
+                    CPU
+                </Label>
+                <section aria-labelledby="cpu-label">x</section>
+            </>,
+        );
+        const el = screen.getByTestId('lbl');
+        expect(el.tagName).toBe('SPAN');
+        expect(el.id).toBe('cpu-label');
+        expect(el.getAttribute('title')).toBe('Processor');
+        expect(screen.getByRole('region', { name: 'CPU' })).toBeDefined();
+    });
+
+    it('forwards native attributes on the label element', () => {
+        render(
+            <Label htmlFor="callsign" id="callsign-label" aria-describedby="hint">
+                Callsign
+            </Label>,
+        );
+        const el = screen.getByText('Callsign');
+        expect(el.tagName).toBe('LABEL');
+        expect(el.id).toBe('callsign-label');
+        expect(el.getAttribute('aria-describedby')).toBe('hint');
+    });
 });

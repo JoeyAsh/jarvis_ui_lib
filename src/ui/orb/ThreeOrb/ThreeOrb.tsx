@@ -10,7 +10,11 @@ import type { Orb } from '../orbEngine';
 import type { OrbState } from '@common/types';
 import type { ThreeOrbProps } from './ThreeOrb.types';
 
-export function ThreeOrb({ state, className }: ThreeOrbProps): ReactElement {
+export function ThreeOrb({
+    state,
+    className,
+    'aria-label': ariaLabel,
+}: ThreeOrbProps): ReactElement {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const orbRef = useRef<Orb | null>(null);
 
@@ -34,9 +38,15 @@ export function ThreeOrb({ state, className }: ThreeOrbProps): ReactElement {
         orbRef.current?.setState(mapped);
     }, [state]);
 
+    const a11yProps =
+        ariaLabel !== undefined
+            ? { role: 'img', 'aria-label': ariaLabel }
+            : { 'aria-hidden': true as const };
+
     return (
         <canvas
             ref={canvasRef}
+            {...a11yProps}
             className={['fixed top-0 left-0 pointer-events-none z-0', className]
                 .filter(Boolean)
                 .join(' ')}

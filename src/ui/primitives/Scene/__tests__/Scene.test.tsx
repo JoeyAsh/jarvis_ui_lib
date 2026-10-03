@@ -1,4 +1,9 @@
+/// <reference types="node" />
+// Node types: the stylesheet is read from disk (Vitest stubs CSS imports) to check the
+// reduced-motion rule, which jsdom cannot evaluate.
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { render } from '@testing-library/react';
 import { Scene } from '../Scene';
 
@@ -45,8 +50,25 @@ describe('Scene', () => {
         expect(container.querySelector('.lib-scene__horizon')).toBeDefined();
     });
 
+    it('renders 60 stars by default', () => {
+        const { container } = render(<Scene />);
+        expect(container.querySelectorAll('.lib-starfield__star')).toHaveLength(60);
+    });
+
+    it('passes starCount to the StarField', () => {
+        const { container } = render(<Scene starCount={12} />);
+        expect(container.querySelectorAll('.lib-starfield__star')).toHaveLength(12);
+    });
+
     it('merges className', () => {
         const { container } = render(<Scene className="extra" />);
         expect(container.querySelector('.lib-scene')?.classList.contains('extra')).toBe(true);
+    });
+
+    it('stops its animation under prefers-reduced-motion', () => {
+        const css = readFileSync(join(process.cwd(), 'src/ui/primitives/Scene/Scene.css'), 'utf8');
+        const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
+        expect(reduced).toContain('.lib-scene__grid');
+        expect(reduced).toMatch(/animation:\s*none/);
     });
 });

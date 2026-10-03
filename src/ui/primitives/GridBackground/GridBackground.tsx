@@ -11,26 +11,14 @@ export function GridBackground({
         <div
             aria-hidden
             className={cx(
-                'fixed inset-0 pointer-events-none motion-reduce:!animation-none',
+                'lib-grid-bg fixed inset-0 z-0 pointer-events-none',
+                drift && 'lib-grid-bg--drift',
                 className,
             )}
             style={
                 {
                     '--jlib-grid-size': `${gridSize}px`,
-                    zIndex: 0,
-                    backgroundImage: [
-                        `linear-gradient(rgba(76,168,232,0.04) 1px, transparent 1px)`,
-                        `linear-gradient(90deg, rgba(76,168,232,0.04) 1px, transparent 1px)`,
-                    ].join(', '),
-                    backgroundSize: `${gridSize}px ${gridSize}px`,
-                    backgroundPosition: '-1px -1px',
-                    maskImage:
-                        'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
-                    WebkitMaskImage:
-                        'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
-                    animation: drift
-                        ? `jlib-grid-drift ${gridSize * 0.1}s linear infinite`
-                        : undefined,
+                    '--jlib-grid-duration': `${gridSize * 0.1}s`,
                 } as CSSProperties
             }
         />

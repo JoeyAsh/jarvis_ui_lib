@@ -1,101 +1,15 @@
-import {
-    useCallback,
-    useRef,
-    type ReactElement,
-    type MouseEvent,
-    type PointerEvent as ReactPointerEvent,
-} from 'react';
+import { useCallback, useId, useRef, type ReactElement, type MouseEvent } from 'react';
+import { Minimize2, RotateCcw, Square, X } from 'lucide-react';
+import { cx } from '@common/utils/cx';
+import { useClickSfx, useHoverSfx, useSfx } from '@core/audio';
 import { Panel } from '../../primitives/Panel/Panel';
 import { useDraggable } from '../hooks/useDraggable';
 import type { DragState } from '../hooks/useDraggable';
+import { rectVars } from '../rectVars';
 import { useResizable } from '../hooks/useResizable';
 import type { ResizeDir, ResizeState } from '../hooks/useResizable';
-import { useClickSfx, useHoverSfx } from '@core/audio';
-import { useSfx } from '@core/audio';
+import { DOUBLE_CLICK_MS, ICON_SIZE, ICON_STROKE } from './constants';
 import type { WindowProps, WindowState } from './Window.types';
-
-const DOUBLE_CLICK_MS = 300;
-
-function RotateCcwIcon(): ReactElement {
-    return (
-        <svg
-            width="11"
-            height="11"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-            focusable="false"
-        >
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-            <path d="M3 3v5h5" />
-        </svg>
-    );
-}
-
-function SquareIcon(): ReactElement {
-    return (
-        <svg
-            width="11"
-            height="11"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-            focusable="false"
-        >
-            <rect x="4" y="4" width="16" height="16" />
-        </svg>
-    );
-}
-
-function Minimize2Icon(): ReactElement {
-    return (
-        <svg
-            width="11"
-            height="11"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-            focusable="false"
-        >
-            <polyline points="4 14 10 14 10 20" />
-            <polyline points="20 10 14 10 14 4" />
-            <line x1="10" y1="14" x2="3" y2="21" />
-            <line x1="21" y1="3" x2="14" y2="10" />
-        </svg>
-    );
-}
-
-function XIcon(): ReactElement {
-    return (
-        <svg
-            width="11"
-            height="11"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-            focusable="false"
-        >
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-    );
-}
 
 export function Window({
     id,
@@ -123,6 +37,7 @@ export function Window({
 }: WindowProps): ReactElement {
     const { playOneShot } = useSfx();
     const hoverButtonSfx = useHoverSfx('button');
+    const titleId = useId();
 
     const handleFocus = useCallback((): void => {
         if (onFocus) onFocus(id);
@@ -130,9 +45,7 @@ export function Window({
 
     const handleDragStart = useCallback(
         (e: PointerEvent): void => {
-            if (onDragStart) {
-                onDragStart(id, e as unknown as ReactPointerEvent);
-            }
+            if (onDragStart) onDragStart(id, e);
         },
         [id, onDragStart],
     );
@@ -160,7 +73,7 @@ export function Window({
 
     const handleResizeStartCb = useCallback(
         (dir: ResizeDir, e: PointerEvent): void => {
-            if (onResizeStart) onResizeStart(id, dir, e as unknown as ReactPointerEvent);
+            if (onResizeStart) onResizeStart(id, dir, e);
         },
         [id, onResizeStart],
     );
@@ -210,14 +123,21 @@ export function Window({
         [id, onClose],
     );
 
+    // Shared by the dock/undock button and the header double-click: plays the
+    // expand/collapse sound for the current mode, then toggles it.
+    const toggleMode = useCallback((): void => {
+        if (!onModeToggle) return;
+        playOneShot(mode === 'compact' ? 'expand' : 'collapse');
+        onModeToggle(id);
+    }, [id, mode, onModeToggle, playOneShot]);
+
     const handleModeToggle = useCallback(
         (e: MouseEvent<HTMLButtonElement>): void => {
             e.stopPropagation();
             playOneShot('click');
-            playOneShot(mode === 'compact' ? 'expand' : 'collapse');
-            if (onModeToggle) onModeToggle(id);
+            toggleMode();
         },
-        [id, mode, onModeToggle, playOneShot],
+        [playOneShot, toggleMode],
     );
 
     const onCloseClick = useClickSfx(handleClose);
@@ -225,45 +145,29 @@ export function Window({
     const lastClickRef = useRef(0);
     const handleHeaderClick = useCallback(
         (e: MouseEvent<HTMLDivElement>): void => {
-            const target = e.target as HTMLElement | null;
+            const target = e.target instanceof Element ? e.target : null;
             if (target && target.closest('[data-no-drag]')) return;
             const now = performance.now();
             if (now - lastClickRef.current < DOUBLE_CLICK_MS) {
-                if (onModeToggle) onModeToggle(id);
+                toggleMode();
                 lastClickRef.current = 0;
             } else {
                 lastClickRef.current = now;
             }
         },
-        [id, onModeToggle],
+        [toggleMode],
     );
 
     const effectiveState: WindowState = resizing ? 'resizing' : dragging ? 'dragging' : state;
 
-    const rootStyle = {
-        left: position.x,
-        top: position.y,
-        width: position.w,
-        height: position.h,
-    };
+    const rootStyle = rectVars('lib-window', position);
 
-    const rootCls = ['lib-window', className].filter(Boolean).join(' ');
+    const hasTitle = title !== undefined && title !== null && title !== false && title !== '';
 
     const headerLeft = (
         <span className="lib-window__hdr-drag" data-testid="window-drag-handle">
-            {ix !== undefined && (
-                <span style={{ color: 'var(--accent-bright)', fontWeight: 500, opacity: 0.8 }}>
-                    {ix}
-                </span>
-            )}
-            <span
-                style={{
-                    flex: 1,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                }}
-            >
+            {ix !== undefined && <span className="lib-window__ix">{ix}</span>}
+            <span id={titleId} className="lib-window__title">
                 {title}
             </span>
         </span>
@@ -286,7 +190,7 @@ export function Window({
                     data-no-drag
                     data-sfx-hover="button"
                 >
-                    <RotateCcwIcon />
+                    <RotateCcw size={ICON_SIZE} strokeWidth={ICON_STROKE} aria-hidden />
                 </button>
             )}
             {hasModeToggle && (
@@ -301,7 +205,11 @@ export function Window({
                     data-no-drag
                     data-sfx-hover="button"
                 >
-                    {mode === 'compact' ? <SquareIcon /> : <Minimize2Icon />}
+                    {mode === 'compact' ? (
+                        <Square size={ICON_SIZE} strokeWidth={ICON_STROKE} aria-hidden />
+                    ) : (
+                        <Minimize2 size={ICON_SIZE} strokeWidth={ICON_STROKE} aria-hidden />
+                    )}
                 </button>
             )}
             {onClose !== undefined && (
@@ -316,7 +224,7 @@ export function Window({
                     data-no-drag
                     data-sfx-hover="button"
                 >
-                    <XIcon />
+                    <X size={ICON_SIZE} strokeWidth={ICON_STROKE} aria-hidden />
                 </button>
             )}
         </>
@@ -324,13 +232,13 @@ export function Window({
 
     return (
         <div
-            className={rootCls}
+            className={cx('lib-window', className)}
             data-state={effectiveState}
             data-mode={mode}
             data-window-id={id}
             style={rootStyle}
-            role="dialog"
-            aria-label={typeof title === 'string' ? title : undefined}
+            role="region"
+            aria-labelledby={hasTitle ? titleId : undefined}
             onPointerDownCapture={handlePointerDownCapture}
         >
             <Panel
@@ -342,7 +250,6 @@ export function Window({
                 onFocus={handleFocus}
                 onHeaderPointerDown={handlePointerDown}
                 onHeaderClick={handleHeaderClick}
-                style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
             >
                 <div className="lib-window__body">
                     {itemRenderer({ mode, focused, dragging: dragging || resizing })}

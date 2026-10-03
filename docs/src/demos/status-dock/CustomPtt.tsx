@@ -11,7 +11,7 @@ export default function CustomPtt() {
             ptt={
                 <PushToTalkButton
                     active={live}
-                    ariaLabel="Broadcast"
+                    aria-label="Broadcast"
                     onClick={() => setLive((v) => !v)}
                 >
                     <Radio size={24} strokeWidth={1.8} aria-hidden="true" />

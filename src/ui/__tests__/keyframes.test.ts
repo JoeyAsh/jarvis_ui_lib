@@ -29,10 +29,14 @@ describe('keyframes', () => {
                     [...read(f).matchAll(/@keyframes\s+(jlib-[\w-]+)/g)].map((m) => m[1]),
                 ),
         );
+        // Uses anywhere: inline styles and Tailwind arbitrary classes (`animate-[jlib-x_200ms…]`) in
+        // TS/TSX, and `animation` declarations in CSS. Excluded: the @keyframes definitions
+        // themselves and `--jlib-*` custom properties (variables, not animations).
         const used = new Set(
-            files
-                .filter((f) => /\.tsx?$/.test(f))
-                .flatMap((f) => [...read(f).matchAll(/['`"(\s](jlib-[\w-]+)\s/g)].map((m) => m[1])),
+            files.flatMap((f) => {
+                const text = read(f).replace(/@keyframes\s+jlib-[\w-]+/g, '');
+                return [...text.matchAll(/(?<!-)jlib-[a-z0-9-]*[a-z0-9]/g)].map((m) => m[0]);
+            }),
         );
         const missing = [...used].filter((name) => !defined.has(name));
 

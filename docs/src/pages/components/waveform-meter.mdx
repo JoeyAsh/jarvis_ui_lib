@@ -16,8 +16,8 @@ stubs and the animation pauses, so the layout does not jump.
 
 ## Bar count
 
-`barCount` sets the number of bars (12 by default). The first 12 bars have staggered delays; any
-bars beyond that move in sync, so very long meters look more uniform.
+`barCount` sets the number of bars (12 by default). Every bar gets its own animation delay, so
+meters of any length ripple instead of moving in sync.
 
 <Demo name="waveform-meter/BarCount" />
 

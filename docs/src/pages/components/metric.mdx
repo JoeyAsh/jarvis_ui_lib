@@ -30,7 +30,8 @@ itself when it leaves the safe range.
 
 ## Accessibility
 
-- Renders a `<span>` with the value and a `<small>` for the unit; it has no role.
+- Renders a `<span>` with the value and a `<small>` for the unit; it has no role. Native attributes
+  (`id`, `title`, `aria-*`, `data-*`) are forwarded to the `<span>`.
 - Screen readers read value and unit as one string. Prefer units that read well (`ms`, `%`) or name
   the unit in the label.
 - `warn` is shown by color only. When the warning matters, also say it in text, for example with a

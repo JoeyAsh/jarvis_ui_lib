@@ -1,6 +1,6 @@
 /* ================================================================
    PanelBloom — standalone radial-gradient bloom overlay.
-   Keyframes (panelBloom) live in lib.css.
+   Keyframes (panelBloom) live in ui.css.
    ================================================================ */
 
 .lib-panel-bloom {
@@ -27,4 +27,15 @@
 .lib-panel-bloom.active {
     opacity: 1;
     animation: panelBloom 2.6s ease-in-out infinite;
+}
+
+/* Reduced motion: keep the static bloom, drop the brightness pulse and fade. */
+@media (prefers-reduced-motion: reduce) {
+    .lib-panel-bloom {
+        transition: none;
+    }
+
+    .lib-panel-bloom.active {
+        animation: none;
+    }
 }

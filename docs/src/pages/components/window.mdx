@@ -22,8 +22,8 @@ Every window has a `mode`:
 
 - `compact` is the docked state. Resize handles are hidden, and the header shows an **Undock**
   button when you pass `onModeToggle`.
-- `expanded` is the free-floating state. The window gets a stronger elevation, the eight edge and
-  corner handles become active (when `resizable`), and the header shows a **Dock** button.
+- `expanded` is the free-floating state. The window gets an accent hairline and glow, the eight edge
+  and corner handles become active (when `resizable`), and the header shows a **Dock** button.
 
 Window does not switch modes itself. Clicking the dock/undock button or double-clicking the header
 calls `onModeToggle`, and you set the new `mode`. `itemRenderer` receives `{ mode, focused,
@@ -40,13 +40,16 @@ the reset button docks it back into its home slot.
 The window never moves itself: `position` is controlled. `onDragMove` and `onResizeMove` report the
 pointer offset from the start of the gesture (`dx`, `dy`), and `onResizeMove` also reports the
 handle direction (`n`, `se`, ...). Remember the rect when the gesture starts and apply the offset
-to it. Drag the header below, undock the window, then drag its edges.
+to it. `onDragStart` and `onResizeStart` receive the native `pointerdown` `PointerEvent`, like the
+move and end callbacks. Drag the header below, undock the window, then drag its edges.
 
 <Demo name="window/DragAndResize" height="tall" />
 
 During a gesture the root element gets `data-state="dragging"` or `"resizing"`. The other values of
 `state` (`snap-preview`, `swap-preview`, `settling`, `focused`) are styling hooks for the parent:
 `settling` animates position and size changes, and `focused` raises the window above its siblings.
+Position and size reach the stylesheet as the CSS variables `--lib-window-x`, `--lib-window-y`,
+`--lib-window-w` and `--lib-window-h` on the root element.
 To build drag-and-drop between slots, combine Window with [useSlotDrag](/hooks/use-slot-drag) and
 the [slot grid helpers](/utilities/slot-grid).
 
@@ -65,19 +68,24 @@ Through the nearest `SfxProvider`:
 - Resizing loops `resize` until the pointer is released.
 - The reset button plays `click` and `recall`; the dock/undock button plays `click` plus `expand`
   (undock) or `collapse` (dock); the close button plays `click`.
+- Double-clicking the header plays the same `expand` or `collapse` sound as the dock/undock button
+  (without the `click`).
 - Hovering the window plays `hover_panel`; hovering a header button plays `hover_button`.
 
-Toggling the mode by double-clicking the header plays no sound. See
-[Sound effects](/getting-started/sound).
+See [Sound effects](/getting-started/sound).
 
 ## Accessibility
 
-- The root is a `role="dialog"` element. It is named by `title` only when the title is a string.
-- Window does not move or trap focus and sets no `aria-modal`; it behaves as a non-modal region.
+- The root is a non-modal `role="region"` landmark. `aria-labelledby` points at the title element,
+  so any `title` (string or element) names it; without a title the region is unnamed.
+- Window does not move or trap focus; Tab moves through its content in document order like any
+  other part of the page.
 - The header buttons are native buttons named **Reset window**, **Undock window** / **Dock window**
-  and **Close window**, so they work with the keyboard.
-- Dragging, resizing and the double-click toggle are pointer-only. Offer another way to move or
-  resize content when keyboard users need it.
+  and **Close window**, so they work with the keyboard. The dock/undock button is the keyboard
+  equivalent of the header double-click.
+- Dragging and resizing are pointer-only: there are no arrow-key or other keyboard shortcuts to
+  move or resize a window. Offer another way to move or resize content when keyboard users need
+  it.
 
 ## API
 

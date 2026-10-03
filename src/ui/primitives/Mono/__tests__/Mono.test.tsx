@@ -33,4 +33,28 @@ describe('Mono', () => {
         expect(container.querySelector('span')?.className).toContain('my-class');
         expect(container.querySelector('span')?.className).toContain('font-mono');
     });
+
+    it('forwards native attributes to the root', () => {
+        render(
+            <Mono id="m" title="Mono text" aria-live="polite" data-testid="mono">
+                x
+            </Mono>,
+        );
+        const el = screen.getByTestId('mono');
+        expect(el.id).toBe('m');
+        expect(el.getAttribute('title')).toBe('Mono text');
+        expect(el.getAttribute('aria-live')).toBe('polite');
+    });
+
+    it('passes attributes through the as element (dateTime on time)', () => {
+        render(
+            <Mono as="time" dateTime="2026-10-03T09:04:17Z">
+                09:04:17Z
+            </Mono>,
+        );
+        const el = screen.getByText('09:04:17Z');
+        expect(el.tagName).toBe('TIME');
+        expect(el.getAttribute('datetime')).toBe('2026-10-03T09:04:17Z');
+        expect(el.className).toContain('font-mono');
+    });
 });

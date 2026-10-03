@@ -21,11 +21,19 @@ Clicking the label then focuses the field. Without `htmlFor` it renders a `<span
 
 <Demo name="label/WithControl" />
 
+## Naming a group
+
+Without `htmlFor` the label is a `<span>`. Native attributes such as `id`, `title`, `aria-*` and
+`data-*` are forwarded on both the `<span>` and the `<label>`, so give the label an `id` and point
+`aria-labelledby` of a group, region or custom widget at it.
+
+<Demo name="label/LabelledBy" />
+
 ## Accessibility
 
 - With `htmlFor` it is a real `<label>`, so the text becomes the accessible name of the control.
-- Without `htmlFor` it is a `<span>` with no semantics. It does not label anything for assistive
-  technology; give controls their own `aria-label` or use `htmlFor`.
+- Without `htmlFor` it is a `<span>` with no semantics of its own. Give it an `id` and reference it
+  with `aria-labelledby` to make it the accessible name of another element.
 - The text is transformed to uppercase by CSS only. Write captions in normal case so screen readers
   do not spell them out letter by letter.
 

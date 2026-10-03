@@ -18,13 +18,15 @@ describe('SlotGhost', () => {
         );
     });
 
-    it('renders at the given rect coordinates', () => {
+    it('injects the rect as CSS variables instead of raw inline geometry', () => {
         const { container } = render(<SlotGhost rect={RECT} />);
         const el = container.querySelector<HTMLDivElement>('.lib-slot-ghost');
-        expect(el?.style.left).toBe('12px');
-        expect(el?.style.top).toBe('72px');
-        expect(el?.style.width).toBe('316px');
-        expect(el?.style.height).toBe('250px');
+        expect(el?.style.getPropertyValue('--lib-slot-ghost-x')).toBe('12px');
+        expect(el?.style.getPropertyValue('--lib-slot-ghost-y')).toBe('72px');
+        expect(el?.style.getPropertyValue('--lib-slot-ghost-w')).toBe('316px');
+        expect(el?.style.getPropertyValue('--lib-slot-ghost-h')).toBe('250px');
+        expect(el?.style.left).toBe('');
+        expect(el?.style.width).toBe('');
     });
 
     it('renders label when provided', () => {

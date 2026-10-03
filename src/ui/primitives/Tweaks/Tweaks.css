@@ -1,7 +1,8 @@
 /* ================================================================
    Tweaks — dev panel for live theme adjustments.
-   Ported from handoff lines 499-514.
-   Keyframe: winIn — defined in lib.css.
+   Ported from handoff lines 499-514. Custom CSS for the backdrop-filter
+   panel, the toggle knob pseudo-element and the oklch swatch color.
+   Keyframe: winIn — defined in ui.css.
    ================================================================ */
 
 .lib-tweaks {
@@ -72,11 +73,12 @@
     cursor: pointer;
     padding: 0;
     outline: none;
+    background: oklch(0.72 0.14 var(--lib-tweaks-swatch-hue, 215));
     /* No border-radius — sharp HUD */
 }
 
 .lib-tweaks__swatch.active {
-    border-color: #fff;
+    border-color: var(--text);
     box-shadow: var(--glow);
 }
 

@@ -50,11 +50,65 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `TopBar`: new `position` prop (`'fixed'` default, `'sticky'`, `'static'`) so the bar can be used
   inside a page layout; new `TopBarPosition` type.
 
+- `StatusLabel`: `labels` prop to override or localize the text per state, and `live` prop that
+  turns the status text into a polite live region.
+- `StatusDock`: `pttLabel` prop for the accessible name of the built-in push-to-talk button.
+- `StateSimulator`: `FOLLOW UP` button for the `follow_up` state.
+- `WindowManager`: `onExpandedRectsChange` prop, so controlled `expandedRects` can be moved and
+  resized.
+- `HUDShell`: `working` shows an accent light trace along the top edge and a soft edge vignette.
+- `Scene`: `starCount` prop (default 60).
+- `CssOrb`, `ThreeOrb`: optional `aria-label`; when set, the orb is exposed as `role="img"`.
+- `PushToTalkButton`: accepts all native `<button>` attributes and events (`disabled`, `id`,
+  `onPointerDown` / `onPointerUp` for hold-to-talk, ...), forwards its `ref` and supports `aria-label`.
+- `Hint`: the position union is exported as `HintPosition`.
+
+### Changed
+
+- `Label`, `Mono`, `Pill`, `Metric`: native attributes (`id`, `title`, `aria-*`, `data-*`, event
+  handlers) are forwarded to the root element; `Mono` accepts `dateTime` for `as="time"`.
+- `Icon`: decorative by default (`aria-hidden="true"` without `aria-label`); with `aria-label` it gets
+  `role="img"`. `className` no longer defaults to an empty string.
+- `Window`: the root is a non-modal `role="region"` named by its title (was `role="dialog"`);
+  `onDragStart` / `onResizeStart` are typed with the native `PointerEvent` they receive; header icons
+  are lucide-react icons; accent glows replace black drop shadows.
+- `HUDShell`: idle panels are `inert`, and leaving idle crossfades like entering it.
+- `StatusDock`: the state text is a polite live region, so state changes are announced.
+- `StatusLabel`: `follow_up` shows `follow-up...` instead of `listening...`.
+- `GlassCard`: draws one set of corner brackets (the Panel's own) instead of two.
+- `LightTrace`: `color` also tints the bright center and glow, not only the tails.
+- `PushToTalkButton`: `onClick` is a standard click handler and receives the event (no-argument
+  handlers still work).
+- `useTweakApply`: removes the CSS variables it set when the component unmounts.
+- `StateSimulator`, `Tweaks`: buttons and swatches expose their selection via `aria-pressed`.
+- `Hint`: the fixed corner modifier class is now `lib-hint--fixed-br` (was `fixed-br`); `Hint.Key`
+  renders the `Kbd` chip.
+- Styling: inline styles were replaced by classes and CSS variables in `ProgressBar`, `Sparkline`,
+  `Reticle`, `CornerBrackets`, `Scanlines`, `GridBackground`, `GlowFrame`, `StarField`, `CssOrb`,
+  `Window`, `SnapOverlay`, `SwapOverlay` and `SlotGhost`; colors in `Sparkline`, `Scanlines`,
+  `GridBackground`, `Scene`, `Reactor`, `CssOrb`, `PushToTalkButton` and `StateSimulator` derive from
+  the theme tokens, so they follow token overrides. No visual change with the default tokens.
+
+### Deprecated
+
+- `PushToTalkButton`: the `ariaLabel` prop; use `aria-label` instead (it wins when both are set).
+
 ### Fixed
 
 - `GlowFrame` `breathe`, `GridBackground` `drift`, `Scanlines` `sweep` and the `StatusBadge` pulse
   referenced animations that did not exist, so they did nothing (`breathe` even removed the glow).
   The keyframes now ship in the stylesheet.
+- `prefers-reduced-motion` is now respected by `GridBackground` drift, `GlowFrame` breathe (falls back
+  to the static glow), `StarField` and `Scene` twinkle/drift, `LightTrace`, `PanelBloom`,
+  `StatusBadge` pulse and the `CssOrb` particle loop.
+- `CssOrb` is decorative by default (`aria-hidden`) instead of an `aria-label` on a role-less
+  element; the `ThreeOrb` canvas is `aria-hidden` by default.
+- `WindowManager`: dragging or resizing an expanded window with controlled `expandedRects` no longer
+  snaps back; `homeAssignments` changes are picked up by Reset (was read once on mount).
+- `Window`: double-clicking the header plays the `expand` / `collapse` sound like the button.
+- `WaveformMeter`: every bar gets its own animation delay, not only the first 12.
+- `Tweaks`: slider ids are unique per instance (`useId`).
+- `StateSimulator`: the toolbar wraps on narrow screens instead of overflowing its container.
 
 ## [0.1.0] - 2026-10-03
 

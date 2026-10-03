@@ -1,4 +1,6 @@
-import type { CSSProperties, ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import { cx } from '@common/utils/cx';
+import { rectVars } from '../rectVars';
 import type { SwapOverlayProps } from './SwapOverlay.types';
 
 export function SwapOverlay({
@@ -7,26 +9,18 @@ export function SwapOverlay({
     hovered = false,
     className,
 }: SwapOverlayProps): ReactElement {
-    const rootCls = ['lib-swap', className].filter(Boolean).join(' ');
+    const rootCls = cx('lib-swap', className);
 
     if (!active || ghostRect === null) {
         return <div className={rootCls} aria-hidden />;
     }
 
-    const style: CSSProperties = {
-        left: ghostRect.x,
-        top: ghostRect.y,
-        width: ghostRect.w,
-        height: ghostRect.h,
-    };
-
-    const ghostCls = ['lib-swap__ghost', hovered ? 'lib-swap__ghost--hovered' : '']
-        .filter(Boolean)
-        .join(' ');
-
     return (
         <div className={rootCls} aria-hidden>
-            <div className={ghostCls} style={style} />
+            <div
+                className={cx('lib-swap__ghost', hovered && 'lib-swap__ghost--hovered')}
+                style={rectVars('lib-swap-ghost', ghostRect)}
+            />
         </div>
     );
 }

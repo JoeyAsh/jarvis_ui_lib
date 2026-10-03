@@ -1,27 +1,27 @@
 import { type ReactElement } from 'react';
-import type { AppOrbState } from '@common/types';
+import { cx } from '@common/utils/cx';
+import { STATUS_LABEL_TEXTS } from './constants';
 import type { StatusLabelProps } from './StatusLabel.types';
-
-const STATE_LABELS: Record<AppOrbState, string> = {
-    idle: 'READY',
-    listening: 'listening...',
-    thinking: 'thinking...',
-    speaking: 'speaking...',
-    follow_up: 'listening...',
-    working: 'working...',
-};
 
 export function StatusLabel({
     state,
+    labels,
+    live = false,
     brand = 'J A R V I S',
     className,
 }: StatusLabelProps): ReactElement {
     const isActive = state !== 'idle';
-    const stateClass = ['lib-status-label__state', isActive && 'active'].filter(Boolean).join(' ');
+    const text = labels?.[state] ?? STATUS_LABEL_TEXTS[state];
 
     return (
-        <div className={['lib-status-label', className].filter(Boolean).join(' ')}>
-            <span className={stateClass}>{STATE_LABELS[state]}</span>
+        <div className={cx('lib-status-label', className)}>
+            <span
+                className={cx('lib-status-label__state', isActive && 'active')}
+                role={live ? 'status' : undefined}
+                aria-live={live ? 'polite' : undefined}
+            >
+                {text}
+            </span>
             <span className="lib-status-label__brand">{brand}</span>
         </div>
     );
