@@ -24,7 +24,8 @@ publisher:
 
 ## Regular releases
 
-1. Open a PR that bumps `version` in `package.json` (SemVer) and merge it.
+1. Open a PR that bumps `version` in `package.json` (SemVer) and cut the changelog, then merge it
+   with **Rebase and merge** (the only enabled merge method).
 2. Create a GitHub release with tag `v<version>` (matching `package.json`).
 3. The `release` workflow runs the checks and runs `npm publish --provenance --access public`.
 
@@ -32,3 +33,5 @@ The workflow fails if the tag does not match the `package.json` version.
 
 If `jarvis-react-ui@<version>` already exists on npm (for example the manually published first release),
 the workflow detects this, logs a notice and skips `npm publish` instead of failing.
+
+Claude Code users: the `/release` skill runs these steps; see `.claude/rules/release.md`.
