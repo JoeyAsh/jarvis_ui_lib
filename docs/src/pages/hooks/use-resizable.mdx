@@ -1,0 +1,39 @@
+# useResizable
+
+<Lead>
+    A low-level pointer resize hook. `onPointerDown(dir)` creates a handler per edge or corner and
+    reports the resize offset while the pointer moves.
+</Lead>
+
+```ts
+import { useResizable } from 'jarvis-react-ui';
+
+const { onPointerDown, resizing, dir } = useResizable({ onStart, onMove, onEnd, disabled });
+```
+
+## Usage
+
+Render a handle per direction and attach `onPointerDown('se')`, `onPointerDown('e')` and so on. Apply
+`dx` / `dy` to the size in `onMove` and commit it in `onEnd`. Clamp to a minimum size yourself.
+
+<Demo name="use-resizable/ResizeBox" height="tall" />
+
+## Options
+
+| Option     | Type                                            | Description                        |
+| ---------- | ----------------------------------------------- | ---------------------------------- |
+| `onStart`  | `(dir: ResizeDir, e: PointerEvent) => void`     | Called when a resize begins.       |
+| `onMove`   | `(state: ResizeState, e: PointerEvent) => void` | Called on every pointer move.      |
+| `onEnd`    | `(state: ResizeState, e: PointerEvent) => void` | Called on pointer up.              |
+| `disabled` | `boolean`                                       | Ignores pointer down while `true`. |
+
+`ResizeDir` is `'n' | 's' | 'e' | 'w' | 'ne' | 'nw' | 'se' | 'sw'`. `ResizeState` is
+`{ resizing, dir, startX, startY, dx, dy }`.
+
+## Sound
+
+Loops `resize` while resizing.
+
+## Accessibility
+
+Pointer only; provide keyboard controls if resizing changes content the user needs.

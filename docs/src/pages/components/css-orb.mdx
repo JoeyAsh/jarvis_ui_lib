@@ -1,0 +1,55 @@
+# CssOrb
+
+<Lead>
+    CssOrb is the animated JARVIS orb, built from CSS gradients, rings and a few orbiting particles.
+    It shows the assistant's state at a glance and needs no WebGL. For the Three.js particle version
+    see [ThreeOrb](/components/three-orb).
+</Lead>
+
+<ComponentMeta component="CssOrb" />
+
+## States
+
+`state` takes an `AppOrbState`. CssOrb gives five of them their own look:
+
+| State       | Look                                                                  |
+| ----------- | --------------------------------------------------------------------- |
+| `idle`      | The blue core floats slowly up and down.                              |
+| `listening` | The core breathes, and three pulse rings expand outward from it.      |
+| `thinking`  | The core's color slowly shifts in hue and saturation.                 |
+| `speaking`  | The core's glow pulses quickly, like a voice level.                   |
+| `working`   | Core, rings, ticks, pulses and particles turn amber; the glow pulses. |
+
+`follow_up`, the sixth `AppOrbState` value, has no style of its own and looks like `idle`. The demo
+cycles through the five styled states every three seconds.
+
+<Demo name="css-orb/Cycle" height="tall" align="stretch" />
+
+## Rings and particles
+
+`rings` draws five concentric rings (360 to 920px wide) and a rotating tick ring around the core.
+`particles` adds six dots orbiting at 180 to 330px. Both are on by default; turn them off for a
+quieter orb or a small container. Pick a state with the
+[StateSimulator](/components/state-simulator) to compare.
+
+<Demo name="css-orb/StatePicker" height="tall" align="stretch" />
+
+## Sizing
+
+The root element is a zero-size anchor centred (`left: 50%; top: 50%`) in its nearest positioned
+ancestor. The core is 280px wide and the rings reach 920px, so place the orb in a
+`position: relative` container with a fixed height and `overflow: hidden` when it should not spill
+over the surrounding layout.
+
+## Accessibility
+
+- The core, pulses, ticks and particles are `aria-hidden`. The root carries
+  `aria-label="Orb: <state>"`, but as a plain `<div>` without a role it is not reliably announced.
+  Treat the orb as decorative and show the state as text as well, for example with a
+  [StatusLabel](/components/status-label).
+- With `prefers-reduced-motion: reduce`, the CSS animations of the core, rings and pulses stop. The
+  particles keep orbiting, because they are moved by script; pass `particles={false}` to stop them.
+
+## API
+
+<ApiTable component="CssOrb" />

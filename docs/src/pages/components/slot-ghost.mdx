@@ -1,0 +1,39 @@
+# SlotGhost
+
+<Lead>
+    SlotGhost is a dashed placeholder for an empty slot, with an optional caption. Use it to show
+    where windows can go in a custom window layout.
+</Lead>
+
+<ComponentMeta component="SlotGhost" />
+
+## Basic
+
+SlotGhost is absolutely positioned at `rect` inside its nearest positioned ancestor. `label` adds a
+small uppercase caption in the middle.
+
+<Demo name="slot-ghost/Basic" />
+
+## Empty slots
+
+Render a SlotGhost for every slot without a window, so the grid stays readable while it is partly
+empty. Unlike the overlays, SlotGhost is positioned `absolute`, not `fixed`, and sits in the same
+layer as your windows.
+
+<Demo name="slot-ghost/EmptySlots" height="tall" align="stretch" />
+
+<Callout title="Not part of WindowManager">
+    [WindowManager](/components/window-manager) does not render SlotGhost; its empty slots stay
+    blank. SlotGhost is a building block for layouts you assemble yourself from
+    [Window](/components/window), [useSlotDrag](/hooks/use-slot-drag) and the [slot grid
+    helpers](/utilities/slot-grid).
+</Callout>
+
+## Accessibility
+
+SlotGhost is decorative: its root is `aria-hidden`, so the label is not announced, and it takes no
+pointer events.
+
+## API
+
+<ApiTable component="SlotGhost" />

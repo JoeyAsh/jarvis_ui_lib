@@ -44,5 +44,6 @@ its docs, in the same PR.**
 ## Checks
 
 - `npm run docs:check -- --only <Name>` must pass for every component you add or change.
-- `npm run build:docs` must pass; `npm run docs:check` runs in CI.
+- `npm run build:docs` must pass; CI runs `npm run docs:check -- --strict`, so a public component
+  without page, demo, nav entry or prop JSDoc cannot be merged.
 - Scaffold pages with `/docs-page`. `/new-component` runs it as a required step.

@@ -1,0 +1,45 @@
+# useDraggable
+
+<Lead>
+    A low-level pointer drag hook. It tracks the drag offset, keeps the pointer captured when it
+    leaves the element and plays the drag sounds. `Window` and `useSlotDrag` build on it.
+</Lead>
+
+```ts
+import { useDraggable } from 'jarvis-react-ui';
+
+const { onPointerDown, dragging } = useDraggable({ onStart, onMove, onEnd, disabled });
+```
+
+## Usage
+
+Attach `onPointerDown` to the drag handle. `onMove` receives the live offset (`dx`, `dy`) from the
+drag start; commit the position in `onEnd`.
+
+<Demo name="use-draggable/DragBox" height="tall" />
+
+## Options
+
+| Option     | Type                                          | Description                        |
+| ---------- | --------------------------------------------- | ---------------------------------- |
+| `onStart`  | `(e: PointerEvent) => void`                   | Called when the drag begins.       |
+| `onMove`   | `(state: DragState, e: PointerEvent) => void` | Called on every pointer move.      |
+| `onEnd`    | `(state: DragState, e: PointerEvent) => void` | Called on pointer up.              |
+| `disabled` | `boolean`                                     | Ignores pointer down while `true`. |
+
+`DragState` is `{ dragging, startX, startY, dx, dy }`. The hook returns `onPointerDown` and the
+current `dragging` flag for styling.
+
+## Sound
+
+Plays `drag_start`, loops `drag_move` while dragging and plays `drag_end` on release.
+
+## Accessibility
+
+Pointer only. Offer a keyboard alternative (e.g. arrow buttons or a slot picker) when dragging is
+the only way to change a layout.
+
+## Related
+
+- [useResizable](/hooks/use-resizable) for resize handles.
+- [useSlotDrag](/hooks/use-slot-drag) adds snap and swap targets on the slot grid.

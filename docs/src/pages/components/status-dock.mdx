@@ -1,0 +1,65 @@
+# StatusDock
+
+<Lead>
+    The voice control at the bottom center of the HUD: a push-to-talk button between two waveform
+    meters, with the current assistant state underneath. It is driven by a single `AppOrbState`.
+</Lead>
+
+<ComponentMeta component="StatusDock" />
+
+## Basic
+
+StatusDock is `position: fixed`, centered horizontally 24px above the bottom edge, with
+`z-index: 25`. Render it once near the root of your app, or pass it to the `dock` slot of
+[HUDShell](/components/hud-shell). `onPTT` fires when the button is clicked; update your state
+there. In this demo the frame contains it; in an app it sits at the bottom of the viewport.
+
+<Demo name="status-dock/Basic" height="tall" />
+
+## States
+
+`state` takes an `AppOrbState`, the same value you pass to the orb. Every state except `idle` starts
+the [WaveformMeter](/components/waveform-meter)s and marks the
+[PushToTalkButton](/components/push-to-talk-button) as active. The text below comes from
+[StatusLabel](/components/status-label): `READY` when idle, otherwise `listening...`,
+`thinking...`, `speaking...` or `working...` (`follow_up` shows `listening...`).
+
+<Demo name="status-dock/States" height="tall" />
+
+```tsx
+import { CssOrb, StatusDock } from 'jarvis-react-ui';
+import type { AppOrbState } from 'jarvis-react-ui';
+
+function Assistant({ state, onTalk }: { state: AppOrbState; onTalk: () => void }) {
+    return (
+        <>
+            <CssOrb state={state} />
+            <StatusDock state={state} onPTT={onTalk} />
+        </>
+    );
+}
+```
+
+## Custom button
+
+`ptt` replaces the built-in button. Pass your own `PushToTalkButton` to change its icon or
+accessible name; `onPTT` is then unused, so wire the click on your button.
+
+<Demo name="status-dock/CustomPtt" height="tall" />
+
+## Sound
+
+The built-in push-to-talk button plays `hover_button` on hover and `click` on click through the
+nearest `SfxProvider`. The meters and the label are silent.
+
+## Accessibility
+
+- The push-to-talk button is a native `<button>` named `Push to talk` with `aria-pressed` set while
+  `state` is not `idle`. It works with **Enter** and **Space**.
+- The waveform meters are `aria-hidden`.
+- The state text is not a live region, so state changes are not announced. Mirror the state into
+  your own `aria-live="polite"` element if screen reader users need it.
+
+## API
+
+<ApiTable component="StatusDock" />
