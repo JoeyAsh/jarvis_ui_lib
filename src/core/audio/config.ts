@@ -63,6 +63,9 @@ export type SfxEvent =
     | 'transition_2'
     | 'recall';
 
+/** Default base URL SFX files are loaded from (served from the consumer's `public/sounds/`). */
+export const DEFAULT_SOUND_BASE_URL = '/sounds/';
+
 /** Gain applied to duckable loops when ducking is active. */
 export const DUCK_VOLUME = 0.12;
 

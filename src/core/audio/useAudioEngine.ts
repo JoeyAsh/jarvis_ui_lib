@@ -9,6 +9,7 @@ import { getAudioEngine } from './audioEngine';
 import type { AudioEngine } from './audioEngine';
 import type { SfxEvent } from './config';
 import type { AppOrbState } from '@common/types';
+import type { UseAudioEngineOptions } from './useAudioEngine.types';
 
 const STORAGE_KEY = 'jarvis.sfx.muted';
 const IDLE_TIMEOUT_MS = 30_000;
@@ -45,8 +46,14 @@ export function useAudioEngine(
     orbState: AppOrbState,
     connected: boolean,
     heartbeatEnabled = false,
+    options: UseAudioEngineOptions = {},
 ): UseAudioEngineReturn {
     const [engine] = useState<AudioEngine>(getAudioEngine);
+    const { soundBaseUrl } = options;
+
+    useEffect(() => {
+        if (soundBaseUrl !== undefined) engine.setSoundBaseUrl(soundBaseUrl);
+    }, [engine, soundBaseUrl]);
 
     const [isMuted, setIsMuted] = useState<boolean>(readStoredMute);
 

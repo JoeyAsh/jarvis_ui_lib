@@ -72,12 +72,32 @@ export function Root({ children }: { children: React.ReactNode }) {
 }
 ```
 
-The audio engine currently loads its files from the **hard-coded URL path `/sounds/`** of your site
-(there is no base-URL option yet). Copy the bundled sounds into your static directory:
+#### Sounds
+
+The sound files ship inside the package under `public/sounds`. The audio engine loads them from a
+**base URL** that defaults to `/sounds/` of your site. There are two ways to provide them:
+
+**1. Copy them to your static directory (default, no configuration):**
 
 ```bash
 cp -r node_modules/jarvis-react-ui/public/sounds public/sounds
 ```
+
+**2. Point `soundBaseUrl` at your own path or a CDN** (pin the package version in the URL):
+
+```tsx
+const { playOneShot, play, stop } = useAudioEngine('idle', true, false, {
+    // own path:  soundBaseUrl: '/assets/sfx/',
+    // unpkg:     https://unpkg.com/jarvis-react-ui@0.1.0/public/sounds/
+    // jsDelivr:  https://cdn.jsdelivr.net/npm/jarvis-react-ui@0.1.0/public/sounds/
+    soundBaseUrl: 'https://unpkg.com/jarvis-react-ui@0.1.0/public/sounds/',
+});
+```
+
+The value may be a relative path or an absolute URL; a trailing slash is added if missing. Outside
+React you can call `getAudioEngine().setSoundBaseUrl(url)` directly. Changing the base URL drops
+the cached sounds so they reload from the new location. A CDN must send CORS headers (unpkg and
+jsDelivr do).
 
 The files are also addressable as `jarvis-react-ui/sounds/*` through the package `exports` map for
 bundlers that handle assets. Browsers only start audio after a user gesture. Missing files are

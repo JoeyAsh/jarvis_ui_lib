@@ -20,6 +20,9 @@ Initial public release (planned as 0.1.0).
   (`three` is an optional peer dependency).
 - UI sound effects: `SfxProvider`, `useSfx`, `useClickSfx`, `useHoverSfx`, `useAudioEngine` and the
   bundled sound files.
+- Configurable sound base URL: `AudioEngine.setSoundBaseUrl()` / `getSoundBaseUrl()`, the
+  `soundBaseUrl` option of `useAudioEngine` (4th argument) and `DEFAULT_SOUND_BASE_URL` (`/sounds/`),
+  so sounds can be served from a custom path or a CDN.
 - Design tokens and a single compiled `style.css` (no Tailwind needed in consumer projects).
 - Live showcase (`npm run dev`).
 - Published as the ESM npm package `jarvis-react-ui` with TypeScript declarations, MIT licensed.
