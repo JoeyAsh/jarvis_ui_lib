@@ -21,7 +21,7 @@ export function NavList({
     return (
         <nav aria-label={ariaLabel} className={cx('flex flex-col gap-4 font-mono', className)}>
             {groups.map((group, gi) => (
-                <div key={group.label ?? `group-${gi}`} className="flex flex-col gap-[2px]">
+                <div key={`${gi}-${group.label ?? ''}`} className="flex flex-col gap-[2px]">
                     {group.label !== undefined && (
                         <span className="px-[10px] pb-[4px] text-[8px] uppercase tracking-[2px] text-text-muted">
                             {group.label}

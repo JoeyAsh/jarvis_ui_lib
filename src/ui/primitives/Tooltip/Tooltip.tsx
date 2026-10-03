@@ -52,6 +52,10 @@ export function Tooltip({
     }
 
     const visible = open && !disabled;
+    const ownDescription = children.props['aria-describedby'];
+    const describedBy = visible
+        ? [ownDescription, id].filter((v) => v !== undefined && v !== '').join(' ')
+        : ownDescription;
 
     return (
         <span
@@ -63,7 +67,7 @@ export function Tooltip({
             onBlur={hide}
             onKeyDown={handleKeyDown}
         >
-            {cloneElement(children, { 'aria-describedby': visible ? id : undefined })}
+            {cloneElement(children, { 'aria-describedby': describedBy })}
             {visible && (
                 <span
                     id={id}

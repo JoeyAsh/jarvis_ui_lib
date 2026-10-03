@@ -42,7 +42,10 @@ export function Tabs({
         tabRefs.current[target]?.focus();
     }
 
-    const active = items.find((t) => t.value === selected);
+    const active = items.find((t) => t.value === selected && t.disabled !== true);
+    // Roving tabindex target: the selected tab, or the first enabled one when the selection is
+    // missing or disabled, so the tab list always stays reachable by keyboard.
+    const focusValue = active?.value ?? firstEnabledValue(items);
 
     return (
         <div className={cx('flex flex-col font-mono', className)}>
@@ -61,7 +64,7 @@ export function Tabs({
                                 id={`${baseId}-tab-${item.value}`}
                                 aria-selected={isSelected}
                                 aria-controls={`${baseId}-panel-${item.value}`}
-                                tabIndex={isSelected ? 0 : -1}
+                                tabIndex={item.value === focusValue ? 0 : -1}
                                 disabled={item.disabled}
                                 className={cx(
                                     '-mb-px px-[12px] py-[6px] border-b bg-transparent cursor-pointer',
@@ -92,7 +95,11 @@ export function Tabs({
                     role="tabpanel"
                     id={`${baseId}-panel-${active.value}`}
                     aria-labelledby={`${baseId}-tab-${active.value}`}
-                    className={cx('pt-[12px]', panelClassName)}
+                    tabIndex={0}
+                    className={cx(
+                        'pt-[12px] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent',
+                        panelClassName,
+                    )}
                 >
                     {active.content}
                 </div>

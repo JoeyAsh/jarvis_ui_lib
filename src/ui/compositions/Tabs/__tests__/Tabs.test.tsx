@@ -98,4 +98,15 @@ describe('Tabs', () => {
         fireEvent.click(screen.getByRole('tab', { name: 'Code' }));
         expect(sfx.playOneShot).toHaveBeenCalledWith('click');
     });
+
+    it('keeps the tab list reachable when the value matches no enabled tab', () => {
+        render(<Tabs items={ITEMS} value="off" />);
+        expect(screen.getByRole('tab', { name: 'Preview' }).getAttribute('tabindex')).toBe('0');
+        expect(screen.queryByRole('tabpanel')).toBeNull();
+    });
+
+    it('makes the panel focusable', () => {
+        render(<Tabs items={ITEMS} />);
+        expect(screen.getByRole('tabpanel').getAttribute('tabindex')).toBe('0');
+    });
 });

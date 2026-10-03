@@ -1,4 +1,5 @@
 import { forwardRef } from 'react';
+import type { MouseEvent } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { cx } from '@common/utils/cx';
 import { useClickSfx, useHoverSfx } from '@core/audio';
@@ -19,16 +20,23 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
         className,
         children,
         onClick,
+        onMouseEnter,
         ...rest
     },
     ref,
 ) {
     const hoverSfx = useHoverSfx('button');
+
+    function handleMouseEnter(e: MouseEvent<HTMLAnchorElement>): void {
+        hoverSfx(e);
+        onMouseEnter?.(e);
+    }
     const clickSfx = useClickSfx(onClick);
 
     return (
         <a
             ref={ref}
+            {...rest}
             href={href}
             target={external ? '_blank' : undefined}
             rel={external ? 'noopener noreferrer' : undefined}
@@ -39,10 +47,9 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
                 active && 'lib-link--active',
                 className,
             )}
-            onMouseEnter={hoverSfx}
+            onMouseEnter={handleMouseEnter}
             onClick={clickSfx}
             data-sfx-hover="button"
-            {...rest}
         >
             {children}
             {external && (
