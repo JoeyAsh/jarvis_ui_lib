@@ -154,7 +154,7 @@ Contributions are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md). Releases are 
 
 ## License
 
-[MIT](LICENSE) (c) 2026 Johannes Aschenbrenner.
+[MIT](LICENSE) (c) 2026 JoeyAsh.
 
 The sound effects in `public/sounds` were generated with ElevenLabs by the author and are
 distributed under the same MIT license by their owner, see [NOTICE](NOTICE).

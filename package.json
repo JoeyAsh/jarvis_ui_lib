@@ -51,7 +51,7 @@
         "vitest": "^4.1.4"
     },
     "license": "MIT",
-    "author": "Johannes Aschenbrenner",
+    "author": "JoeyAsh (https://github.com/JoeyAsh)",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/JoeyAsh/jarvis_ui_lib.git"
