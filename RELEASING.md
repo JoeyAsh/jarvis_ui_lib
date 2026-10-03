@@ -29,3 +29,6 @@ publisher:
 3. The `release` workflow runs the checks and runs `npm publish --provenance --access public`.
 
 The workflow fails if the tag does not match the `package.json` version.
+
+If `jarvis-react-ui@<version>` already exists on npm (for example the manually published first release),
+the workflow detects this, logs a notice and skips `npm publish` instead of failing.
