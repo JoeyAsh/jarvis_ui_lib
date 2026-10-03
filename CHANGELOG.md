@@ -7,6 +7,25 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- `ThreeOrb`: five new WebGL designs via the `variant` prop: `particle`, `halo`, `signal`, `reactor`
+  and `lattice` (bloom-lit, each loaded as its own chunk). The original look stays the default as
+  `constellation`.
+- `ThreeOrb`: new props `quality` (`'high'` / `'low'` for weak GPUs), `interactive` (drag to rotate,
+  scroll to zoom), `analyser` (Web Audio `AnalyserNode` for audio reactivity; the variant designs
+  simulate a voice without one) and `fill` (`'viewport'` default, or `'container'` to fill the parent
+  element).
+- `jarvis-react-ui/orb`: `createVariantOrb(variant, container, options)` to drive the variant designs
+  without React, `readAudio` / `createAudioBuffers` helpers, `ORB_VARIANTS`, `ORB_VISUAL_STATES`,
+  `BAND_COUNT` and the `OrbRenderer`, `OrbVariant`, `OrbVisualState`, `OrbQuality`,
+  `VariantOrbOptions`, `ThreeOrbVariant` and `ThreeOrbFill` types.
+
+### Fixed
+
+- `ThreeOrb` / `createOrb`: no longer log the `THREE.Clock` deprecation warning with three r183 or
+  newer.
+
 ## [0.2.0] - 2026-10-03
 
 ### Added

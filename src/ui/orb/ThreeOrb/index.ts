@@ -1,3 +1,3 @@
 export { ThreeOrb } from './ThreeOrb';
-export type { ThreeOrbProps } from './ThreeOrb.types';
+export type { ThreeOrbProps, ThreeOrbVariant, ThreeOrbFill } from './ThreeOrb.types';
 export { default } from './ThreeOrb';
