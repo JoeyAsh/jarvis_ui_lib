@@ -1,0 +1,51 @@
+# Tailwind
+
+<Lead>
+    The library is styled with Tailwind v4 internally, but ships compiled CSS. You do not need
+    Tailwind. If your project uses it, you can map the same tokens into your own theme.
+</Lead>
+
+## Without Tailwind
+
+Nothing to do. `jarvis-react-ui/style.css` contains every class the components use. Write your own
+styles with the CSS variables:
+
+```css
+.my-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+}
+```
+
+## With Tailwind v4
+
+Map the tokens in your `@theme` block to get utilities like `bg-surface`, `text-accent` or
+`border-border` that follow runtime overrides:
+
+```css
+@import 'tailwindcss';
+
+@theme {
+    --color-bg: var(--bg);
+    --color-surface: var(--surface);
+    --color-border: var(--border);
+    --color-accent: var(--accent);
+    --color-accent-bright: var(--accent-bright);
+    --color-text: var(--text);
+    --color-text-secondary: var(--text-secondary);
+    --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+```
+
+Import `jarvis-react-ui/style.css` before your Tailwind entry. Both stylesheets contain the preflight
+reset; that is harmless.
+
+## What follows runtime overrides
+
+| Kind                                  | Follows overrides    | Why                                                                                                                |
+| ------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Colors (`bg-*`, `text-*`, `border-*`) | Yes                  | The theme colors point at the CSS variables (set on `:root`, or set the `--color-*` alias on a sub-tree).          |
+| Glow (`shadow-glow*`)                 | Via `--shadow-glow*` | The utilities read `--shadow-glow*`, not `--glow*`; override both.                                                 |
+| Spacing, z-index, durations           | No                   | Compiled as literal values; use the `--s-*`, `--z-*`, `--dur-*` variables directly where you need runtime control. |
+| Radius                                | Fixed                | The scale is capped at 2px and 4px by design.                                                                      |

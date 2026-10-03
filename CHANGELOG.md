@@ -19,6 +19,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   navigation, controlled or uncontrolled), `Table` (typed columns with custom cell renderers,
   dense mode, caption, empty state), `CodeBlock` (code panel with title, language label, copy
   button and optional pre-highlighted HTML) and `Callout` (info/success/warning/error note).
+- Documentation website at https://joeyash.github.io/jarvis_ui_lib/ with getting-started guides,
+  theming playground, design token reference, live demos with source and generated API tables;
+  the package `homepage` now points to it.
+- JSDoc descriptions for the props of `Button`, `Panel`, `TopBar`, `WindowManager`, `Input`,
+  `IconButton`, `Switch`, `Link`, `Tooltip`, `Divider`, `Callout`, `CodeBlock`, `NavList`, `Table`
+  and `Tabs`, shown in editor tooltips.
 - `TopBar`: new `position` prop (`'fixed'` default, `'sticky'`, `'static'`) so the bar can be used
   inside a page layout; new `TopBarPosition` type.
 

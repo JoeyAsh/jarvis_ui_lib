@@ -29,6 +29,10 @@ jobs:
             - run: npm test
             - run: npm run build
             - run: npm run build:showcase
+            - run: npm run build:docs
+            # Reports components without docs page/demo/JSDoc as warnings; fails on nav/page
+            # mismatches. Becomes `-- --strict` once every component is documented.
+            - run: npm run docs:check
 
     changelog:
         name: changelog

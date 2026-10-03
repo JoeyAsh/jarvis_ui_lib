@@ -6,7 +6,8 @@ paths:
 
 # Showcase rules
 
-The showcase (`npm run dev`) is the library's documentation and visual test bed.
+The showcase (`npm run dev`) is the library's internal visual test bed (the public docs live in
+`docs/`, see `docs.md`).
 
 - **Every public component needs a demo** covering its variants/states, built from `ShowcaseCard`
   (`label`, `code` snippet string, children, optional `dark`). The `code` snippet must be valid usage.
@@ -29,3 +30,5 @@ The showcase (`npm run dev`) is the library's documentation and visual test bed.
 - Showcase code imports components relatively (`../../primitives/Button`), like the rest of `src/ui`.
 - `ShowcaseSfxRoot` provides SFX and the mute toggle; do not add a second provider.
 - Verify in a browser; a green build does not prove a preview looks right (`/verify`).
+- The showcase is the internal dev playground. The public documentation is the docs site; every
+  public component also needs a docs page (`.claude/rules/docs.md`).

@@ -1,0 +1,47 @@
+# Button
+
+<Lead>
+    Buttons trigger an action. They come in four variants, two sizes, and play the hover and click
+    sounds of the JARVIS sound set.
+</Lead>
+
+<ComponentMeta component="Button" />
+
+## Variants
+
+Use `primary` for the main action of a view, `secondary` (the default) for regular actions, `ghost`
+for low-emphasis actions and `danger` for destructive ones.
+
+<Demo name="button/Variants" />
+
+## Sizes
+
+<Demo name="button/Sizes" />
+
+## Disabled
+
+A disabled button is dimmed, cannot be focused by click and does not fire `onClick`.
+
+<Demo name="button/Disabled" />
+
+## With an icon
+
+Put an icon from `lucide-react` next to the label. Mark it `aria-hidden` because the label already
+names the action. For icon-only buttons use [IconButton](/components/icon-button).
+
+<Demo name="button/WithIcon" />
+
+## Sound
+
+Hovering plays `hover_button` and clicking plays `click` through the nearest `SfxProvider`. Without a
+provider the button stays silent. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Renders a native `<button>`, so keyboard and screen reader support come for free.
+- The focus ring is visible on keyboard focus only (`focus-visible`).
+- The label is the accessible name; keep it short and verb-first.
+
+## API
+
+<ApiTable component="Button" />

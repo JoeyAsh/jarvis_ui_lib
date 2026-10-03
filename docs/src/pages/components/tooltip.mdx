@@ -1,0 +1,47 @@
+# Tooltip
+
+<Lead>
+    A small text bubble that explains its trigger on hover or keyboard focus. It is the standard
+    companion of [IconButton](/components/icon-button).
+</Lead>
+
+<ComponentMeta component="Tooltip" />
+
+## Basic
+
+Wrap a single focusable element. The tooltip opens after `delayMs` (300ms by default) on hover and
+immediately on keyboard focus.
+
+<Demo name="tooltip/Basic" />
+
+## Placements
+
+`placement` puts the bubble on the `top` (default), `bottom`, `left` or `right` of the trigger.
+The bubble does not flip when it runs out of space, so choose a side with room.
+
+<Demo name="tooltip/Placements" />
+
+## Toolbar
+
+A row of icon buttons with tooltips below them. `delayMs={0}` opens them instantly while the
+pointer sweeps across the toolbar.
+
+<Demo name="tooltip/Toolbar" />
+
+<Callout variant="info" title="Positioning">
+    The bubble is absolutely positioned next to the trigger, not portaled. Ancestors with `overflow:
+    hidden` clip it.
+</Callout>
+
+## Accessibility
+
+- The bubble has `role="tooltip"` and an id; while it is open the trigger gets `aria-describedby`
+  pointing at it.
+- It opens on focus and closes on blur and on Escape.
+- Tooltip content is a supplementary description. Do not put interactive content in it, and do not
+  rely on it as the only accessible name of the trigger (give an `IconButton` its `label`).
+- `disabled` keeps the tooltip mounted but never shows it.
+
+## API
+
+<ApiTable component="Tooltip" />

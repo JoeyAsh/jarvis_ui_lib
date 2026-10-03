@@ -13,8 +13,8 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
     invalid?: boolean;
     /** Stretches the field to the width of its container. @default false */
     fullWidth?: boolean;
-    /** Class name for the outer frame. */
+    /** Additional class names for the outer frame `<div>` that holds input and adornments. */
     className?: string;
-    /** Class name for the native `<input>` element. */
+    /** Additional class names for the native `<input>` element. */
     inputClassName?: string;
 }

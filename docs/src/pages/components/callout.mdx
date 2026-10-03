@@ -1,0 +1,43 @@
+# Callout
+
+<Lead>
+    Callouts highlight a short note, tip or warning next to the content it belongs to. Four semantic
+    variants set the accent color and the default icon.
+</Lead>
+
+<ComponentMeta component="Callout" />
+
+## Variants
+
+`info` (the default) is for neutral notes, `success` confirms a good state, `warning` flags
+something to watch out for and `error` reports a failure. Each variant brings its own icon.
+
+<Demo name="callout/Variants" />
+
+## With a title
+
+`title` adds a small uppercase heading in the variant color above the body.
+
+<Demo name="callout/WithTitle" />
+
+## Custom icon or no icon
+
+Pass any `lucide-react` icon component to `icon` to replace the variant icon, or `icon={false}` to
+render none. The color still follows the variant.
+
+<Demo name="callout/CustomIcon" />
+
+This documentation uses `Callout` for its own notes, and Markdown blockquotes (`> ...`) on these
+pages render as an `info` callout.
+
+## Accessibility
+
+- The root element has `role="note"`, so screen readers announce it as supplementary content.
+- The icon is decorative and marked `aria-hidden`; put the meaning into `title` or the body text
+  instead of relying on color or icon alone.
+- A callout is not a live region. For messages that appear in response to an action, wrap it in
+  your own `aria-live` container.
+
+## API
+
+<ApiTable component="Callout" />

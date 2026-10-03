@@ -1,0 +1,48 @@
+# Table
+
+<Lead>
+    Table renders typed rows as a data table. Columns describe how each cell is rendered, so the
+    same row objects can carry plain values, pills or any other content.
+</Lead>
+
+<ComponentMeta component="Table" />
+
+## Columns and rows
+
+`Table` is generic over the row type. Each `TableColumn<T>` has a unique `key`, a `header` and a
+`render(row, index)` function that returns the cell content. `align` sets the alignment of header
+and cells (right-align numbers), and `className` is applied to every cell of the column, which is
+handy for widths. `getRowKey` must return a stable, unique key per row.
+
+<Demo name="table/Basic" align="stretch" />
+
+Define columns outside the component (or memoize them) so they are not recreated on every render.
+TypeScript infers `T` from `rows` and checks every `render` function against it.
+
+## Dense with a visible caption
+
+`dense` tightens the cell padding for compact lists such as logs. The `caption` is always present
+for screen readers; `showCaption` also shows it as a small heading above the table.
+
+<Demo name="table/DenseWithCaption" align="stretch" />
+
+## Empty state
+
+When `rows` is empty, a single full-width row shows `emptyText` (default "No data").
+
+<Demo name="table/Empty" align="stretch" />
+
+The API tables on every component page of this site are rendered with `Table`.
+
+## Accessibility
+
+- Renders a native `<table>` with `<thead>`, `<tbody>` and `<th scope="col">` header cells.
+- Always pass a `caption`: it names the table for assistive technology. Without `showCaption` it is
+  visually hidden but still read out.
+- The table sits in a horizontally scrollable container, so wide tables do not break the layout on
+  small screens.
+- Rows are not interactive. If a row needs an action, put a button or link into a cell.
+
+## API
+
+<ApiTable component="Table" />

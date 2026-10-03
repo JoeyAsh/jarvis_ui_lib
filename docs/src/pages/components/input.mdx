@@ -1,0 +1,72 @@
+# Input
+
+<Lead>
+    A single-line text field in a hairline HUD frame. It accepts icons or keyboard hints on either
+    side, comes in two sizes and has an invalid state for validation errors.
+</Lead>
+
+<ComponentMeta component="Input" />
+
+## Basic
+
+`Input` passes every native `<input>` attribute through (`value`, `onChange`, `type`, `name`,
+`placeholder`, ...). The ref points at the native `<input>`.
+
+<Demo name="input/Basic" />
+
+## Adornments
+
+`startAdornment` and `endAdornment` render inside the frame, before and after the text. Use them for
+an icon, a keyboard hint built with `Hint.Key`, a unit or a small action.
+
+<Demo name="input/WithAdornments" />
+
+## Sizes
+
+`sm` is 26px high, `md` (the default) is 32px. The field is 220px wide; set `fullWidth` to fill its
+container instead.
+
+<Demo name="input/Sizes" />
+
+## Invalid
+
+`invalid` switches the frame to the error color and sets `aria-invalid` on the input. The component
+renders no helper text itself: place the message next to it and link it with `aria-describedby`.
+
+<Demo name="input/Invalid" />
+
+## Controlled
+
+Drive the field with `value` and `onChange` like a native input. Here a clear button appears in the
+end adornment once there is text.
+
+<Demo name="input/Controlled" />
+
+## Disabled
+
+`disabled` is forwarded to the native input; the frame dims and hover sounds stop.
+
+<Demo name="input/Disabled" />
+
+## Styling
+
+`className` goes to the outer frame (border, size, width); `inputClassName` goes to the native
+`<input>` element.
+
+## Sound
+
+Hovering the frame plays `hover_button` through the nearest `SfxProvider` (not while disabled).
+Typing is silent. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Renders a native `<input>`; all keyboard behavior is the browser's.
+- There is no built-in label. Provide a visible `<label htmlFor>` or an `aria-label`; a placeholder
+  is not a label.
+- `invalid` sets `aria-invalid="true"`. Reference the error message with `aria-describedby`.
+- Adornments are decorative by default: mark icons `aria-hidden`. Interactive adornments (such as a
+  clear [IconButton](/components/icon-button)) need their own accessible name.
+
+## API
+
+<ApiTable component="Input" />

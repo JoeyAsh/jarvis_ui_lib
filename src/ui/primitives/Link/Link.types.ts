@@ -12,6 +12,8 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     external?: boolean;
     /** Marks the link as the current page (`aria-current="page"`) and highlights it. @default false */
     active?: boolean;
+    /** Additional class names for the `<a>` element. */
     className?: string;
+    /** Link text. With `external`, the external-link icon is appended after it. */
     children: ReactNode;
 }

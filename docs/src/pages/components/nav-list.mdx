@@ -1,0 +1,82 @@
+# NavList
+
+<Lead>
+    NavList is a vertical navigation list for sidebars: grouped link entries with optional headings,
+    trailing badges and a highlighted current entry. The sidebar of this documentation is a NavList.
+</Lead>
+
+<ComponentMeta component="NavList" />
+
+## Groups and badges
+
+`groups` is an array of blocks. Each group has an optional `label` (omit it for an ungrouped block
+at the top) and its `items`. An item needs a unique `id`, a `label` and an `href`; `badge` adds
+trailing content such as a `Pill`. The entry whose `id` equals `activeId` is
+highlighted.
+
+<Demo name="nav-list/Groups" />
+
+## Client-side routing
+
+Entries are real `<a href>` links, so the list works without JavaScript and supports opening in a
+new tab. `onItemClick` runs before the browser follows the link; call `event.preventDefault()` to
+handle navigation yourself and update `activeId`.
+
+<Demo name="nav-list/ClientSide" />
+
+With a router, derive `activeId` from the current location and navigate in `onItemClick`. Let
+modified clicks (Ctrl, Cmd, Shift, middle button) through so "open in new tab" keeps working. This
+is how the sidebar of this site is wired up with React Router:
+
+```tsx
+import { useLocation, useNavigate } from 'react-router';
+import { NavList } from 'jarvis-react-ui';
+import type { NavListGroup } from 'jarvis-react-ui';
+
+const GROUPS: NavListGroup[] = [
+    {
+        label: 'Components',
+        items: [
+            { id: 'button', label: 'Button', href: '/components/button' },
+            { id: 'tabs', label: 'Tabs', href: '/components/tabs' },
+        ],
+    },
+];
+
+export function Sidebar() {
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+
+    return (
+        <NavList
+            aria-label="Documentation"
+            groups={GROUPS}
+            activeId={pathname.split('/').pop()}
+            onItemClick={(item, e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                e.preventDefault();
+                void navigate(item.href);
+            }}
+        />
+    );
+}
+```
+
+## Sound
+
+Hovering an entry plays `hover_button` and clicking plays `click` through the nearest
+`SfxProvider`. Without a provider the list stays silent. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Renders a `<nav>` landmark named by `aria-label` (default "Navigation"). Give each NavList on a
+  page a distinct name.
+- Every group is a `<ul>` list of `<li>` items, so screen readers announce the number of entries.
+- The active entry gets `aria-current="page"` in addition to the visual highlight.
+- Entries are native links: Tab moves between them, Enter follows them, and the focus outline is
+  visible on keyboard focus.
+- Group labels are plain text, not headings, so they do not appear in the heading outline.
+
+## API
+
+<ApiTable component="NavList" />

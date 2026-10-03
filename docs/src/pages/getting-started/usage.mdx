@@ -1,0 +1,82 @@
+# Usage
+
+<Lead>
+    Components are plain React components with typed props. Compose them like any other UI kit; the
+    HUD look comes from the shared design tokens.
+</Lead>
+
+## A first panel
+
+```tsx
+import 'jarvis-react-ui/style.css';
+import { Button, Metric, Panel, Pill } from 'jarvis-react-ui';
+
+export function App() {
+    return (
+        <Panel title="System">
+            <Metric value={42} unit="%" />
+            <Pill variant="ok">online</Pill>
+            <Button>Run diagnostics</Button>
+        </Panel>
+    );
+}
+```
+
+## Dark background
+
+The components are designed for the dark JARVIS background. Give your page the background token so
+everything sits on the right surface:
+
+```css
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+```
+
+For the full HUD look, add the decorative layers `GridBackground`, `Scanlines` and
+`ViewportCorners`, or the complete `HUDShell` frame.
+
+## Props and refs
+
+- Every component accepts `className`, merged onto its root element.
+- Components that wrap a native element (`Button`, `IconButton`, `Input`, `Link`, `Switch`) accept
+  that element's attributes (`onClick`, `disabled`, `aria-*`, ...) and forward their `ref`.
+- Controlled and uncontrolled modes follow React conventions: `value` / `defaultValue` with
+  `onValueChange` (Tabs), `checked` / `defaultChecked` with `onCheckedChange` (Switch).
+
+Each component page ends with an **API** table generated from the TypeScript types, so it always
+matches the source.
+
+## Client-side routing
+
+Links and navigation entries render real `<a>` elements. To use them with a router, prevent the
+default navigation and call your router instead:
+
+```tsx
+import { useNavigate } from 'react-router';
+import { NavList } from 'jarvis-react-ui';
+
+export function Sidebar() {
+    const navigate = useNavigate();
+    return (
+        <NavList
+            groups={groups}
+            onItemClick={(item, event) => {
+                event.preventDefault();
+                navigate(item.href);
+            }}
+        />
+    );
+}
+```
+
+This documentation site is built exactly like that, using only `jarvis-react-ui` components.
+
+## TypeScript
+
+All props, variants and helper types are exported next to their component:
+
+```ts
+import type { ButtonProps, ButtonVariant, TableColumn } from 'jarvis-react-ui';
+```

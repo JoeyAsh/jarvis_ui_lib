@@ -21,9 +21,10 @@
             "@ui": ["./src/ui/index"],
             "@ui/*": ["./src/ui/*"],
             "@common/*": ["./src/common/*"],
-            "@test/*": ["./src/test/*"]
+            "@test/*": ["./src/test/*"],
+            "@docs/*": ["./docs/src/*"]
         }
     },
-    "include": ["src"],
+    "include": ["src", "docs/src"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

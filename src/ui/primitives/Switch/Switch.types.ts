@@ -16,5 +16,6 @@ export interface SwitchProps extends Omit<
     label?: ReactNode;
     /** Track size. @default 'md' */
     size?: SwitchSize;
+    /** Additional class names for the root `<button role="switch">` (wraps track and label). */
     className?: string;
 }

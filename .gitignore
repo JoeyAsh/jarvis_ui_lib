@@ -1,6 +1,8 @@
 node_modules
 dist
 dist-showcase
+dist-docs
+docs/generated
 
 # IDE
 .idea/

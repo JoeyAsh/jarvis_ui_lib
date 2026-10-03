@@ -12,6 +12,8 @@ export default tseslint.config(
         ignores: [
             'dist/**',
             'dist-showcase/**',
+            'dist-docs/**',
+            'docs/generated/**',
             'node_modules/**',
             '**/*.config.js',
             'coverage/**',
@@ -55,7 +57,7 @@ export default tseslint.config(
                 ...globals.node,
             },
             parserOptions: {
-                project: ['./tsconfig.json', './tsconfig.node.json'],
+                project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.scripts.json'],
                 tsconfigRootDir: import.meta.dirname,
             },
         },

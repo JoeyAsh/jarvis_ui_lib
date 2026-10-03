@@ -15,5 +15,6 @@ export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
     size?: IconButtonSize;
     /** Marks the button as toggled on (`aria-pressed`) and highlights it. */
     pressed?: boolean;
+    /** Additional class names for the `<button>` element. */
     className?: string;
 }

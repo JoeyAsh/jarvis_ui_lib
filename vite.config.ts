@@ -15,6 +15,7 @@ export default defineConfig({
                 replacement: resolve(import.meta.dirname, 'src/common') + '/$1',
             },
             { find: /^@test\/(.*)/, replacement: resolve(import.meta.dirname, 'src/test') + '/$1' },
+            { find: /^@docs\/(.*)/, replacement: resolve(import.meta.dirname, 'docs/src') + '/$1' },
         ],
     },
     build: { outDir: 'dist-showcase', emptyOutDir: true },

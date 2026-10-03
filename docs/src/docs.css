@@ -1,0 +1,42 @@
+/* ================================================================
+   Docs site styles. Pulls in the library's tokens, Tailwind theme,
+   keyframes and component stylesheets (from source), then tells
+   Tailwind to scan both the docs app and the library for classes.
+   ================================================================ */
+
+@import '../../src/styles/tokens.css';
+@import '../../src/index.css';
+@import '../../src/ui/ui.css';
+@import '../../src/ui/components.css';
+
+@source '../../src/ui';
+@source './';
+
+html {
+    scroll-padding-top: 72px;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+}
+
+/* tokens.css sizes h1–h3 outside any cascade layer, which beats Tailwind utilities (they live in
+   @layer utilities). Headings that carry classes fall back to the layered values instead. */
+h1[class],
+h2[class],
+h3[class] {
+    font-size: revert-layer;
+    font-weight: revert-layer;
+    color: revert-layer;
+    letter-spacing: revert-layer;
+}
+
+/* Heading anchor links inherit the global `a` styling from tokens.css; strip it. */
+.docs-anchor,
+.docs-anchor:hover {
+    color: inherit;
+    border-bottom: 0;
+}

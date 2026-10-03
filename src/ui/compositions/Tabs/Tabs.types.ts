@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+/** A single tab of a `Tabs` component. */
 export interface TabItem {
     /** Unique value identifying the tab. */
     value: string;
@@ -11,6 +12,7 @@ export interface TabItem {
     disabled?: boolean;
 }
 
+/** Props of the `Tabs` component. */
 export interface TabsProps {
     /** Tabs in display order. */
     items: TabItem[];
@@ -24,7 +26,8 @@ export interface TabsProps {
     'aria-label'?: string;
     /** Content rendered at the right end of the tab bar, e.g. an `IconButton`. */
     actions?: ReactNode;
+    /** Additional class names for the root element (wraps the tab bar and the panel). */
     className?: string;
-    /** Class name for the panel container. */
+    /** Additional class names for the `role="tabpanel"` container. */
     panelClassName?: string;
 }

@@ -1,5 +1,6 @@
 import type { MouseEvent, ReactNode } from 'react';
 
+/** A single link entry of a `NavList`. */
 export interface NavListItem {
     /** Unique id of the entry; compared with `activeId`. */
     id: string;
@@ -11,6 +12,7 @@ export interface NavListItem {
     badge?: ReactNode;
 }
 
+/** A titled block of `NavList` entries. */
 export interface NavListGroup {
     /** Group heading. Omit for an ungrouped block at the top. */
     label?: string;
@@ -18,6 +20,7 @@ export interface NavListGroup {
     items: NavListItem[];
 }
 
+/** Props of the `NavList` component. */
 export interface NavListProps {
     /** Navigation groups in display order. */
     groups: NavListGroup[];
@@ -30,5 +33,6 @@ export interface NavListProps {
     onItemClick?: (item: NavListItem, event: MouseEvent<HTMLAnchorElement>) => void;
     /** Accessible name of the `<nav>` landmark. @default 'Navigation' */
     'aria-label'?: string;
+    /** Additional class names for the root `<nav>` element. */
     className?: string;
 }

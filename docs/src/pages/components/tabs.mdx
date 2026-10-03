@@ -1,0 +1,69 @@
+# Tabs
+
+<Lead>
+    Tabs switch between panels of related content in the same place. Only the selected panel is
+    rendered, and the tab bar has room for actions on the right.
+</Lead>
+
+<ComponentMeta component="Tabs" />
+
+## Basic
+
+Pass the tabs as `items`, each with a unique `value`, a `label` and its panel `content`. Without
+`value` the component manages the selection itself and starts with `defaultValue`, or the first
+enabled tab.
+
+<Demo name="tabs/Basic" align="stretch" />
+
+## Controlled
+
+Pass `value` and `onValueChange` to own the selection, e.g. to sync it with the URL or to change
+it from elsewhere. `onValueChange` is also called in uncontrolled mode.
+
+<Demo name="tabs/Controlled" align="stretch" />
+
+## Disabled tab
+
+A tab with `disabled: true` is dimmed, cannot be clicked and is skipped by the arrow keys.
+
+<Demo name="tabs/DisabledTab" align="stretch" />
+
+## Actions
+
+`actions` renders content at the right end of the tab bar, such as a small
+[IconButton](/components/icon-button). Actions belong to the whole tab set, not to a single tab.
+
+<Demo name="tabs/WithActions" align="stretch" />
+
+Use `panelClassName` to style the panel container, e.g. its typography or padding.
+
+## Keyboard
+
+| Key                        | Action                                                                           |
+| -------------------------- | -------------------------------------------------------------------------------- |
+| `Tab`                      | Moves focus into the tab list (to the selected tab) and on to the panel content. |
+| `ArrowRight` / `ArrowLeft` | Selects the next / previous enabled tab, wrapping around.                        |
+| `Home` / `End`             | Selects the first / last enabled tab.                                            |
+
+Selection follows focus: moving with the arrow keys selects the tab immediately.
+
+## Sound
+
+Hovering a tab plays `hover_button` and selecting a different tab plays `click` through the
+nearest `SfxProvider`. Without a provider the tabs stay silent. See
+[Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Follows the WAI-ARIA tabs pattern: a `role="tablist"` of `role="tab"` buttons and one
+  `role="tabpanel"`.
+- Name the tab list with `aria-label`.
+- Each tab has `aria-selected` and `aria-controls` pointing at the panel; the panel is labelled by
+  its tab through `aria-labelledby`.
+- Roving tabindex: only the selected tab is in the tab order (`tabIndex={0}`), the others have
+  `tabIndex={-1}` and are reached with the arrow keys.
+- Disabled tabs use the native `disabled` attribute.
+
+## API
+
+<ApiTable component="Tabs" />

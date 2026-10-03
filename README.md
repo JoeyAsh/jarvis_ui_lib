@@ -3,6 +3,9 @@
 Sharp, dark, HUD-style React components: primitives, compositions, a window/slot-grid system and a
 CSS / Three.js orb. JetBrains Mono, glow instead of shadows, built-in UI sound effects.
 
+**Documentation: https://joeyash.github.io/jarvis_ui_lib/** (guides, theming, live demos and API
+tables for every component).
+
 [![CI](https://github.com/JoeyAsh/jarvis_ui_lib/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeyAsh/jarvis_ui_lib/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/jarvis-react-ui)](https://www.npmjs.com/package/jarvis-react-ui)
 [![license](https://img.shields.io/npm/l/jarvis-react-ui)](LICENSE)
@@ -52,7 +55,8 @@ The stylesheet contains the design tokens (CSS custom properties), a compiled ut
 the components, keyframes and all component styles. It also includes Tailwind's preflight reset, so
 import it once at the root of your app. It loads JetBrains Mono from Google Fonts.
 
-The showcase (`npm run dev`) demonstrates every component with its variants and usage snippets.
+The [documentation site](https://joeyash.github.io/jarvis_ui_lib/) has live demos and the full API
+of every component.
 
 ### Sound effects
 
@@ -173,6 +177,8 @@ npm run dev              # live showcase at http://localhost:5173
 | `npm run typecheck`      | `tsc --noEmit`                                  |
 | `npm run lint`           | ESLint (0 errors and 0 warnings required)       |
 | `npm run format:check`   | Prettier check (`npm run format` writes)        |
+| `npm run docs:dev`       | Documentation site dev server                   |
+| `npm run build:docs`     | Build the documentation site into `dist-docs/`  |
 
 ## Contributing
 

@@ -37,10 +37,15 @@ export interface ContainerGeometry extends ViewportSize {
     top: number;
 }
 
+/** One window rendered by `WindowManager`. */
 export interface ManagedWindow {
+    /** Unique window id; used as the key in `assignments`, `modes` and `focusedId`. */
     id: string;
+    /** Header title. A string title also becomes the window's accessible name. */
     title?: ReactNode;
+    /** Index glyph shown before the title, e.g. `◈`. */
     ix?: ReactNode;
+    /** Tag shown at the right end of the header, e.g. `LIVE`. */
     badge?: ReactNode;
     /**
      * Render-prop content. Receives the current mode, focused state, and
@@ -58,38 +63,48 @@ export interface ExpandedRect {
 }
 
 export interface WindowManagerProps {
-    /** Windows to render. */
+    /** Windows to render. A window without an entry in `assignments` is not rendered. */
     windows: ManagedWindow[];
-    /** windowId → slotId (controlled). */
+    /** Window id → slot id (controlled). Each window is docked in its assigned slot. */
     assignments: Record<string, SlotId>;
-    /** Called when assignments should change (drop → move or swap). */
+    /**
+     * Called with the next assignments when a window is dropped on another slot (move), on an
+     * occupied slot (swap) or reset to its home slot.
+     */
     onAssignmentsChange: (next: Record<string, SlotId>) => void;
     /**
-     * Original "home" slot assignments used by Reset. Defaults to the value of
-     * `assignments` on first render if not provided.
+     * Home slots restored by a window's Reset button. Read once on mount; defaults to the
+     * `assignments` of the first render.
      */
     homeAssignments?: Record<string, SlotId>;
-    /** Focused window id (controlled). */
+    /** Id of the focused window (controlled); `null` for none. @default null */
     focusedId?: string | null;
-    /** Called when a window is focused / blur (null = no focus). */
+    /**
+     * Called with a window id when a window is pressed, dragged or toggled, and with `null` on a
+     * pointer down outside every window.
+     */
     onFocusChange?: (id: string | null) => void;
 
     // ── Mode — controlled/uncontrolled ────────────────────────────────────────
 
     /**
-     * Controlled mode map. When provided, WindowManager uses these values
-     * instead of its internal mode state.
+     * Window id → `compact` | `expanded` (controlled). Missing ids are `compact`. Omit it to let
+     * WindowManager track modes internally.
      */
     modes?: Record<string, PanelMode>;
     /**
-     * Called when a window's mode should change.
+     * Called with the full next mode map when a window is undocked, docked or reset. Fires in
+     * both controlled and uncontrolled mode.
      */
     onModesChange?: (next: Record<string, PanelMode>) => void;
 
     /**
-     * Controlled expanded-rect map.
+     * Window id → free-floating rect (controlled). When set, WindowManager no longer stores
+     * positions itself, so moving and resizing expanded windows has no effect. Omit it to let
+     * WindowManager track them.
      */
     expandedRects?: Record<string, ExpandedRect>;
 
+    /** Additional class names for the root element. */
     className?: string;
 }

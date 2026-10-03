@@ -25,6 +25,9 @@ not edit. Read `.claude/rules/*.md` first; cite `file:line` for every finding.
 - Radius > 4px, non-JetBrains-Mono font, hardcoded hex colors, `drop-shadow`.
 - Public component missing from `src/ui/index.ts` (component + types), missing test, or missing
   showcase demo.
+- Public component without docs page, demo or sidebar entry, public prop without JSDoc, or a
+  component change whose docs page/demos/JSDoc were not updated (`.claude/rules/docs.md`).
+- Docs-only UI component in `docs/` that should be a library component.
 - SFX: config `file` that does not exist in `public/sounds/`.
 
 **Major**: missing named+default export or `index.ts` re-exports, missing `displayName` on

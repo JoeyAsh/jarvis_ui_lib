@@ -1,0 +1,53 @@
+# IconButton
+
+<Lead>
+    A square button that shows only a `lucide-react` icon. Use it for compact toolbar actions; the
+    required `label` gives it an accessible name.
+</Lead>
+
+<ComponentMeta component="IconButton" />
+
+## Variants
+
+`ghost` (the default) is borderless until hovered and suits dense toolbars. `secondary`, `primary`
+and `danger` mirror the [Button](/components/button) variants.
+
+<Demo name="icon-button/Variants" />
+
+## Sizes
+
+`sm` is a 24px square with a 12px icon, `md` (the default) is 30px with a 14px icon.
+
+<Demo name="icon-button/Sizes" />
+
+## Toggle
+
+Pass `pressed` to turn the button into a toggle. It highlights the button and sets `aria-pressed`.
+Keep the `label` constant (for example "Mute") and let `pressed` carry the state.
+
+<Demo name="icon-button/Toggle" />
+
+## Disabled
+
+<Demo name="icon-button/Disabled" />
+
+## With a tooltip
+
+The label is only announced to assistive technology. Wrap the button in a
+[Tooltip](/components/tooltip) to show a hint to sighted users as well.
+
+## Sound
+
+Hovering plays `hover_button` and clicking plays `click` through the nearest `SfxProvider`. Without a
+provider the button stays silent. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Renders a native `<button type="button">` with `aria-label` set from `label`.
+- The icon is rendered with `aria-hidden="true"`.
+- `pressed` maps to `aria-pressed`; leave it `undefined` for a plain action button.
+- The focus ring is visible on keyboard focus only (`focus-visible`).
+
+## API
+
+<ApiTable component="IconButton" />

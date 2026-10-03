@@ -1,13 +1,15 @@
 import type { ReactNode } from 'react';
 
+/** Horizontal alignment of a `Table` column. */
 export type TableAlign = 'left' | 'center' | 'right';
 
+/** Definition of one `Table` column; `T` is the row type. */
 export interface TableColumn<T> {
-    /** Unique key of the column. */
+    /** Unique key of the column; used as the React key of its cells. */
     key: string;
     /** Header cell content. */
     header: ReactNode;
-    /** Renders the cell for a row. */
+    /** Renders the cell content for a row; `index` is the row's position in `rows`. */
     render: (row: T, index: number) => ReactNode;
     /** Horizontal alignment of header and cells. @default 'left' */
     align?: TableAlign;
@@ -15,6 +17,7 @@ export interface TableColumn<T> {
     className?: string;
 }
 
+/** Props of the `Table` component; `T` is the row type. */
 export interface TableProps<T> {
     /** Column definitions in display order. */
     columns: TableColumn<T>[];
@@ -30,5 +33,6 @@ export interface TableProps<T> {
     dense?: boolean;
     /** Content shown in a single full-width row when `rows` is empty. @default 'No data' */
     emptyText?: ReactNode;
+    /** Additional class names for the scroll container that wraps the `<table>`. */
     className?: string;
 }

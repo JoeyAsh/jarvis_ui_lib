@@ -1,0 +1,90 @@
+# WindowManager
+
+<Lead>
+    WindowManager lays out a set of windows on a fixed slot grid. Windows dock into slots, can be
+    dragged onto other slots to move or swap, and can be undocked into free-floating, resizable
+    windows.
+</Lead>
+
+<ComponentMeta component="WindowManager" />
+
+## Slot grid
+
+The grid has nine slots: three in the left column (`L1`–`L3`), three in the right column
+(`R1`–`R3`) and three in the bottom strip (`B1`–`B3`). The columns are 316px wide, the bottom strip
+is 140px high, and the top 60px stay free for a [TopBar](/components/top-bar). The grid is computed
+from the size of the WindowManager, which fills its containing block (`position: fixed; inset: 0`):
+the viewport, or the nearest ancestor with a `transform`. Column slots share the height left
+between the top bar and the bottom strip (at least 60px each), so the 420px demo stages below dock
+their windows in the bottom strip.
+
+## Basic
+
+`assignments` maps window ids to slots and is controlled: keep it in state and update it in
+`onAssignmentsChange`. Drag a window header onto another slot to move it, or onto an occupied slot to
+swap the two windows.
+
+<Demo name="window-manager/Basic" height="tall" />
+
+## Compact and expanded
+
+Every window has a mode. `compact` windows are docked in their slot. Click the undock button in the
+header, or double-click the header, to switch to `expanded`: the window floats above the grid, larger
+than its slot, and can be dragged freely and resized from its edges and corners. The dock button
+switches back.
+
+`itemRenderer` receives `{ mode, focused, dragging }`, so a window can show a compact summary while
+docked and more detail while expanded.
+
+<Demo name="window-manager/Modes" height="tall" />
+
+## Controlled state
+
+`focusedId` and `modes` can be controlled too. Focus moves to a window when it is pressed, dragged or
+toggled, and `onFocusChange` receives `null` on a pointer down outside every window. Omit `modes` to
+let WindowManager track modes itself; `onModesChange` fires either way.
+
+<Demo name="window-manager/Controlled" height="tall" align="start" />
+
+## Reset
+
+The reset button in each header docks the window, clears any custom size and moves it back to its
+home slot. Home slots come from `homeAssignments`, or from `assignments` on the first render; both
+are read once on mount.
+
+<Callout variant="warning" title="Controlled expandedRects">
+    When you pass `expandedRects`, WindowManager stops storing the positions of expanded windows and
+    offers no change callback, so dragging and resizing an expanded window has no lasting effect.
+    Omit it unless you want to pin expanded windows in place.
+</Callout>
+
+## Windows
+
+Each entry of `windows` is a `ManagedWindow`:
+
+| Field          | Type                                            | Description                                                   |
+| -------------- | ----------------------------------------------- | ------------------------------------------------------------- |
+| `id`           | `string`                                        | Unique id; the key in `assignments`, `modes` and `focusedId`. |
+| `title`        | `ReactNode`                                     | Header title. A string title is also the accessible name.     |
+| `ix`           | `ReactNode`                                     | Index glyph before the title.                                 |
+| `badge`        | `ReactNode`                                     | Tag at the right end of the header.                           |
+| `itemRenderer` | `(props: PanelContentRenderProps) => ReactNode` | Renders the body; receives `mode`, `focused` and `dragging`.  |
+
+A window without an entry in `assignments` is not rendered.
+
+## Sound
+
+Through the nearest `SfxProvider`, dragging plays `drag_start`, a looping `drag_move` and `drag_end`;
+resizing loops `resize`; the undock and dock buttons play `click` plus `expand` or `collapse`; the
+reset button plays `click` plus `recall`. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Each window is a `role="dialog"` element named by its string `title`.
+- The reset and dock buttons are native buttons with accessible names.
+- Dragging, swapping and resizing are pointer-only. Offer another way to rearrange content when
+  keyboard users need it.
+
+## API
+
+<ApiTable component="WindowManager" />

@@ -1,0 +1,46 @@
+# Link
+
+<Lead>
+    A styled anchor for inline text links, secondary links and navigation. It can open external
+    pages in a new tab and mark the current page in a navigation bar.
+</Lead>
+
+<ComponentMeta component="Link" />
+
+## Variants
+
+`accent` (the default) is the inline link with a dashed underline. `muted` is a quieter link for
+secondary content. `nav` is the uppercase style for navigation bars.
+
+<Demo name="link/Variants" />
+
+## External
+
+`external` opens the link in a new tab with `rel="noopener noreferrer"` and appends an external-link
+icon.
+
+<Demo name="link/External" />
+
+## Navigation
+
+Use `variant="nav"` with `active` on the link of the current page. With a client-side router, call
+`event.preventDefault()` in `onClick` and navigate yourself, or wrap your router's link component.
+
+<Demo name="link/Navigation" />
+
+## Sound
+
+Hovering plays `hover_button` and clicking plays `click` through the nearest `SfxProvider`. See
+[Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Renders a native `<a>`, so it is focusable and activates with Enter. Always pass an `href`.
+- `active` sets `aria-current="page"`.
+- The external-link icon is `aria-hidden`. If the link text does not make clear that it opens a new
+  tab, say so in the text.
+- The focus outline is visible on keyboard focus only (`focus-visible`).
+
+## API
+
+<ApiTable component="Link" />

@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
+/** Semantic variant of a `Callout`; sets the accent color and the default icon. */
 export type CalloutVariant = 'info' | 'success' | 'warning' | 'error';
 
+/** Props of the `Callout` component. */
 export interface CalloutProps {
     /** Semantic color and default icon. @default 'info' */
     variant?: CalloutVariant;
@@ -12,5 +14,6 @@ export interface CalloutProps {
     icon?: LucideIcon | false;
     /** Body content. */
     children: ReactNode;
+    /** Additional class names for the root `role="note"` element. */
     className?: string;
 }

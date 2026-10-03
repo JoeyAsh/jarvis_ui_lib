@@ -1,0 +1,56 @@
+# TopBar
+
+<Lead>
+    The TopBar is the status strip at the top of the HUD. It has three slots, left, center and
+    right, and carries the panel chrome: corner brackets and a light trace that circles its border.
+</Lead>
+
+<ComponentMeta component="TopBar" />
+
+## Positions
+
+`position` decides how the bar is placed:
+
+| Value    | Behavior                                                                                       |
+| -------- | ---------------------------------------------------------------------------------------------- |
+| `fixed`  | Default. Pinned to the viewport, 10px from the top, left and right edges, above other content. |
+| `sticky` | Full width in the document flow; sticks 10px below the top of its scroll container.            |
+| `static` | Full width in the document flow, like a normal block, e.g. inside a page header or a card.     |
+
+The bar is always 40px high. With `fixed`, leave room at the top of your layout: the slot grid of
+[WindowManager](/components/window-manager) reserves the top 60px for it.
+
+## Static
+
+<Demo name="top-bar/Static" align="stretch" />
+
+## Slots
+
+Each slot takes any React node. Use the left slot for time or status text, the center for a title
+and the right for a brand mark or actions.
+
+<Demo name="top-bar/Actions" align="stretch" />
+
+## Sticky
+
+Scroll the log: the bar stays at the top of the scroll container.
+
+<Demo name="top-bar/Sticky" align="stretch" />
+
+## Fixed
+
+The default. In this demo the bar is pinned to the demo frame, because the frame creates a
+containing block; in an app it is pinned to the viewport.
+
+<Demo name="top-bar/Fixed" height="tall" />
+
+## Accessibility
+
+- The TopBar renders plain `<div>` elements without a landmark role. If it acts as the page header,
+  wrap it in a `<header>` element.
+- Keep interactive content in the slots keyboard accessible, e.g. `Button`, or `IconButton` with a
+  `label`.
+
+## API
+
+<ApiTable component="TopBar" />
