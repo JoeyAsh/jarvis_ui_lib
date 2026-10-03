@@ -7,6 +7,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-03
+
 ### Added
 
 - Charts: `LineChart` (linear or smooth, optional dots), `AreaChart` (optionally stacked) and
@@ -136,5 +138,6 @@ Initial public release.
 - Live showcase (`npm run dev`).
 - Published as the ESM npm package `jarvis-react-ui` with TypeScript declarations, MIT licensed.
 
-[Unreleased]: https://github.com/JoeyAsh/jarvis_ui_lib/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/JoeyAsh/jarvis_ui_lib/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/JoeyAsh/jarvis_ui_lib/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/JoeyAsh/jarvis_ui_lib/releases/tag/v0.1.0
