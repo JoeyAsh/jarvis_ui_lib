@@ -14,6 +14,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   with placements), `Switch` (accessible on/off toggle, controlled or uncontrolled), `Divider`
   (horizontal/vertical separator with optional label) and `Link` (accent/muted/nav anchor with
   external and active states). All props carry JSDoc descriptions.
+- New compositions: `NavList` (grouped side navigation with active entry, badges and an
+  `onItemClick` hook for client-side routers), `Tabs` (accessible tab list with keyboard
+  navigation, controlled or uncontrolled), `Table` (typed columns with custom cell renderers,
+  dense mode, caption, empty state), `CodeBlock` (code panel with title, language label, copy
+  button and optional pre-highlighted HTML) and `Callout` (info/success/warning/error note).
+- `TopBar`: new `position` prop (`'fixed'` default, `'sticky'`, `'static'`) so the bar can be used
+  inside a page layout; new `TopBarPosition` type.
 
 ## [0.1.0] - 2026-10-03
 

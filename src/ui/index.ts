@@ -40,7 +40,7 @@ export { Panel } from './primitives/Panel';
 export type { PanelProps } from './primitives/Panel';
 
 export { TopBar } from './primitives/TopBar';
-export type { TopBarProps } from './primitives/TopBar';
+export type { TopBarProps, TopBarPosition } from './primitives/TopBar';
 
 export { CornerBrackets } from './primitives/CornerBrackets';
 export type { CornerBracketsProps } from './primitives/CornerBrackets';
@@ -183,3 +183,18 @@ export type { HUDShellProps } from './compositions/HUDShell';
 
 export { WindowManager } from './compositions/WindowManager';
 export type { ManagedWindow, WindowManagerProps, ExpandedRect } from './compositions/WindowManager';
+
+export { NavList } from './compositions/NavList';
+export type { NavListProps, NavListGroup, NavListItem } from './compositions/NavList';
+
+export { Tabs } from './compositions/Tabs';
+export type { TabsProps, TabItem } from './compositions/Tabs';
+
+export { Table } from './compositions/Table';
+export type { TableProps, TableColumn, TableAlign } from './compositions/Table';
+
+export { CodeBlock } from './compositions/CodeBlock';
+export type { CodeBlockProps } from './compositions/CodeBlock';
+
+export { Callout } from './compositions/Callout';
+export type { CalloutProps, CalloutVariant } from './compositions/Callout';

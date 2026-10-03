@@ -1,9 +1,22 @@
 import { type ReactElement } from 'react';
+import { cx } from '@common/utils/cx';
 import type { TopBarProps } from './TopBar.types';
 
-export function TopBar({ left, center, right, className }: TopBarProps): ReactElement {
+export function TopBar({
+    left,
+    center,
+    right,
+    position = 'fixed',
+    className,
+}: TopBarProps): ReactElement {
     return (
-        <div className={['lib-topbar', className].filter(Boolean).join(' ')}>
+        <div
+            className={cx(
+                'lib-topbar',
+                position !== 'fixed' && `lib-topbar--${position}`,
+                className,
+            )}
+        >
             {/* Bottom corner brackets (::before and ::after on .lib-topbar handle tl/tr) */}
             <span className="lib-topbar__c-bl" />
             <span className="lib-topbar__c-br" />
