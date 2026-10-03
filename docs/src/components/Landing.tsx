@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 import { useNavigate } from 'react-router';
 import { AudioLines, Grid3x3, Orbit, Palette, ShieldCheck, Zap } from 'lucide-react';
-import { Button, CodeBlock, CornerBrackets, CssOrb, Panel, Pill } from '@ui';
+import { Button, CornerBrackets, CssOrb, Panel, Pill } from '@ui';
+import { DocsCodeBlock } from './DocsCodeBlock';
 import type { AppOrbState } from '@common/types';
 import { LANDING_FEATURES, ORB_CYCLE, ORB_CYCLE_MS } from './landingContent';
 
@@ -69,7 +70,7 @@ export function Landing(): ReactElement {
                 <span className="text-[9px] uppercase tracking-[2px] text-text-secondary">
                     Install
                 </span>
-                <CodeBlock
+                <DocsCodeBlock
                     code="npm i jarvis-react-ui react react-dom lucide-react"
                     language="bash"
                 />

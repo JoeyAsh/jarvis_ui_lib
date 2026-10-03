@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { ReactElement } from 'react';
-import { Button, CodeBlock, Metric, Panel, Pill, ProgressBar, Switch } from '@ui';
+import { Button, Metric, Panel, Pill, ProgressBar, Switch } from '@ui';
+import { DocsCodeBlock } from './DocsCodeBlock';
 import { THEME_PRESETS } from './themePresets';
 import { cssBlock, expandThemeVars } from '../utils/themeVars';
 
@@ -50,7 +51,7 @@ export function ThemePlayground(): ReactElement {
                     <Switch label="Shields" defaultChecked />
                 </div>
             </div>
-            <CodeBlock code={css} language="css" title="theme.css (scoped to one area)" />
+            <DocsCodeBlock code={css} language="css" title="theme.css (scoped to one area)" />
         </div>
     );
 }

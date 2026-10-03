@@ -5,18 +5,39 @@
     HUD look comes from the shared design tokens.
 </Lead>
 
+## Wrap your app
+
+Mount [JarvisProvider](/components/jarvis-provider) once at the root. It sets up UI sounds, toasts
+and the `useJarvis()` controls:
+
+```tsx
+// main.tsx
+import 'jarvis-react-ui/style.css';
+import { createRoot } from 'react-dom/client';
+import { JarvisProvider } from 'jarvis-react-ui';
+import { App } from './App';
+
+createRoot(document.getElementById('root') as HTMLElement).render(
+    <JarvisProvider>
+        <App />
+    </JarvisProvider>,
+);
+```
+
 ## A first panel
 
 ```tsx
-import 'jarvis-react-ui/style.css';
-import { Button, Metric, Panel, Pill } from 'jarvis-react-ui';
+import { Button, Metric, Panel, Pill, useToast } from 'jarvis-react-ui';
 
 export function App() {
+    const { toast } = useToast();
     return (
         <Panel title="System">
             <Metric value={42} unit="%" />
             <Pill variant="ok">online</Pill>
-            <Button>Run diagnostics</Button>
+            <Button onClick={() => toast({ variant: 'success', title: 'Diagnostics passed' })}>
+                Run diagnostics
+            </Button>
         </Panel>
     );
 }

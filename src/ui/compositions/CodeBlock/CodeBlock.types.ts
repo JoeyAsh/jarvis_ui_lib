@@ -15,6 +15,11 @@ export interface CodeBlockProps {
     title?: ReactNode;
     /** Shows the copy-to-clipboard button. @default true */
     copyable?: boolean;
+    /**
+     * Called with the code after it was copied to the clipboard, e.g. to show a toast. Not called
+     * when copying fails or the clipboard API is unavailable.
+     */
+    onCopy?: (code: string) => void;
     /** Content rendered at the right end of the header, next to the copy button. */
     actions?: ReactNode;
     /** Additional class names for the outer frame (wraps the header and the `<pre>`). */

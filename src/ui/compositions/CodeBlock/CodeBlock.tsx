@@ -13,6 +13,7 @@ export function CodeBlock({
     language,
     title,
     copyable = true,
+    onCopy,
     actions,
     className,
 }: CodeBlockProps): ReactElement {
@@ -32,6 +33,7 @@ export function CodeBlock({
         clipboard.writeText(code).then(
             () => {
                 setCopied(true);
+                onCopy?.(code);
                 if (timerRef.current !== null) clearTimeout(timerRef.current);
                 timerRef.current = setTimeout(() => setCopied(false), COPIED_RESET_MS);
             },

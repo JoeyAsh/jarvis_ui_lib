@@ -28,7 +28,8 @@ The showcase (`npm run dev`) is the library's internal visual test bed (the publ
   explicit height — `transform-gpu` creates the containing block for `position: fixed` children.
   See `HUDShellSection.tsx` and `WindowsSection.tsx`.
 - Showcase code imports components relatively (`../../primitives/Button`), like the rest of `src/ui`.
-- `ShowcaseSfxRoot` provides SFX and the mute toggle; do not add a second provider.
+- The showcase root is wrapped in `JarvisProvider` (SFX, toasts, `useJarvis` mute toggle); do not
+  add a second provider.
 - Verify in a browser; a green build does not prove a preview looks right (`/verify`).
 - The showcase is the internal dev playground. The public documentation is the docs site; every
   public component also needs a docs page (`.claude/rules/docs.md`).

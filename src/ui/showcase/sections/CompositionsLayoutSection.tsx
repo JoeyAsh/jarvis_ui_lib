@@ -10,7 +10,9 @@ import { TopBar } from '../../primitives/TopBar';
 import { BrandMark } from '../../primitives/BrandMark';
 import { Pill } from '../../primitives/Pill';
 import { Button } from '../../primitives/Button';
+import { Toast } from '../../primitives/Toast';
 import { ShowcaseCard } from '../ShowcaseCard';
+import { ToastTriggers } from './ToastTriggers';
 
 interface DemoPropRow {
     name: string;
@@ -67,7 +69,7 @@ export function CompositionsLayoutSection(): ReactElement {
             <div>
                 <h2 className="text-[12px] text-text font-mono mb-1">COMPOSITIONS — Layout</h2>
                 <p className="text-[10px] text-text-secondary font-mono">
-                    NavList · Tabs · Table · CodeBlock · Callout · TopBar position
+                    NavList · Tabs · Table · CodeBlock · Callout · Toast · TopBar position
                 </p>
             </div>
             <div className="grid grid-cols-3 gap-3">
@@ -177,6 +179,38 @@ export function CompositionsLayoutSection(): ReactElement {
                             </Button>
                         }
                     />
+                </ShowcaseCard>
+                <ShowcaseCard
+                    label="TOAST VARIANTS (static)"
+                    code={`<Toast title="Saved" description="…" duration={5000} onDismiss={close} />
+<Toast variant="error" title="Connection lost" />`}
+                    dark
+                >
+                    <div className="flex flex-col gap-2 w-full">
+                        <Toast
+                            variant="success"
+                            title="Diagnostics passed"
+                            description="All systems nominal."
+                            duration={5000}
+                            paused
+                            onDismiss={() => undefined}
+                        />
+                        <Toast
+                            variant="warning"
+                            title="Power at 18%"
+                            action={{ label: 'Reroute', onClick: () => undefined }}
+                        />
+                        <Toast variant="error" title="Connection lost" />
+                    </div>
+                </ShowcaseCard>
+
+                <ShowcaseCard
+                    label="TOAST PROVIDER (click — bottom right)"
+                    code={`const { toast } = useToast();
+toast({ variant: 'success', title: 'Diagnostics passed' });`}
+                    dark
+                >
+                    <ToastTriggers />
                 </ShowcaseCard>
             </div>
         </section>

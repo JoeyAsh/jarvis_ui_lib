@@ -511,6 +511,28 @@ describe('useAudioEngine — localStorage persistence', () => {
         expect(spies.setMuted).toHaveBeenCalledWith(false);
     });
 
+    it('initialMuted applies when nothing is stored', async () => {
+        await act(async () => {
+            renderHook(() => useAudioEngine('idle', true, false, { initialMuted: true }));
+            await Promise.resolve();
+        });
+
+        expect(spies.setMuted).toHaveBeenCalledWith(true);
+    });
+
+    it('a stored preference wins over initialMuted', async () => {
+        localStorageStore['jarvis.sfx.muted'] = 'false';
+
+        const { result } = renderHook(() =>
+            useAudioEngine('idle', true, false, { initialMuted: true }),
+        );
+        await act(async () => {
+            await Promise.resolve();
+        });
+
+        expect(result.current.isMuted).toBe(false);
+    });
+
     it('localStorage unavailable (getItem throws) → falls back to false, does not throw', async () => {
         vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
             throw new Error('SecurityError');

@@ -10,4 +10,11 @@ export interface UseAudioEngineOptions {
      * play sounds on mount.
      */
     soundBaseUrl?: string;
+
+    /**
+     * Mute state to start with when the user has no stored preference yet. Once the user toggles,
+     * the choice is stored in `localStorage` and takes precedence on later visits.
+     * @default false
+     */
+    initialMuted?: boolean;
 }

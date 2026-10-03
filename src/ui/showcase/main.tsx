@@ -5,7 +5,7 @@ import '../../index.css';
 import '../ui.css';
 import '../components.css';
 import { Showcase } from './Showcase';
-import { ShowcaseSfxRoot } from './ShowcaseSfxRoot';
+import { JarvisProvider } from '../compositions/JarvisProvider';
 
 // The main app sets overflow:hidden on body/html to prevent scroll.
 // Showcase is a long-form page — restore normal scroll here.
@@ -21,8 +21,8 @@ el.style.overflow = 'visible';
 
 createRoot(el).render(
     <StrictMode>
-        <ShowcaseSfxRoot>
+        <JarvisProvider>
             <Showcase />
-        </ShowcaseSfxRoot>
+        </JarvisProvider>
     </StrictMode>,
 );
