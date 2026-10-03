@@ -1,0 +1,43 @@
+/* ================================================================
+   NavList — entries are anchors, and tokens.css styles every bare
+   `a` outside any cascade layer (accent color, dashed border).
+   Tailwind utilities live in @layer utilities and cannot override
+   that, so the entry chrome needs plain class selectors.
+   ================================================================ */
+
+.lib-navlist__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+    border-left: 1px solid var(--border);
+    border-radius: 0;
+    transition:
+        color var(--dur-fast) var(--ease),
+        border-color var(--dur-fast) var(--ease),
+        background var(--dur-fast) var(--ease);
+}
+
+.lib-navlist__item:hover {
+    color: var(--accent);
+    border-color: transparent;
+    border-left-color: var(--accent-dim);
+}
+
+.lib-navlist__item--active,
+.lib-navlist__item--active:hover {
+    color: var(--accent-bright);
+    border-left-color: var(--accent);
+    background: rgba(76, 168, 232, 0.08);
+    box-shadow: var(--glow-inner);
+}
+
+.lib-navlist__item:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: -1px;
+}

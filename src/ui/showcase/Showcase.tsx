@@ -9,6 +9,7 @@ import { PrimitivesInteractiveSection } from './sections/PrimitivesInteractiveSe
 import { PrimitivesControlsSection } from './sections/PrimitivesControlsSection';
 import { OrbSection } from './sections/OrbSection';
 import { CompositionsSection } from './sections/CompositionsSection';
+import { CompositionsLayoutSection } from './sections/CompositionsLayoutSection';
 import { WindowsSection } from './sections/WindowsSection';
 import { DevOverlaysSection } from './sections/DevOverlaysSection';
 import { useShowcaseSfx } from './ShowcaseSfxRoot';
@@ -24,6 +25,7 @@ const NAV: NavItem[] = [
     { id: 'primitives-controls', label: 'CONTROLS', group: 'PRIMITIVES' },
     { id: 'orb', label: 'ORB', group: 'PRIMITIVES' },
     { id: 'compositions', label: 'COMPOSITIONS', group: 'COMPOSITIONS' },
+    { id: 'compositions-layout', label: 'LAYOUT', group: 'COMPOSITIONS' },
     { id: 'windows', label: 'WINDOWS', group: 'COMPOSITIONS' },
     { id: 'dev-overlays', label: 'DEV TOOLS', group: 'DEV' },
 ];
@@ -101,6 +103,7 @@ export function Showcase(): ReactElement {
                 <PrimitivesControlsSection />
                 <OrbSection />
                 <CompositionsSection />
+                <CompositionsLayoutSection />
                 <WindowsSection />
                 <DevOverlaysSection />
             </main>

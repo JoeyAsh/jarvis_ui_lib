@@ -64,4 +64,20 @@ describe('TopBar', () => {
         expect(container.querySelector('.lib-topbar__center')?.textContent).toBe('C');
         expect(container.querySelector('.lib-topbar__right')?.textContent).toBe('R');
     });
+
+    it('is fixed by default (no position modifier)', () => {
+        const { container } = render(<TopBar />);
+        expect(container.firstElementChild?.className).toBe('lib-topbar');
+    });
+
+    it('position=sticky adds the sticky modifier', () => {
+        const { container } = render(<TopBar position="sticky" />);
+        expect(container.firstElementChild?.className).toContain('lib-topbar--sticky');
+    });
+
+    it('position=static adds the static modifier and keeps className', () => {
+        const { container } = render(<TopBar position="static" className="extra" />);
+        expect(container.firstElementChild?.className).toContain('lib-topbar--static');
+        expect(container.firstElementChild?.className).toContain('extra');
+    });
 });

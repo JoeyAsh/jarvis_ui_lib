@@ -164,3 +164,22 @@
     justify-content: flex-end;
     flex: 1;
 }
+
+/* Position modifiers — the default .lib-topbar is fixed to the viewport. */
+.lib-topbar--sticky,
+.lib-topbar--static {
+    left: auto;
+    right: auto;
+    width: 100%;
+}
+
+.lib-topbar--sticky {
+    position: sticky;
+    top: 10px;
+}
+
+.lib-topbar--static {
+    position: relative;
+    top: auto;
+    z-index: auto;
+}
