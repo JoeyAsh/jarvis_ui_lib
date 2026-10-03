@@ -3,8 +3,16 @@ updates:
     - package-ecosystem: npm
       directory: /
       schedule:
-          interval: weekly
+          interval: monthly
       open-pull-requests-limit: 5
+      # Routine (minor/patch) updates arrive bundled; majors stay individual PRs for review.
+      groups:
+          dev-dependencies:
+              dependency-type: development
+              update-types: ['minor', 'patch']
+          production-dependencies:
+              dependency-type: production
+              update-types: ['minor', 'patch']
       ignore:
           # typescript-eslint does not support TypeScript 7 yet; stay on TS 6.
           - dependency-name: typescript
@@ -15,4 +23,8 @@ updates:
     - package-ecosystem: github-actions
       directory: /
       schedule:
-          interval: weekly
+          interval: monthly
+      groups:
+          github-actions:
+              patterns: ['*']
+              update-types: ['minor', 'patch']
