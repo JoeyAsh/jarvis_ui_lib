@@ -80,7 +80,7 @@ export function DocsSearch(): ReactElement {
                 type="button"
                 onClick={() => changeOpen(true)}
                 aria-label="Search documentation"
-                className="hidden md:inline-flex items-center gap-3 h-[26px] px-[8px] border border-border rounded-[2px] bg-[rgba(13,13,20,0.75)] text-[10px] text-text-muted hover:border-border-bright cursor-pointer"
+                className="hidden md:inline-flex items-center gap-3 whitespace-nowrap h-[26px] px-[8px] border border-border rounded-[2px] bg-[rgba(13,13,20,0.75)] text-[10px] text-text-muted hover:border-border-bright cursor-pointer"
             >
                 <Search size={12} aria-hidden="true" />
                 <span>Search docs…</span>
