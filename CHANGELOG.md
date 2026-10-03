@@ -7,7 +7,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-Initial public release (planned as 0.1.0).
+## [0.1.0] - 2026-10-03
+
+Initial public release.
 
 ### Added
 
@@ -27,5 +29,5 @@ Initial public release (planned as 0.1.0).
 - Live showcase (`npm run dev`).
 - Published as the ESM npm package `jarvis-react-ui` with TypeScript declarations, MIT licensed.
 
-[Unreleased]: https://github.com/JoeyAsh/jarvis_ui_lib/commits/main
+[Unreleased]: https://github.com/JoeyAsh/jarvis_ui_lib/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/JoeyAsh/jarvis_ui_lib/releases/tag/v0.1.0
