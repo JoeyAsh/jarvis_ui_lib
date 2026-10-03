@@ -7,6 +7,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- New primitives: `Input` (text field with start/end adornments, sizes, invalid state), `IconButton`
+  (square icon-only button with accessible label and pressed state), `Tooltip` (hover/focus bubble
+  with placements), `Switch` (accessible on/off toggle, controlled or uncontrolled), `Divider`
+  (horizontal/vertical separator with optional label) and `Link` (accent/muted/nav anchor with
+  external and active states). All props carry JSDoc descriptions.
+
 ## [0.1.0] - 2026-10-03
 
 Initial public release.

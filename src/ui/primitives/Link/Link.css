@@ -1,0 +1,55 @@
+/* ================================================================
+   Link — tokens.css styles every bare `a` (accent color + dashed
+   border-bottom) outside any cascade layer, so Tailwind utilities
+   (which live in @layer utilities) cannot override it. Variant
+   styles therefore need plain class selectors here.
+   ================================================================ */
+
+.lib-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font);
+    cursor: pointer;
+}
+
+.lib-link--accent {
+    color: var(--accent);
+    border-bottom: 1px dashed var(--accent-dim);
+}
+
+.lib-link--accent:hover {
+    color: var(--accent-bright);
+    border-bottom-color: var(--accent);
+}
+
+.lib-link--muted,
+.lib-link--nav {
+    color: var(--text-secondary);
+    border-bottom: 1px solid transparent;
+}
+
+.lib-link--muted:hover,
+.lib-link--nav:hover {
+    color: var(--accent);
+}
+
+.lib-link--nav {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.lib-link--active,
+.lib-link--active:hover {
+    color: var(--accent-bright);
+}
+
+.lib-link--nav.lib-link--active {
+    border-bottom-color: var(--accent);
+}
+
+.lib-link:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 2px;
+}

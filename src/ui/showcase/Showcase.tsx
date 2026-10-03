@@ -6,6 +6,7 @@ import { TokensSection } from './sections/TokensSection';
 import { PrimitivesTextSection } from './sections/PrimitivesTextSection';
 import { PrimitivesChromeSection } from './sections/PrimitivesChromeSection';
 import { PrimitivesInteractiveSection } from './sections/PrimitivesInteractiveSection';
+import { PrimitivesControlsSection } from './sections/PrimitivesControlsSection';
 import { OrbSection } from './sections/OrbSection';
 import { CompositionsSection } from './sections/CompositionsSection';
 import { WindowsSection } from './sections/WindowsSection';
@@ -20,6 +21,7 @@ const NAV: NavItem[] = [
     { id: 'primitives-text', label: 'TEXT & DATA', group: 'PRIMITIVES' },
     { id: 'chrome', label: 'CHROME', group: 'PRIMITIVES' },
     { id: 'primitives-interactive', label: 'INTERACTIVE', group: 'PRIMITIVES' },
+    { id: 'primitives-controls', label: 'CONTROLS', group: 'PRIMITIVES' },
     { id: 'orb', label: 'ORB', group: 'PRIMITIVES' },
     { id: 'compositions', label: 'COMPOSITIONS', group: 'COMPOSITIONS' },
     { id: 'windows', label: 'WINDOWS', group: 'COMPOSITIONS' },
@@ -96,6 +98,7 @@ export function Showcase(): ReactElement {
                 <PrimitivesTextSection />
                 <PrimitivesChromeSection />
                 <PrimitivesInteractiveSection />
+                <PrimitivesControlsSection />
                 <OrbSection />
                 <CompositionsSection />
                 <WindowsSection />
