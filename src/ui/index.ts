@@ -218,3 +218,14 @@ export type {
 
 export { JarvisProvider, useJarvis } from './compositions/JarvisProvider';
 export type { JarvisProviderProps, JarvisContextValue } from './compositions/JarvisProvider';
+
+export { LineChart } from './compositions/LineChart';
+export type { LineChartProps, ChartCurve } from './compositions/LineChart';
+
+export { AreaChart } from './compositions/AreaChart';
+export type { AreaChartProps } from './compositions/AreaChart';
+
+export { BarChart } from './compositions/BarChart';
+export type { BarChartProps } from './compositions/BarChart';
+
+export type { BaseChartProps, ChartSeries, ChartColor } from './compositions/ChartFrame';

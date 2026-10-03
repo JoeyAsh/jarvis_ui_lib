@@ -10,6 +10,7 @@ import { PrimitivesControlsSection } from './sections/PrimitivesControlsSection'
 import { OrbSection } from './sections/OrbSection';
 import { CompositionsSection } from './sections/CompositionsSection';
 import { CompositionsLayoutSection } from './sections/CompositionsLayoutSection';
+import { ChartsSection } from './sections/ChartsSection';
 import { WindowsSection } from './sections/WindowsSection';
 import { DevOverlaysSection } from './sections/DevOverlaysSection';
 import { useJarvis } from '../compositions/JarvisProvider';
@@ -26,6 +27,7 @@ const NAV: NavItem[] = [
     { id: 'orb', label: 'ORB', group: 'PRIMITIVES' },
     { id: 'compositions', label: 'COMPOSITIONS', group: 'COMPOSITIONS' },
     { id: 'compositions-layout', label: 'LAYOUT', group: 'COMPOSITIONS' },
+    { id: 'charts', label: 'CHARTS', group: 'COMPOSITIONS' },
     { id: 'windows', label: 'WINDOWS', group: 'COMPOSITIONS' },
     { id: 'dev-overlays', label: 'DEV TOOLS', group: 'DEV' },
 ];
@@ -104,6 +106,7 @@ export function Showcase(): ReactElement {
                 <OrbSection />
                 <CompositionsSection />
                 <CompositionsLayoutSection />
+                <ChartsSection />
                 <WindowsSection />
                 <DevOverlaysSection />
             </main>

@@ -6,6 +6,7 @@ export type DocsGroup =
     | 'Voice & status'
     | 'Dev tools'
     | 'Compositions'
+    | 'Charts'
     | 'Window'
     | 'Orb'
     | 'Hooks'

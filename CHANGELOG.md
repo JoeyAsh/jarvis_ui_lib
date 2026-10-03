@@ -9,6 +9,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Charts: `LineChart` (linear or smooth, optional dots), `AreaChart` (optionally stacked) and
+  `BarChart` (grouped or stacked, negative values). Dependency-free SVG in token colors, responsive
+  width, nice y-axis ticks, legend, hover tooltip, keyboard inspection (arrow keys) and a
+  screen-reader data table. Shared `ChartSeries`, `ChartColor` and `BaseChartProps` types.
 - `Dialog`: modal dialog rendered into `document.body` with focus trap, Escape and backdrop closing,
   focus return, scroll lock, `initialFocusRef`, three sizes and `menu_open` / `menu_close` sounds.
 - `Kbd`: keyboard key chip (`<kbd>`) in two sizes.

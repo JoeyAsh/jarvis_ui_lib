@@ -1,0 +1,34 @@
+# AreaChart
+
+<Lead>
+    A line chart with the area below the line filled. Use it for volumes over time, and stack the
+    series to show how parts add up to a total.
+</Lead>
+
+<ComponentMeta component="AreaChart" />
+
+## Basic
+
+<Demo name="area-chart/Basic" align="stretch" />
+
+## Stacked
+
+`stacked` places each series on top of the previous one, so the upper edge shows the total. The
+tooltip and table still list the individual values.
+
+<Demo name="area-chart/Stacked" align="stretch" />
+
+## Data, colors and axis
+
+AreaChart takes the same `series`, `labels`, colors and axis props as
+[LineChart](/components/line-chart#data-format). The y-axis always includes zero, so areas start
+from the baseline.
+
+## Accessibility
+
+Same as [LineChart](/components/line-chart#accessibility): `aria-label`, a screen-reader table, and
+a keyboard inspection control (Tab, then arrow keys).
+
+## API
+
+<ApiTable component="AreaChart" />

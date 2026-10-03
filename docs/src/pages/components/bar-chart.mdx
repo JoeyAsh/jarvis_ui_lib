@@ -1,0 +1,40 @@
+# BarChart
+
+<Lead>
+    Compares values across categories. Several series are grouped side by side or stacked into one
+    bar per category; negative values grow downward from zero.
+</Lead>
+
+<ComponentMeta component="BarChart" />
+
+## Grouped
+
+Each category gets one bar per series, side by side.
+
+<Demo name="bar-chart/Grouped" align="stretch" />
+
+## Stacked
+
+`stacked` puts the series on top of each other, so the bar height is the total.
+
+<Demo name="bar-chart/Stacked" align="stretch" />
+
+## Negative values
+
+The y-axis always includes zero. Positive bars grow up from it, negative bars grow down.
+
+<Demo name="bar-chart/Delta" align="stretch" />
+
+## Data, colors and axis
+
+BarChart takes the same `series`, `labels`, colors and axis props as
+[LineChart](/components/line-chart#data-format). Hovering a category dims the others.
+
+## Accessibility
+
+Same as [LineChart](/components/line-chart#accessibility): `aria-label`, a screen-reader table, and
+a keyboard inspection control (Tab, then arrow keys).
+
+## API
+
+<ApiTable component="BarChart" />

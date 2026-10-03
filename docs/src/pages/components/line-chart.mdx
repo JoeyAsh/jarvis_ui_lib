@@ -1,0 +1,65 @@
+# LineChart
+
+<Lead>
+    Shows how values change over an ordered axis such as time. Lines are drawn as SVG in the token
+    colors, scale to their container and can be inspected by pointer or keyboard.
+</Lead>
+
+<ComponentMeta component="LineChart" />
+
+## Basic
+
+Pass the values as `series` and one label per point as `labels`. `formatValue` formats the y-axis,
+the tooltip and the screen-reader table.
+
+<Demo name="line-chart/Basic" align="stretch" />
+
+## Data format
+
+All three charts ([LineChart](/components/line-chart), [AreaChart](/components/area-chart) and
+[BarChart](/components/bar-chart)) take the same data:
+
+```ts
+import type { ChartSeries } from 'jarvis-react-ui';
+
+const series: ChartSeries[] = [
+    { id: 'cpu', label: 'CPU', data: [18, 12, 48, 72] },
+    { id: 'gpu', label: 'GPU', data: [10, 8, 32, 88], color: 'warning' },
+];
+```
+
+`color` is one of `accent`, `bright`, `success`, `warning`, `error` or `muted`. Without it, series
+get colors in that order. The colors are the theme tokens, so charts follow
+[theming](/customization/theming).
+
+## Multiple series and curves
+
+`curve="smooth"` draws curved lines; `showDots` marks every point. The legend appears automatically
+for more than one series (`showLegend` overrides it).
+
+<Demo name="line-chart/MultiSeries" align="stretch" />
+
+## Live data
+
+Charts are plain props-in, SVG-out components: update `series` and they redraw. Fix the axis with
+`yMin` / `yMax` so it does not jump while the values move.
+
+<Demo name="line-chart/Live" align="stretch" />
+
+## Axis
+
+The y-axis range comes from the data, rounded to "nice" ticks (`yTicks` sets the approximate count).
+`yMin` and `yMax` override it. X labels are thinned out automatically when there are many points.
+
+## Accessibility
+
+- The chart has an accessible name from `aria-label` (required).
+- A visually hidden table lists all values for screen readers.
+- Hover shows a tooltip with all series at that position. For keyboard users the chart contains a
+  focusable inspection control: **Tab** to it and use the **arrow keys** to move between positions;
+  the current values are announced.
+- Colors are not the only signal: the legend, tooltip and table name every series.
+
+## API
+
+<ApiTable component="LineChart" />
