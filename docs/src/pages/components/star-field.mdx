@@ -1,0 +1,34 @@
+# StarField
+
+<Lead>
+    StarField scatters tiny twinkling stars over a surface. Use it for a deep-space backdrop behind
+    the orb or inside a dark tile.
+</Lead>
+
+<ComponentMeta component="StarField" />
+
+## Basic
+
+StarField covers its parent (`position: absolute; inset: 0`) at 60% opacity, so the parent needs
+`relative` and usually a dark background. Each star twinkles on a four-second loop with its own
+phase.
+
+<Demo name="star-field/Basic" />
+
+## Count
+
+`count` sets the number of stars; the default is 60. Star positions are computed deterministically
+from their index, so the same count always produces the same sky, on the server and on the client.
+
+<Demo name="star-field/Count" />
+
+[Scene](/components/scene) includes a StarField with the default count.
+
+## Accessibility
+
+- The star layer is `aria-hidden` and ignores pointer events.
+- The twinkle animation runs continuously and does not respond to `prefers-reduced-motion`.
+
+## API
+
+<ApiTable component="StarField" />

@@ -1,0 +1,28 @@
+# ViewportCorners
+
+<Lead>
+    ViewportCorners pins four large L-shaped marks to the corners of the screen, each with a small
+    glowing dot. They frame the whole HUD like the corners of a viewfinder.
+</Lead>
+
+<ComponentMeta component="ViewportCorners" />
+
+## Basic
+
+The corners are `position: fixed`, 6px from each edge, with `z-index: 4`. Render them once near the
+root of your app. In this demo the frame contains them; in an app they sit in the viewport corners.
+
+<Demo name="viewport-corners/Basic" height="tall" />
+
+`HUDShell` renders ViewportCorners by default (`viewportCorners`). See
+[Scene](/components/scene) for a full backdrop that combines them with a Reactor.
+
+## Accessibility
+
+- All four corners are `aria-hidden` and ignore pointer events, so they never block clicks on
+  content underneath.
+- `className` is applied to each of the four corner elements.
+
+## API
+
+<ApiTable component="ViewportCorners" />

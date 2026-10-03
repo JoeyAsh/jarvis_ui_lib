@@ -28,6 +28,15 @@ export default defineConfig({
     ],
     resolve: {
         alias: [
+            // The package's own name, so docs demos import exactly like consumers do.
+            {
+                find: /^jarvis-react-ui$/,
+                replacement: resolve(import.meta.dirname, 'src/lib.ts'),
+            },
+            {
+                find: /^jarvis-react-ui\/orb$/,
+                replacement: resolve(import.meta.dirname, 'src/ui/orb/index.ts'),
+            },
             { find: /^@ui$/, replacement: resolve(import.meta.dirname, 'src/ui/index.ts') },
             { find: /^@ui\/(.*)/, replacement: resolve(import.meta.dirname, 'src/ui') + '/$1' },
             { find: /^@core\/(.*)/, replacement: resolve(import.meta.dirname, 'src/core') + '/$1' },

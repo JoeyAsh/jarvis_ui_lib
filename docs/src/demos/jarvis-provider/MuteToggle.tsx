@@ -1,4 +1,4 @@
-import { Button, Pill, Switch, useJarvis } from '@ui';
+import { Button, Pill, Switch, useJarvis } from 'jarvis-react-ui';
 
 export default function MuteToggle() {
     const { isMuted, toggleMute } = useJarvis();

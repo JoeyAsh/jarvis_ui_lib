@@ -1,5 +1,5 @@
 import { Copy, Download, Settings, Trash2 } from 'lucide-react';
-import { Divider, IconButton } from '@ui';
+import { Divider, IconButton } from 'jarvis-react-ui';
 
 export default function Vertical() {
     return (

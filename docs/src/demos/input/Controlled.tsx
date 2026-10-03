@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Search, X } from 'lucide-react';
-import { IconButton, Input } from '@ui';
+import { IconButton, Input } from 'jarvis-react-ui';
 
 export default function Controlled() {
     const [query, setQuery] = useState('');

@@ -1,4 +1,4 @@
-import { Button, useToast } from '@ui';
+import { Button, useToast } from 'jarvis-react-ui';
 
 export default function WithDescription() {
     const { toast } = useToast();

@@ -1,0 +1,53 @@
+# PushToTalkButton
+
+<Lead>
+    The round microphone button of the voice HUD. It toggles the mic and, while `active`, shows two
+    pulsing rings and a stronger glow so the user can see that JARVIS is listening.
+</Lead>
+
+<ComponentMeta component="PushToTalkButton" />
+
+## Toggle the microphone
+
+The button is fully controlled: keep the mic state yourself, pass it as `active` and flip it in
+`onClick`. `onClick` receives no arguments. A dashed rim rotates slowly in both states.
+
+<Demo name="push-to-talk-button/Toggle" />
+
+## Custom content
+
+`children` replace the default `Mic` icon. Mark the icon `aria-hidden` and describe the action with
+`ariaLabel`, because the button has no visible text.
+
+<Demo name="push-to-talk-button/CustomContent" />
+
+## With the orb state
+
+In an assistant UI the button usually drives the orb state (`AppOrbState`) rather than a plain
+boolean. Here a click moves `idle` to `listening`, a second click ends the turn (`thinking`), and the
+reply plays out as `speaking` before returning to `idle`. A [WaveformMeter](/components/waveform-meter)
+on each side runs while audio flows, and a [StatusLabel](/components/status-label) names the state.
+
+<Demo name="push-to-talk-button/VoiceLoop" />
+
+The component has no hold-to-talk mode: it reacts to clicks only. For a keyboard shortcut such as
+Space, listen for `keydown`/`keyup` in your app and update `active` yourself; a
+[Hint](/components/hint) can advertise the key.
+
+## Sound
+
+Hovering plays `hover_button` and clicking plays `click` through the nearest `SfxProvider`. Without a
+provider the button stays silent. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Renders a native `<button type="button">`, so it is focusable and Enter and Space activate it.
+- `ariaLabel` (default `Push to talk`) is rendered as `aria-label` and is the accessible name; the
+  icon is decorative.
+- `aria-pressed` mirrors `active`, so screen readers announce it as a toggle button that is pressed
+  while the mic is live.
+- The focus ring (2px accent outline) is visible on keyboard focus only (`focus-visible`).
+
+## API
+
+<ApiTable component="PushToTalkButton" />

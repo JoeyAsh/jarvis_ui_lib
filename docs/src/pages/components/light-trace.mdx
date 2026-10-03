@@ -1,0 +1,42 @@
+# LightTrace
+
+<Lead>
+    LightTrace sends four short strips of light around the border of its parent. It marks a surface
+    as live or active.
+</Lead>
+
+<ComponentMeta component="LightTrace" />
+
+## Basic
+
+LightTrace is absolutely positioned 1px outside its parent's padding box, so it runs over a 1px
+border. Give the parent `position: relative` (the `relative` utility). One full lap takes six
+seconds.
+
+<Demo name="light-trace/Basic" />
+
+## Color
+
+`color` takes any CSS color and tints the tails of the strips; the bright center stays
+`--accent-bright`. Prefer theme variables such as `var(--warning)`.
+
+<Demo name="light-trace/Color" />
+
+## Building a custom card
+
+LightTrace, [PanelBloom](/components/panel-bloom), [PanelRails](/components/panel-rails) and
+[CornerBrackets](/components/corner-brackets) are the layers a [Panel](/components/panel) is made of.
+Combine them to give your own surfaces the same chrome. Put the layers first and give the content
+`relative` so it paints above them.
+
+<Demo name="light-trace/CustomCard" />
+
+## Accessibility
+
+- The trace is `aria-hidden` and ignores pointer events.
+- The animation runs continuously and does not respond to `prefers-reduced-motion`. Render
+  LightTrace conditionally if your app must honor that setting.
+
+## API
+
+<ApiTable component="LightTrace" />

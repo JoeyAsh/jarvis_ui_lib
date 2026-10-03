@@ -1,0 +1,54 @@
+# StateSimulator
+
+<Lead>
+    A development toolbar with one button per orb state. Use it to preview how the orb and the voice
+    UI react to each `AppOrbState` without a real voice pipeline.
+</Lead>
+
+<ComponentMeta component="StateSimulator" />
+
+<Callout variant="warning" title="Development aid">
+    StateSimulator is meant for showcases, prototypes and debugging. Do not ship it in a production
+    UI; render it behind a dev flag such as `import.meta.env.DEV`.
+</Callout>
+
+## Inline
+
+With `position="inline"` the toolbar sits in the normal document flow. It is controlled: pass the
+current `state` and update it in `onChange`.
+
+<Demo name="state-simulator/Inline" />
+
+The toolbar offers `idle`, `listening`, `thinking`, `speaking` and `working`. There is no button for
+`follow_up`; if you pass it as `state`, no button is highlighted.
+
+## Drive the orb
+
+Share one state between the simulator, the orb and the [StatusLabel](/components/status-label) to
+check every state in context. The active `working` button turns amber like the orb's working
+overlay.
+
+<Demo name="state-simulator/DriveTheOrb" />
+
+## Fixed to the top
+
+By default (`position="fixed-top"`) the toolbar is `position: fixed`, centred 60px below the top of
+the viewport, above the HUD. Inside this demo frame it stays within the frame.
+
+<Demo name="state-simulator/FixedTop" height="tall" />
+
+## Sound
+
+Hovering a state button plays `hover_button` and clicking it plays `click` through the nearest
+`SfxProvider`. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Every state is a native `<button type="button">` whose text is its accessible name, so the
+  toolbar works with Tab, Enter and Space.
+- The current state is shown by color only; the buttons do not set `aria-pressed`. Show the state
+  in text as well (for example with StatusLabel) if that matters for your tooling.
+
+## API
+
+<ApiTable component="StateSimulator" />

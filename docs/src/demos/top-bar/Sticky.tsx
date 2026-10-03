@@ -1,4 +1,4 @@
-import { TopBar } from '@ui';
+import { TopBar } from 'jarvis-react-ui';
 
 const LINES = Array.from(
     { length: 12 },

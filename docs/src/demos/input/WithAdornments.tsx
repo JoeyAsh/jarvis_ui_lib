@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react';
-import { Hint, Input } from '@ui';
+import { Hint, Input } from 'jarvis-react-ui';
 
 export default function WithAdornments() {
     return (

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from '@ui';
+import { Link } from 'jarvis-react-ui';
 
 const SECTIONS = ['Overview', 'Systems', 'Telemetry'];
 

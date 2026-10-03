@@ -1,4 +1,4 @@
-import { Button } from '@ui';
+import { Button } from 'jarvis-react-ui';
 
 export default function Disabled() {
     return (

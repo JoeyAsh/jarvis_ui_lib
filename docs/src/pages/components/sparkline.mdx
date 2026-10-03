@@ -1,0 +1,45 @@
+# Sparkline
+
+<Lead>
+    A tiny line chart with a soft fill, without axes or labels. Use it to show the trend of a
+    reading next to its current value.
+</Lead>
+
+<ComponentMeta component="Sparkline" />
+
+## Variants
+
+`accent` (the default) draws the line in the accent color; `warn` uses the warning color for a
+series that is out of range.
+
+<Demo name="sparkline/Variants" align="stretch" />
+
+## Scaling and height
+
+The series is scaled between its own minimum and maximum, so the shape always fills the chart. The
+line stretches to the full width of its container; `height` sets the height in pixels (28 by
+default). At least two values are needed to draw a line.
+
+<Demo name="sparkline/Height" align="stretch" />
+
+`width` only sets the width of the internal coordinate system. Because the SVG stretches, it rarely
+needs changing.
+
+## Live data
+
+Keep a fixed-length array in state and append new samples while dropping the oldest. Combine it with
+a [Metric](/components/metric) for the current value, and switch `variant` when a threshold is
+crossed.
+
+<Demo name="sparkline/Live" align="stretch" />
+
+## Accessibility
+
+- Without `aria-label` the SVG has no role and no name; screen readers skip over it. Use this when
+  the current value is already shown as text next to it.
+- With `aria-label` the SVG gets `role="img"`. Describe the trend in words ("CPU load, rising"),
+  since the individual values are not exposed.
+
+## API
+
+<ApiTable component="Sparkline" />

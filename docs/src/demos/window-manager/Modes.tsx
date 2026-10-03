@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Metric, Sparkline, WindowManager } from '@ui';
-import type { ManagedWindow, SlotId } from '@ui';
+import { Metric, Sparkline, WindowManager } from 'jarvis-react-ui';
+import type { ManagedWindow, SlotId } from 'jarvis-react-ui';
 
 const WINDOWS: ManagedWindow[] = [
     {

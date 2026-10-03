@@ -1,5 +1,5 @@
 import { Lightbulb } from 'lucide-react';
-import { Callout } from '@ui';
+import { Callout } from 'jarvis-react-ui';
 
 export default function CustomIcon() {
     return (

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Switch } from '@ui';
+import { Switch } from 'jarvis-react-ui';
 
 export default function Controlled() {
     const [sound, setSound] = useState(true);

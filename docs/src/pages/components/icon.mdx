@@ -1,0 +1,44 @@
+# Icon
+
+<Lead>
+    Renders a `lucide-react` icon at one of three HUD sizes with a consistent stroke width. Use it
+    for status glyphs and icons next to text.
+</Lead>
+
+<ComponentMeta component="Icon" />
+
+## Sizes
+
+Pass the icon component itself (not an element) to `icon`. `sm` is 12px, `md` (the default) 14px
+and `lg` 16px; every size uses a 1.75 stroke.
+
+<Demo name="icon/Sizes" />
+
+## Color
+
+The icon draws in `currentColor`. Set a text color class on the icon via `className`, or on a parent
+element.
+
+## Decorative icons
+
+When the text next to the icon already says everything, mark the icon `aria-hidden` so screen
+readers skip it.
+
+<Demo name="icon/Decorative" />
+
+## Meaningful icons
+
+An icon that stands on its own and carries information needs an `aria-label`. For a clickable icon
+use [IconButton](/components/icon-button) instead.
+
+<Demo name="icon/Standalone" />
+
+## Accessibility
+
+- Renders the lucide `<svg>`; `aria-label` and `aria-hidden` are forwarded to it.
+- Use either `aria-hidden` (decorative) or `aria-label` (meaningful), never neither.
+- The ref points at the `<svg>` element.
+
+## API
+
+<ApiTable component="Icon" />

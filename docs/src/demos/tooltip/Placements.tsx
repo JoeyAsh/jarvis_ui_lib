@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@ui';
+import { Button, Tooltip } from 'jarvis-react-ui';
 
 export default function Placements() {
     return (

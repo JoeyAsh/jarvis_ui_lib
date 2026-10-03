@@ -1,0 +1,42 @@
+# Mono
+
+<Lead>
+    A text element in JetBrains Mono with four size steps and three text colors. Use it for body
+    text, readouts and log lines inside HUD panels.
+</Lead>
+
+<ComponentMeta component="Mono" />
+
+## Sizes
+
+`xs` is 9px, `sm` 10px, `md` (the default) 11px and `lg` 13px.
+
+<Demo name="mono/Sizes" />
+
+## Colors
+
+The default uses the primary text color. `secondary` steps it down, `muted` steps it down further
+for timestamps and other low-priority text. When both are set, `muted` wins.
+
+<Demo name="mono/Colors" />
+
+## Element
+
+`Mono` renders a `<span>` by default. Use `as` to render a different element, such as `p`, `code`
+or `time`, so the text keeps its meaning in the document.
+
+<Demo name="mono/AsElement" />
+
+`Mono` only forwards `children` and `className` to the element; other attributes (for example
+`dateTime` on a `<time>`) are not passed through. Wrap the text in your own element when you need
+them.
+
+## Accessibility
+
+- Renders the element given in `as` with no extra role, so semantics come from that element.
+- Pick a fitting element (`p` for paragraphs, `code` for commands) instead of styling a `<span>`.
+- `muted` text has lower contrast; do not use it for information the user must read.
+
+## API
+
+<ApiTable component="Mono" />

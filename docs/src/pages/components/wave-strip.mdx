@@ -1,0 +1,32 @@
+# WaveStrip
+
+<Lead>
+    A compact, seven-bar waveform that sits inline with text, for example next to a "now playing"
+    caption. It is the small sibling of [WaveformMeter](/components/waveform-meter).
+</Lead>
+
+<ComponentMeta component="WaveStrip" />
+
+## Inline with text
+
+WaveStrip renders a 12px tall `inline-flex` `<span>`, so it lines up with small caption text. Put a
+`mirrored` strip on the other side of the text for a symmetric look.
+
+<Demo name="wave-strip/NowPlaying" />
+
+## Paused
+
+With `active={false}` the bars collapse to dim 2px stubs and stop moving. Toggle it with your
+playback state.
+
+<Demo name="wave-strip/Paused" />
+
+## Accessibility
+
+- The strip is `aria-hidden`; the text next to it must carry the meaning (for example "Playing" or
+  "Paused").
+- It has no interactive behavior and plays no sound.
+
+## API
+
+<ApiTable component="WaveStrip" />

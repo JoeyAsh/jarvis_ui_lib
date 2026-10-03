@@ -1,5 +1,5 @@
 import { RefreshCw } from 'lucide-react';
-import { IconButton } from '@ui';
+import { IconButton } from 'jarvis-react-ui';
 
 export default function Disabled() {
     return (

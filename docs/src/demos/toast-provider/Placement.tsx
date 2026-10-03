@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Button, ToastProvider, useToast } from '@ui';
-import type { ToastPlacement } from '@ui';
+import { Button, ToastProvider, useToast } from 'jarvis-react-ui';
+import type { ToastPlacement } from 'jarvis-react-ui';
 
 const PLACEMENTS: ToastPlacement[] = ['bottom-right', 'top-right', 'bottom-center', 'top-center'];
 

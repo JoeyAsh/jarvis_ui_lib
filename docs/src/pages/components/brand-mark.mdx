@@ -1,0 +1,31 @@
+# BrandMark
+
+<Lead>
+    The spaced-out `J A R V I S` wordmark in muted text, with an optional `MK XLII` subline. Use it
+    as the brand in a top bar or a status dock.
+</Lead>
+
+<ComponentMeta component="BrandMark" />
+
+## Wordmark
+
+Without props it renders the wordmark only. `sub` adds the subline below it.
+
+<Demo name="brand-mark/Basic" />
+
+## In a top bar
+
+The mark is centered in its own box, so it fits any slot of a [TopBar](/components/top-bar).
+
+<Demo name="brand-mark/InTopBar" align="stretch" />
+
+## Accessibility
+
+- Renders a `<div>` with two `<span>`s and no role.
+- The letters are separated by spaces, so screen readers read them one by one ("J, A, R, V, I,
+  S"). When the brand name matters to the user, provide it elsewhere as text, for example in the
+  page title.
+
+## API
+
+<ApiTable component="BrandMark" />

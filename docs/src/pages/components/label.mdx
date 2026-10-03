@@ -1,0 +1,34 @@
+# Label
+
+<Lead>
+    A small uppercase caption in the secondary text color. Use it to name a reading, a group of
+    values or a form control.
+</Lead>
+
+<ComponentMeta component="Label" />
+
+## Captions
+
+Put a `Label` above or next to the value it names, such as a [Metric](/components/metric). `dim`
+switches to the muted color for less important captions.
+
+<Demo name="label/Basic" />
+
+## Form controls
+
+With `htmlFor`, the label renders as a native `<label>` bound to the control with that `id`.
+Clicking the label then focuses the field. Without `htmlFor` it renders a `<span>`.
+
+<Demo name="label/WithControl" />
+
+## Accessibility
+
+- With `htmlFor` it is a real `<label>`, so the text becomes the accessible name of the control.
+- Without `htmlFor` it is a `<span>` with no semantics. It does not label anything for assistive
+  technology; give controls their own `aria-label` or use `htmlFor`.
+- The text is transformed to uppercase by CSS only. Write captions in normal case so screen readers
+  do not spell them out letter by letter.
+
+## API
+
+<ApiTable component="Label" />

@@ -1,0 +1,36 @@
+# GridBackground
+
+<Lead>
+    GridBackground is a faint blueprint grid behind the whole page. It fades out toward the edges
+    with a radial mask, so it frames the content without competing with it.
+</Lead>
+
+<ComponentMeta component="GridBackground" />
+
+## Basic
+
+The grid is a `fixed`, full-viewport layer with `z-index: 0`. Render it once near the root of your
+app and give the content that should sit on top a position (e.g. `relative`). `gridSize` sets the
+cell size in pixels; the default is 44.
+
+The demo frames on this site use a GridBackground themselves. Here, the demo frame contains the
+fixed layer; in an app it covers the viewport.
+
+<Demo name="grid-background/Basic" height="tall" />
+
+## Drift
+
+`drift` scrolls the grid slowly in a loop.
+
+<Demo name="grid-background/Drift" height="tall" />
+
+For a complete backdrop with grid, stars, scanlines and vignette use [Scene](/components/scene).
+
+## Accessibility
+
+- The layer is `aria-hidden` and ignores pointer events.
+- The grid is very low contrast and carries no information.
+
+## API
+
+<ApiTable component="GridBackground" />

@@ -1,4 +1,4 @@
-import { CodeBlock } from '@ui';
+import { CodeBlock } from 'jarvis-react-ui';
 
 export default function NotCopyable() {
     return (

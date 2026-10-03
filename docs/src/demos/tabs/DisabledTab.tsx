@@ -1,4 +1,4 @@
-import { Tabs } from '@ui';
+import { Tabs } from 'jarvis-react-ui';
 
 export default function DisabledTab() {
     return (

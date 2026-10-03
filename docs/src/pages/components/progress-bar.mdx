@@ -1,0 +1,46 @@
+# ProgressBar
+
+<Lead>
+    A thin glowing bar that shows a fraction of a whole: load, capacity or the progress of a task.
+    It fills the width of its container.
+</Lead>
+
+<ComponentMeta component="ProgressBar" />
+
+## Variants
+
+`accent` (the default) and `bright` are for normal readings; `warn` uses the warning color for a
+value that needs attention. Each variant has a matching glow.
+
+<Demo name="progress-bar/Variants" align="stretch" />
+
+## Heights
+
+`thin` (the default) is 2px and suits dense panels. `normal` is 4px for a bar that is the main
+content of a row.
+
+<Demo name="progress-bar/Heights" align="stretch" />
+
+## Live progress
+
+`value` is a fraction from `0` to `1`; values outside that range are clamped. Width changes animate
+smoothly, so you can update it as often as new data arrives.
+
+<Demo name="progress-bar/Live" align="stretch" />
+
+## Width
+
+The bar takes the full width of its parent. Set the width on a wrapper or pass a width class via
+`className`, which lands on the track element.
+
+## Accessibility
+
+- Renders `role="progressbar"` with `aria-valuemin="0"`, `aria-valuemax="100"` and
+  `aria-valuenow` set to the rounded percentage.
+- Always give it an accessible name with `aria-label`; a visible caption next to it is not linked
+  automatically.
+- The bar is not focusable and has no keyboard interaction.
+
+## API
+
+<ApiTable component="ProgressBar" />

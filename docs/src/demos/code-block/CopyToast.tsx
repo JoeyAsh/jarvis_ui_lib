@@ -1,4 +1,4 @@
-import { CodeBlock, useToast } from '@ui';
+import { CodeBlock, useToast } from 'jarvis-react-ui';
 
 export default function CopyToast() {
     const { toast } = useToast();

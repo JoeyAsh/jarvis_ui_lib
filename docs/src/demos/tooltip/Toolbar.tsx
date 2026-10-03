@@ -1,5 +1,5 @@
 import { FileCode, Maximize2, Volume2 } from 'lucide-react';
-import { IconButton, Tooltip } from '@ui';
+import { IconButton, Tooltip } from 'jarvis-react-ui';
 
 export default function Toolbar() {
     return (

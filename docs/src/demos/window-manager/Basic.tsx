@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { WindowManager } from '@ui';
-import type { ManagedWindow, SlotId } from '@ui';
+import { WindowManager } from 'jarvis-react-ui';
+import type { ManagedWindow, SlotId } from 'jarvis-react-ui';
 
 const WINDOWS: ManagedWindow[] = [
     { id: 'system', title: 'System', ix: '◈', itemRenderer: () => 'CPU 42% · RAM 61%' },

@@ -1,5 +1,5 @@
 import { Power, Radar } from 'lucide-react';
-import { Button } from '@ui';
+import { Button } from 'jarvis-react-ui';
 
 export default function WithIcon() {
     return (
