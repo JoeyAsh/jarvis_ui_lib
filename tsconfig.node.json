@@ -12,5 +12,5 @@
         "declaration": true,
         "outDir": "./node_modules/.tmp/node-out"
     },
-    "include": ["vite.config.ts"]
+    "include": ["vite.config.ts", "vite.config.lib.ts"]
 }

@@ -1,0 +1,18 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "outDir": "./node_modules/.tmp/lib-types",
+        "types": ["vite/client"]
+    },
+    "include": ["src"],
+    "exclude": [
+        "src/**/__tests__/**",
+        "src/**/*.test.ts",
+        "src/**/*.test.tsx",
+        "src/test/**",
+        "src/ui/showcase/**"
+    ]
+}
