@@ -1,0 +1,43 @@
+# Textarea
+
+<Lead>
+    A multi-line text field in the same hairline frame as [Input](/components/input), for notes,
+    prompts and log entries.
+</Lead>
+
+<ComponentMeta component="Textarea" />
+
+## Basic
+
+`rows` sets the visible lines (3 by default), `size` the font size and padding. The field is 320px
+wide; `fullWidth` stretches it to its container. Users can resize it vertically.
+
+<Demo name="textarea/Basic" />
+
+## Auto resize
+
+`autoResize` grows the field with its content, from `rows` up to `maxRows` lines; beyond that it
+scrolls. It works with controlled and uncontrolled values.
+
+<Demo name="textarea/AutoResize" />
+
+## States
+
+`invalid` shows the error border and sets `aria-invalid`; `disabled` dims the field.
+
+<Demo name="textarea/States" />
+
+## Sound
+
+Hovering plays `hover_button` through the nearest `SfxProvider`. See
+[Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Renders a native `<textarea>`; name it with `aria-label` or a `<label htmlFor>`.
+- `invalid` sets `aria-invalid`. Describe the error in text and link it with `aria-describedby`.
+- The `ref` is forwarded to the textarea.
+
+## API
+
+<ApiTable component="Textarea" />

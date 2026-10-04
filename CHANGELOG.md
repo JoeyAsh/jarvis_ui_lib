@@ -9,6 +9,17 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Form controls:
+    - `Slider`: range input with pointer drag, track click and keyboard (arrows, PageUp/PageDown,
+      Home/End), `onValueChange` / `onValueCommit`, `min` / `max` / `step`, `formatValue`.
+    - `Checkbox`: native checkbox in HUD chrome with an `indeterminate` state.
+    - `Textarea`: multi-line field matching `Input`, with `autoResize` between `rows` and `maxRows`.
+    - `RadioGroup`: mutually exclusive options with roving focus, descriptions and disabled items.
+    - `Select`: dropdown with keyboard navigation, typeahead and icons; the list opens in a portal,
+      so it is not clipped inside windows, and Escape closes only the list.
+- Docs: new "Forms" group in the sidebar (Input, Textarea, Select, Checkbox, RadioGroup, Switch,
+  Slider).
+
 - `WindowManager`: floating windows for content created at runtime. `ManagedWindow.floating` opens a
   window free-floating without a slot (no limit of nine), `defaultRect` sets its initial rect
   (otherwise it opens centred and cascades), and `closable` plus the new `onClose` prop add a close

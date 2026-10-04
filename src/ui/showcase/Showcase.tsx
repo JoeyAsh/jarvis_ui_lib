@@ -13,6 +13,7 @@ import { PrimitivesTextSection } from './sections/PrimitivesTextSection';
 import { PrimitivesChromeSection } from './sections/PrimitivesChromeSection';
 import { PrimitivesInteractiveSection } from './sections/PrimitivesInteractiveSection';
 import { PrimitivesControlsSection } from './sections/PrimitivesControlsSection';
+import { FormsSection } from './sections/FormsSection';
 import { OrbSection } from './sections/OrbSection';
 import { CompositionsSection } from './sections/CompositionsSection';
 import { CompositionsLayoutSection } from './sections/CompositionsLayoutSection';
@@ -32,6 +33,7 @@ const NAV: NavItem[] = [
     { id: 'chrome', label: 'CHROME', group: 'PRIMITIVES' },
     { id: 'primitives-interactive', label: 'INTERACTIVE', group: 'PRIMITIVES' },
     { id: 'primitives-controls', label: 'CONTROLS', group: 'PRIMITIVES' },
+    { id: 'forms', label: 'FORMS', group: 'PRIMITIVES' },
     { id: 'orb', label: 'ORB', group: 'PRIMITIVES' },
     { id: 'compositions', label: 'COMPOSITIONS', group: 'COMPOSITIONS' },
     { id: 'compositions-layout', label: 'LAYOUT', group: 'COMPOSITIONS' },
@@ -120,6 +122,7 @@ export function Showcase(): ReactElement {
                 <PrimitivesChromeSection />
                 <PrimitivesInteractiveSection />
                 <PrimitivesControlsSection />
+                <FormsSection />
                 <OrbSection />
                 <CompositionsSection />
                 <CompositionsLayoutSection />

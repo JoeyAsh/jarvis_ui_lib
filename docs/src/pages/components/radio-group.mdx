@@ -1,0 +1,45 @@
+# RadioGroup
+
+<Lead>
+    A set of mutually exclusive options. Use it when all choices should stay visible; for long lists
+    use a [Select](/components/select).
+</Lead>
+
+<ComponentMeta component="RadioGroup" />
+
+## Basic
+
+Pass the options as `items`, each with a unique `value` and a `label`. Without `value` the group
+keeps its own state; `defaultValue` sets the start selection.
+
+<Demo name="radio-group/Basic" />
+
+## Descriptions and disabled options
+
+`description` adds a muted second line; `disabled` on an item skips it. Control the group with
+`value` and `onValueChange`.
+
+<Demo name="radio-group/Descriptions" />
+
+## Horizontal
+
+`orientation="horizontal"` puts the options in a row, `size="sm"` makes them smaller.
+
+<Demo name="radio-group/Horizontal" />
+
+## Sound
+
+Hovering an option plays `hover_button` and selecting plays `click` through the nearest
+`SfxProvider`. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- The group has `role="radiogroup"` (name it with `aria-label` or `aria-labelledby`); each option is
+  a button with `role="radio"` and `aria-checked`.
+- The group is one Tab stop (roving focus): Tab focuses the selected option, or the first enabled
+  one. Arrow keys move the selection and skip disabled options; Home and End jump to the first and
+  last option; Space selects the focused option.
+
+## API
+
+<ApiTable component="RadioGroup" />

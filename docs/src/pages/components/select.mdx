@@ -1,0 +1,48 @@
+# Select
+
+<Lead>
+    A dropdown to pick one option from a list. The list opens in a portal, so it is never clipped by
+    a scrolling window body and stays above floating windows.
+</Lead>
+
+<ComponentMeta component="Select" />
+
+## Basic
+
+Pass the options as `options`, each with a unique `value` and a `label`. `placeholder` is shown
+while nothing is selected; disabled options can't be picked.
+
+<Demo name="select/Basic" />
+
+## Controlled, with icons
+
+Pass `value` and update it in `onValueChange`. `icon` shows content before the label, in the list
+and in the trigger.
+
+<Demo name="select/Controlled" />
+
+## States
+
+`size="sm"` for dense layouts, `invalid` for validation errors, `disabled` to lock it. With `name`
+the value is submitted with a surrounding `<form>`.
+
+<Demo name="select/States" />
+
+## Sound
+
+Opening plays `menu_open`, closing `menu_close` and picking an option `click`; hovering the trigger
+plays `hover_button`. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- The trigger is a button with `role="combobox"`, `aria-haspopup="listbox"`, `aria-expanded` and
+  `aria-controls`; name it with `aria-label`, `aria-labelledby` or a `<label htmlFor={id}>`.
+- ArrowDown, ArrowUp, Enter and Space open the list. In the list, the arrows move the active option
+  (`aria-activedescendant`) and skip disabled ones, Home and End jump to the ends, typing letters
+  jumps to a matching label, Enter or Space picks it, and Escape closes the list and returns focus to
+  the trigger. Escape does not close a surrounding floating window.
+- A pointer down outside the list closes it.
+
+## API
+
+<ApiTable component="Select" />
