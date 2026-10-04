@@ -46,3 +46,12 @@ documented there.
 
 `llms-full.txt` is large. Agents that search files can read `api.json` or grep `llms-full.txt` for
 the component they need instead of loading all of it.
+
+## Let an assistant build windows
+
+The files above help assistants that **write code** with the library. To let a model **build UI at
+runtime**, for example a voice assistant that opens a video window or a volume control, use the
+generative entry: the model sends JSON specs through tools, and
+[UiRenderer](/components/ui-renderer) renders them with library components. The package ships the
+JSON Schema (`jarvis-react-ui/ui-schema.json`) and ready-made tool definitions
+(`jarvis-react-ui/ui-tools.json`); see [Connecting an assistant](/generative/assistant).

@@ -13,6 +13,8 @@ export type { UseUiWindowsOptions, UseUiWindowsResult, UiWindowEntry } from './u
 
 export { validateUiSpec } from './validate';
 export { UI_REGISTRY } from './registry';
+export { UI_REGISTRY_META } from './registry.meta';
+export type { UiComponentName } from './registry.meta';
 export { UI_ICONS } from './icons';
 
 export type {
@@ -33,4 +35,4 @@ export type {
     UiActionEvent,
     UiMethod,
 } from './spec.types';
-export type { UiRegistryEntry, UiPropKind, UiEventKind } from './registry.types';
+export type { UiRegistryEntry, UiRegistryMeta, UiPropKind, UiEventKind } from './registry.types';
