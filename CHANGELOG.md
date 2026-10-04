@@ -11,7 +11,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Form controls:
     - `Slider`: range input with pointer drag, track click and keyboard (arrows, PageUp/PageDown,
-      Home/End), `onValueChange` / `onValueCommit`, `min` / `max` / `step`, `formatValue`.
+      Home/End), `onValueChange` / `onValueCommit`, `min` / `max` / `step`, `formatValue`, `fullWidth`.
     - `Checkbox`: native checkbox in HUD chrome with an `indeterminate` state.
     - `Textarea`: multi-line field matching `Input`, with `autoResize` between `rows` and `maxRows`.
     - `RadioGroup`: mutually exclusive options with roving focus, descriptions and disabled items.
@@ -19,6 +19,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
       so it is not clipped inside windows, and Escape closes only the list.
 - Docs: new "Forms" group in the sidebar (Input, Textarea, Select, Checkbox, RadioGroup, Switch,
   Slider).
+- Media:
+    - `MediaControls`: source-independent transport controls (play/pause, seek bar, time, mute,
+      volume, optional previous/next/fullscreen), fully controlled, with `K` / `M` / arrow-key
+      shortcuts; unknown or live durations show `LIVE`.
+    - `MediaPlayer`: video or audio file player with `MediaControls`, captions track, error state
+      and a `MediaHandle` ref (`play`, `pause`, `seek`, `setVolume`, `setMuted`).
+    - `YouTubePlayer`: YouTube video with HUD controls via the IFrame Player API (loaded on first
+      mount, privacy-enhanced `youtube-nocookie.com` by default), the same `MediaHandle`, and a
+      "Watch on YouTube" fallback when embedding is disabled.
+- Docs: new "Media" group in the sidebar.
 - `WindowManager`: floating windows for content created at runtime. `ManagedWindow.floating` opens a
   window free-floating without a slot (no limit of nine), `defaultRect` sets its initial rect
   (otherwise it opens centred and cascades), and `closable` plus the new `onClose` prop add a close

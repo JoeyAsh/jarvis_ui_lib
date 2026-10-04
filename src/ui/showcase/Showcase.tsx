@@ -14,6 +14,7 @@ import { PrimitivesChromeSection } from './sections/PrimitivesChromeSection';
 import { PrimitivesInteractiveSection } from './sections/PrimitivesInteractiveSection';
 import { PrimitivesControlsSection } from './sections/PrimitivesControlsSection';
 import { FormsSection } from './sections/FormsSection';
+import { MediaSection } from './sections/MediaSection';
 import { OrbSection } from './sections/OrbSection';
 import { CompositionsSection } from './sections/CompositionsSection';
 import { CompositionsLayoutSection } from './sections/CompositionsLayoutSection';
@@ -38,6 +39,7 @@ const NAV: NavItem[] = [
     { id: 'compositions', label: 'COMPOSITIONS', group: 'COMPOSITIONS' },
     { id: 'compositions-layout', label: 'LAYOUT', group: 'COMPOSITIONS' },
     { id: 'charts', label: 'CHARTS', group: 'COMPOSITIONS' },
+    { id: 'media', label: 'MEDIA', group: 'COMPOSITIONS' },
     { id: 'windows', label: 'WINDOWS', group: 'COMPOSITIONS' },
     { id: 'dev-overlays', label: 'DEV TOOLS', group: 'DEV' },
 ];
@@ -127,6 +129,7 @@ export function Showcase(): ReactElement {
                 <CompositionsSection />
                 <CompositionsLayoutSection />
                 <ChartsSection />
+                <MediaSection />
                 <WindowsSection />
                 <DevOverlaysSection />
             </main>

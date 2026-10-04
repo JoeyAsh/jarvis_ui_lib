@@ -216,6 +216,20 @@ export type {
 export { Select } from './compositions/Select';
 export type { SelectProps, SelectOption, SelectSize } from './compositions/Select';
 
+export { MediaControls } from './compositions/MediaControls';
+export type { MediaControlsProps, MediaControlsSize } from './compositions/MediaControls';
+
+export { MediaPlayer } from './compositions/MediaPlayer';
+export type {
+    MediaPlayerProps,
+    MediaHandle,
+    MediaKind,
+    MediaCaptions,
+} from './compositions/MediaPlayer';
+
+export { YouTubePlayer } from './compositions/YouTubePlayer';
+export type { YouTubePlayerProps } from './compositions/YouTubePlayer';
+
 export { Table } from './compositions/Table';
 export type { TableProps, TableColumn, TableAlign } from './compositions/Table';
 

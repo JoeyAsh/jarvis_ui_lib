@@ -131,7 +131,9 @@ describe('Slider', () => {
     });
 
     it('merges className onto the root', () => {
-        const { container } = render(<Slider aria-label="Volume" className="w-full" />);
+        const { container } = render(<Slider aria-label="Volume" className="mt-2" fullWidth />);
+        expect(container.firstElementChild?.className).toContain('mt-2');
         expect(container.firstElementChild?.className).toContain('w-full');
+        expect(container.firstElementChild?.className).not.toContain('w-[220px]');
     });
 });

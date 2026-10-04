@@ -28,10 +28,12 @@ export interface SliderProps extends Omit<
     formatValue?: (value: number) => string;
     /** Track and thumb size. @default 'md' */
     size?: SliderSize;
+    /** Stretches the slider to the width of its container instead of 220px. @default false */
+    fullWidth?: boolean;
     /** Disables dragging and keyboard input. @default false */
     disabled?: boolean;
     /** Accessible name when there is no visible `label`. */
     'aria-label'?: string;
-    /** Additional class names for the root element; set the width here. */
+    /** Additional class names for the root element. */
     className?: string;
 }
