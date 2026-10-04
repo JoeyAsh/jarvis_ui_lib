@@ -128,3 +128,14 @@ describe('MediaPlayer', () => {
         expect(screen.getAllByText('Media unavailable').length).toBeGreaterThan(0);
     });
 });
+
+describe('MediaPlayer — media loaded before mount', () => {
+    it('reads the duration the element already knows (metadata from cache)', () => {
+        vi.spyOn(HTMLMediaElement.prototype, 'duration', 'get').mockReturnValue(120);
+        render(<MediaPlayer src="cached.mp4" />);
+        expect(screen.getByText('2:00')).toBeDefined();
+        const seek = screen.getByRole('slider', { name: 'Seek' });
+        expect(seek.getAttribute('aria-disabled')).toBeNull();
+        expect(seek.getAttribute('aria-valuemax')).toBe('120');
+    });
+});

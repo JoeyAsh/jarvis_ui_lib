@@ -11,6 +11,7 @@ import { cx } from '@common/utils/cx';
 import { useClickSfx } from '@core/audio';
 import { MediaControls } from '../MediaControls';
 import { WaveStrip } from '../../primitives/WaveStrip';
+import { durationOf, readMediaState } from './utils';
 import type { MediaHandle, MediaPlayerProps, MediaState } from './MediaPlayer.types';
 
 /**
@@ -92,12 +93,12 @@ export const MediaPlayer = forwardRef<MediaHandle, MediaPlayerProps>(function Me
                     callbacks.current.onEnded?.();
                 },
             ],
-            ['timeupdate', () => sync({ currentTime: el.currentTime })],
-            ['durationchange', () => sync({ duration: el.duration })],
-            ['loadedmetadata', () => sync({ duration: el.duration, loading: false })],
+            ['timeupdate', () => sync({ currentTime: el.currentTime, duration: durationOf(el) })],
+            ['durationchange', () => sync({ duration: durationOf(el) })],
+            ['loadedmetadata', () => sync({ duration: durationOf(el), loading: false })],
             ['volumechange', () => sync({ volume: el.volume, muted: el.muted })],
             ['waiting', () => sync({ loading: true })],
-            ['canplay', () => sync({ loading: false, error: false })],
+            ['canplay', () => sync({ duration: durationOf(el), loading: false, error: false })],
             [
                 'error',
                 () => {
@@ -107,6 +108,9 @@ export const MediaPlayer = forwardRef<MediaHandle, MediaPlayerProps>(function Me
             ],
         ];
         for (const [event, handler] of listeners) el.addEventListener(event, handler);
+        // Events that fired before the listeners attached (e.g. metadata from cache) are missed:
+        // start from what the element already knows.
+        sync(readMediaState(el));
         return () => {
             for (const [event, handler] of listeners) el.removeEventListener(event, handler);
         };
