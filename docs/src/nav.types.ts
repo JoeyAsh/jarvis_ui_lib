@@ -8,6 +8,7 @@ export type DocsGroup =
     | 'Dev tools'
     | 'Compositions'
     | 'Charts'
+    | 'Media'
     | 'Window'
     | 'Orb'
     | 'Hooks'

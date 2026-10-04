@@ -10,6 +10,7 @@ export const GROUP_ORDER: DocsGroup[] = [
     'Voice & status',
     'Compositions',
     'Charts',
+    'Media',
     'Window',
     'Orb',
     'Hooks',
@@ -96,6 +97,10 @@ export const PAGES: DocsPage[] = [
     { slug: 'components/line-chart', title: 'LineChart', group: 'Charts' },
     { slug: 'components/area-chart', title: 'AreaChart', group: 'Charts' },
     { slug: 'components/bar-chart', title: 'BarChart', group: 'Charts' },
+
+    { slug: 'components/media-controls', title: 'MediaControls', group: 'Media' },
+    { slug: 'components/media-player', title: 'MediaPlayer', group: 'Media' },
+    { slug: 'components/you-tube-player', title: 'YouTubePlayer', group: 'Media' },
 
     { slug: 'components/window', title: 'Window', group: 'Window' },
     { slug: 'components/snap-overlay', title: 'SnapOverlay', group: 'Window' },

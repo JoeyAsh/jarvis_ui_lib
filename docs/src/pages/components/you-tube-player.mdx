@@ -1,0 +1,55 @@
+# YouTubePlayer
+
+<Lead>
+    Plays a YouTube video through the YouTube IFrame Player API, with the HUD
+    [MediaControls](/components/media-controls) instead of YouTube's own controls.
+</Lead>
+
+<ComponentMeta component="YouTubePlayer" />
+
+## Basic
+
+Pass the video id from the URL (`youtube.com/watch?v=<videoId>`). The controls are enabled once the
+player is ready. `start` begins at a position in seconds; the ref is the same `MediaHandle` as
+[MediaPlayer](/components/media-player)'s.
+
+<Demo name="you-tube-player/Basic" />
+
+## In a floating window
+
+A typical assistant flow: the user asks for a video, the app looks up its id and opens a
+[floating window](/components/window-manager) with the player.
+
+<Demo name="you-tube-player/InWindow" height="tall" align="start" />
+
+## External script and privacy
+
+<Callout variant="warning" title="Loads code from YouTube">
+    On first mount the component adds the script `https://www.youtube.com/iframe_api` to the page
+    (once; an existing `window.YT` is reused). The video itself is served by YouTube. By default it
+    uses the privacy-enhanced host `youtube-nocookie.com`, which sets no cookies until the video
+    plays; `privacyEnhanced={false}` uses `youtube.com`. Mention the embed in your privacy notice
+    and allow both hosts in a Content Security Policy (`script-src`, `frame-src`).
+</Callout>
+
+## When a video cannot be embedded
+
+Some owners disable embedding (error `101` or `150`). The player then shows **Embedding is
+disabled for this video** with a **Watch on YouTube** link. Invalid ids, removed videos and a
+blocked script show their own message; `onError` receives the code.
+
+## Sound
+
+The controls play `hover_button`, `click`, `drag_start` and `drag_end` through the nearest
+`SfxProvider`. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- YouTube's own controls and keyboard shortcuts are turned off; the HUD controls and their
+  shortcuts (`K`, `M`, ←, →) replace them.
+- Error messages are announced through `role="alert"`.
+- Captions are controlled by YouTube's settings for the video.
+
+## API
+
+<ApiTable component="YouTubePlayer" />

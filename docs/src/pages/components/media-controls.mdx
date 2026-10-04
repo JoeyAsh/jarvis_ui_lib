@@ -1,0 +1,47 @@
+# MediaControls
+
+<Lead>
+    Transport controls for any media source: play/pause, seek bar, time, mute and volume, plus
+    optional previous/next and fullscreen. They only report what the user does, so they drive a
+    video, an audio file, a YouTube player or a speaker in another room alike.
+</Lead>
+
+<ComponentMeta component="MediaControls" />
+
+## Basic
+
+MediaControls is fully controlled: pass `playing`, `currentTime`, `duration`, `volume` and `muted`
+from your player and handle the callbacks. `onSeek` fires once when a drag on the seek bar ends, so
+a player is not flooded with seeks while dragging; the time readout follows the drag meanwhile.
+Buttons for previous, next and fullscreen appear when you pass their handler.
+
+<Demo name="media-controls/Basic" />
+
+## Live and minimal
+
+A `duration` of `0`, `NaN` or `Infinity` means unknown or live: the seek bar is disabled and `LIVE`
+replaces the total time. Without `onVolumeChange` and `onMutedChange` the volume controls are
+hidden.
+
+<Demo name="media-controls/Live" />
+
+For a ready-made player use [MediaPlayer](/components/media-player) (video and audio files) or
+[YouTubePlayer](/components/you-tube-player).
+
+## Sound
+
+The buttons play `hover_button` and `click`; dragging a slider plays `drag_start` and `drag_end`,
+through the nearest `SfxProvider`. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- The controls are a `role="group"` named **Media controls** (change it with `aria-label`). The
+  buttons are named **Play** / **Pause**, **Mute** / **Unmute** (with `aria-pressed`),
+  **Previous**, **Next** and **Fullscreen**; the sliders **Seek** (with the time as
+  `aria-valuetext`) and **Volume**.
+- Shortcuts while focus is inside the controls: `K` plays or pauses, `M` mutes, ← and → seek 5
+  seconds. Keys a focused slider uses itself are left to it.
+
+## API
+
+<ApiTable component="MediaControls" />

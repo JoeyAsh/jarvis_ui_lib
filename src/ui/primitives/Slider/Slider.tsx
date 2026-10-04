@@ -1,13 +1,14 @@
-import { forwardRef, useId, useRef, useState } from 'react';
+import { forwardRef, useId, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent, PointerEvent } from 'react';
 import { cx } from '@common/utils/cx';
 import { useHoverSfx, useSfx } from '@core/audio';
 import { snapValue, toPercent, valueFromKey, valueFromPointer } from './utils';
 import type { SliderProps } from './Slider.types';
 
+// The horizontal margin is half the thumb width, so the thumb stays inside the root at 0 and 100 %.
 const TRACK_CLASSES = {
-    sm: 'h-[12px]',
-    md: 'h-[16px]',
+    sm: 'h-[12px] mx-[4px]',
+    md: 'h-[16px] mx-[5px]',
 } as const;
 
 const THUMB_CLASSES = {
@@ -32,6 +33,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
         showValue = false,
         formatValue,
         size = 'md',
+        fullWidth = false,
         disabled = false,
         'aria-label': ariaLabel,
         className,
@@ -45,7 +47,9 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
     const [dragging, setDragging] = useState(false);
     const trackRef = useRef<HTMLDivElement>(null);
     const latestRef = useRef(current);
-    latestRef.current = current;
+    useLayoutEffect(() => {
+        latestRef.current = current;
+    });
 
     const labelId = useId();
     const hoverSfx = useHoverSfx('button');
@@ -107,7 +111,8 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
             ref={ref}
             {...rest}
             className={cx(
-                'flex flex-col gap-[6px] w-[220px] font-mono',
+                'flex flex-col gap-[6px] font-mono',
+                fullWidth ? 'w-full' : 'w-[220px]',
                 disabled && 'opacity-40',
                 className,
             )}

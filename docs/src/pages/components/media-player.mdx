@@ -1,0 +1,54 @@
+# MediaPlayer
+
+<Lead>
+    Plays a video or audio file with the HUD [MediaControls](/components/media-controls) instead of
+    the browser's own controls. Through its ref, code (or a voice assistant) can play, pause, seek
+    and change the volume.
+</Lead>
+
+<ComponentMeta component="MediaPlayer" />
+
+## Video
+
+Pass the file as `src`. The video sits in a 16:9 frame as wide as its container, with a large play
+button until it starts. `poster` shows an image before playback, and `captions` adds a WebVTT
+captions track, which you should provide for spoken content.
+
+<Demo name="media-player/Video" />
+
+## Audio
+
+`kind="audio"` renders a compact player: a [WaveStrip](/components/wave-strip) that moves while
+playing, the title and the controls.
+
+<Demo name="media-player/Audio" />
+
+## Control it from code
+
+The ref is a `MediaHandle` with `play()`, `pause()`, `seek(seconds)`, `setVolume(0–1)` and
+`setMuted(boolean)`. [YouTubePlayer](/components/you-tube-player) has the same handle, so commands
+like "pause" or "skip 30 seconds" work the same for both.
+
+<Demo name="media-player/Programmatic" />
+
+<Callout variant="warning" title="Autoplay">
+    Browsers only autoplay media without sound, or after the user interacted with the page. With
+    `autoPlay`, also set `defaultMuted` if playback must start on its own.
+</Callout>
+
+## Sound
+
+The controls play `hover_button`, `click`, `drag_start` and `drag_end` through the nearest
+`SfxProvider`; the media itself plays through the normal browser audio. See
+[Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- Uses the native `<video>` / `<audio>` element with a `<track kind="captions">` for `captions`.
+- All controls are keyboard accessible, with the shortcuts of
+  [MediaControls](/components/media-controls) (`K`, `M`, ←, →).
+- If the media fails to load, the controls are disabled and **Media unavailable** is shown.
+
+## API
+
+<ApiTable component="MediaPlayer" />
