@@ -19,13 +19,14 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
       so it is not clipped inside windows, and Escape closes only the list.
 - Docs: new "Forms" group in the sidebar (Input, Textarea, Select, Checkbox, RadioGroup, Switch,
   Slider).
-
 - `WindowManager`: floating windows for content created at runtime. `ManagedWindow.floating` opens a
   window free-floating without a slot (no limit of nine), `defaultRect` sets its initial rect
   (otherwise it opens centred and cascades), and `closable` plus the new `onClose` prop add a close
   button and Escape-to-close. The window used last is drawn on top. A new floating window plays
   `menu_open`.
 - `Window`: `closeOnEscape` and `stackIndex` props; closing now also plays `menu_close`.
+- `StatusDock`: `labels` (status text per state, e.g. for localization) and `brand` props, passed
+  through to the built-in `StatusLabel`.
 
 ### Fixed
 
