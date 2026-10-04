@@ -9,3 +9,6 @@ export const DEMO_YOUTUBE_ID = 'aqz-KE-bpKQ';
 
 /** Length (s) of the simulated track driving the MediaControls demo. */
 export const DEMO_DURATION = 214;
+
+/** A page that allows being embedded, for the WebFrame demo. */
+export const DEMO_WEB_URL = 'https://example.com';

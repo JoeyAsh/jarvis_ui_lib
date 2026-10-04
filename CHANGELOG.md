@@ -9,6 +9,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- `WebFrame`: a web page in a sandboxed iframe with a toolbar (address, reload, open in new tab);
+  only `http(s)` URLs are loaded.
 - Layout: `Stack` (column or row, `gap` on the `--s-*` tokens, `align`, `justify`, `wrap`) and `Grid`
   (1–6 equal columns or auto-fit with `minColumnWidth`) lay out content without Tailwind.
 - Form controls:
@@ -39,6 +41,11 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Window`: `closeOnEscape` and `stackIndex` props; closing now also plays `menu_close`.
 - `StatusDock`: `labels` (status text per state, e.g. for localization) and `brand` props, passed
   through to the built-in `StatusLabel`.
+
+### Changed
+
+- `Window` / `WindowManager`: the window body now fills the window height, so content can use
+  `height: 100%` (e.g. a `WebFrame` or a player filling a floating window).
 
 ### Fixed
 

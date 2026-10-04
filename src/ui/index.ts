@@ -242,6 +242,9 @@ export type {
 export { YouTubePlayer } from './compositions/YouTubePlayer';
 export type { YouTubePlayerProps } from './compositions/YouTubePlayer';
 
+export { WebFrame } from './compositions/WebFrame';
+export type { WebFrameProps } from './compositions/WebFrame';
+
 export { Table } from './compositions/Table';
 export type { TableProps, TableColumn, TableAlign } from './compositions/Table';
 

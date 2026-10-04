@@ -2,9 +2,16 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { MediaControls } from '../../compositions/MediaControls';
 import { MediaPlayer } from '../../compositions/MediaPlayer';
 import { YouTubePlayer } from '../../compositions/YouTubePlayer';
+import { WebFrame } from '../../compositions/WebFrame';
 import { ShowcaseCard } from '../ShowcaseCard';
 import { SectionHeader } from '../SectionHeader';
-import { DEMO_AUDIO, DEMO_DURATION, DEMO_VIDEO, DEMO_YOUTUBE_ID } from './MediaSection.constants';
+import {
+    DEMO_AUDIO,
+    DEMO_DURATION,
+    DEMO_VIDEO,
+    DEMO_WEB_URL,
+    DEMO_YOUTUBE_ID,
+} from './MediaSection.constants';
 
 export function MediaSection(): ReactElement {
     const [playing, setPlaying] = useState(false);
@@ -21,7 +28,8 @@ export function MediaSection(): ReactElement {
     return (
         <section id="media" className="flex flex-col gap-4">
             <SectionHeader title="Compositions · Media">
-                MediaControls · MediaPlayer (video, audio) · YouTubePlayer — shortcuts K, M, ← →
+                MediaControls · MediaPlayer (video, audio) · YouTubePlayer · WebFrame — shortcuts K,
+                M, ← →
             </SectionHeader>
             <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
                 <ShowcaseCard
@@ -77,6 +85,14 @@ export function MediaSection(): ReactElement {
                     dark
                 >
                     <YouTubePlayer videoId={DEMO_YOUTUBE_ID} title="Big Buck Bunny · Blender" />
+                </ShowcaseCard>
+
+                <ShowcaseCard
+                    label="WEB FRAME"
+                    code={`<WebFrame url="https://example.com" height={260} />`}
+                    dark
+                >
+                    <WebFrame url={DEMO_WEB_URL} height={260} />
                 </ShowcaseCard>
             </div>
         </section>
