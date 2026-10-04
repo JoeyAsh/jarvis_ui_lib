@@ -13,7 +13,12 @@ import {
 import { cx } from '@common/utils/cx';
 import { IconButton } from '../../primitives/IconButton';
 import { Slider } from '../../primitives/Slider';
-import { SEEK_STEP_SECONDS } from './constants';
+import {
+    FINE_SEEK_BELOW_SECONDS,
+    SEEK_STEP_COARSE,
+    SEEK_STEP_FINE,
+    SEEK_STEP_SECONDS,
+} from './constants';
 import { formatClock, isFiniteDuration } from './utils';
 import type { MediaControlsProps } from './MediaControls.types';
 
@@ -132,7 +137,9 @@ export function MediaControls({
                         fullWidth
                         min={0}
                         max={seekable ? duration : 1}
-                        step={1}
+                        step={
+                            duration < FINE_SEEK_BELOW_SECONDS ? SEEK_STEP_FINE : SEEK_STEP_COARSE
+                        }
                         value={seekable ? Math.min(shownTime, duration) : 0}
                         formatValue={formatClock}
                         disabled={!seekable}
