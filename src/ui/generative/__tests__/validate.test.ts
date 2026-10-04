@@ -168,4 +168,19 @@ describe('resolve helpers', () => {
         expect(isSafeUrl('data:text/html,x')).toBe(false);
         expect(isSafeUrl('//evil.example')).toBe(false);
     });
+
+    it('rejects URL tricks that browsers normalise into another scheme or host', () => {
+        expect(isSafeUrl(' javascript:alert(1)')).toBe(false);
+        expect(isSafeUrl('java\tscript:alert(1)')).toBe(false);
+        expect(isSafeUrl('java\nscript:alert(1)')).toBe(false);
+        expect(isSafeUrl('\u0001javascript:alert(1)')).toBe(false);
+        expect(isSafeUrl('JaVaScRiPt:alert(1)')).toBe(false);
+        expect(isSafeUrl('\\\\evil.example')).toBe(false);
+        expect(isSafeUrl('/\\evil.example')).toBe(false);
+        expect(isSafeUrl('https://example.com ')).toBe(false);
+        expect(isSafeUrl('')).toBe(false);
+        expect(isSafeUrl('page.html')).toBe(true);
+        expect(isSafeUrl('?q=1#top')).toBe(true);
+        expect(isSafeUrl('HTTPS://EXAMPLE.COM/x')).toBe(true);
+    });
 });

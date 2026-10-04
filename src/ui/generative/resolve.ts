@@ -93,10 +93,40 @@ export function toJson(value: unknown): UiJson | undefined {
     return undefined;
 }
 
-/** Whether a URL may be used: `http(s)`, protocol-relative is not allowed, relative paths are. */
+/** Base for resolving relative URLs; a relative path keeps this host. */
+const RELATIVE_BASE = 'https://relative.invalid';
+
+/**
+ * Whether a string contains characters browsers strip or reinterpret while parsing a URL:
+ * control characters (incl. tab and newline, which are removed inside a scheme, so
+ * `java\tscript:` becomes `javascript:`), surrounding whitespace and backslashes (treated like
+ * `/`, so `\\evil.example` becomes `//evil.example`).
+ */
+function hasAmbiguousChars(url: string): boolean {
+    if (url.trim() !== url || url.includes('\\')) return true;
+    for (let i = 0; i < url.length; i++) {
+        const code = url.charCodeAt(i);
+        if (code < 0x20 || code === 0x7f) return true;
+    }
+    return false;
+}
+
+/**
+ * Whether a URL may be used: an absolute `http(s)` URL or a relative path on the same site.
+ * Parsed the way a browser parses it, so tricks like ` javascript:`, `java\tscript:`,
+ * `\\evil.example` or `//evil.example` are rejected.
+ */
 export function isSafeUrl(url: string): boolean {
+    if (url === '' || hasAmbiguousChars(url)) return false;
+    let parsed: URL;
+    try {
+        parsed = new URL(url, RELATIVE_BASE);
+    } catch {
+        return false;
+    }
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
     if (/^https?:\/\//i.test(url)) return true;
-    return !/^[a-z][a-z0-9+.-]*:/i.test(url) && !url.startsWith('//');
+    return parsed.origin === RELATIVE_BASE;
 }
 
 /** The value an event passes to actions, per the registry's event kind. */
