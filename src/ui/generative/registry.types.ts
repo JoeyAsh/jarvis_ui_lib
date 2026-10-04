@@ -27,10 +27,8 @@ export interface UiAdaptContext {
     renderNode: (node: UiNode | string, key: string) => ReactNode;
 }
 
-/** How one allowlisted component is rendered from a spec. */
-export interface UiRegistryEntry {
-    /** The library component. */
-    component: ComponentType<UiComponentProps>;
+/** What a spec may do with one allowlisted component (data only). */
+export interface UiRegistryMeta {
     /** Allowed props and their kinds; anything else is rejected. */
     props: Record<string, UiPropKind>;
     /** Allowed event props and the value they pass to actions. */
@@ -41,6 +39,12 @@ export interface UiRegistryEntry {
     children?: 'text' | 'nodes';
     /** Whether the node can be addressed with `call` (players). */
     handle?: boolean;
+}
+
+/** How one allowlisted component is rendered from a spec. */
+export interface UiRegistryEntry extends UiRegistryMeta {
+    /** The library component. */
+    component: ComponentType<UiComponentProps>;
     /** Turns spec props into component props for props that are not plain values (Table, Tabs). */
     adapt?: (props: UiComponentProps, ctx: UiAdaptContext) => UiComponentProps;
 }

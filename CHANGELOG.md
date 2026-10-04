@@ -9,6 +9,11 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Generative UI schema for assistants: the package ships `dist/ui-schema.json` (JSON Schema of a window
+  spec, generated from the component types and JSDoc) and `dist/ui-tools.json` (Claude API tool
+  definitions `open_window`, `update_window`, `control_player`, `close_window`), exported as
+  `jarvis-react-ui/ui-schema.json` and `jarvis-react-ui/ui-tools.json`. `UI_REGISTRY_META` exposes the
+  allowlist as plain data.
 - Generative UI (new entry `jarvis-react-ui/generative`): `UiRenderer` renders a window from a JSON spec
   (allowlisted components and props, state with `$bind` / `$state` / `{{key}}` templates, `visibleIf`,
   `set` / `toggle` / `emit` actions); `useUiWindows` manages several generated windows for

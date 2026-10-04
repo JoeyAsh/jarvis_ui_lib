@@ -1,7 +1,7 @@
 import { UI_ICONS } from './icons';
-import { UI_REGISTRY } from './registry';
+import { UI_REGISTRY_META } from './registry.meta';
 import { isBinding, isNode, isPlainObject, isSafeUrl, isStateRef } from './resolve';
-import type { UiPropKind } from './registry.types';
+import type { UiPropKind, UiRegistryMeta } from './registry.types';
 import type { UiSpecError, UiValidationResult } from './spec.types';
 
 /** Nesting limit, so a broken or hostile spec cannot recurse without end. */
@@ -102,7 +102,9 @@ function checkNode(node: unknown, path: string, walk: Walk, depth: number): void
         walk.errors.push({ path, message: 'expected a node with a "type"' });
         return;
     }
-    const entry = UI_REGISTRY[node.type];
+    const entry: UiRegistryMeta | undefined = (UI_REGISTRY_META as Record<string, UiRegistryMeta>)[
+        node.type
+    ];
     if (entry === undefined) {
         walk.errors.push({ path: `${path}.type`, message: `unknown component "${node.type}"` });
         return;

@@ -115,6 +115,7 @@ export const PAGES: DocsPage[] = [
     { slug: 'components/three-orb', title: 'ThreeOrb', group: 'Orb' },
 
     { slug: 'components/ui-renderer', title: 'UiRenderer', group: 'Generative UI' },
+    { slug: 'generative/assistant', title: 'Connecting an assistant', group: 'Generative UI' },
 
     { slug: 'hooks/sound-hooks', title: 'Sound hooks', group: 'Hooks' },
     { slug: 'hooks/use-audio-engine', title: 'useAudioEngine', group: 'Hooks' },
