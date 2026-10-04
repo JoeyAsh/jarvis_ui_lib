@@ -5,6 +5,7 @@ export const GROUP_ORDER: DocsGroup[] = [
     'Getting started',
     'Customization',
     'Primitives',
+    'Forms',
     'HUD decoration',
     'Voice & status',
     'Compositions',
@@ -36,8 +37,6 @@ export const PAGES: DocsPage[] = [
 
     { slug: 'components/button', title: 'Button', group: 'Primitives' },
     { slug: 'components/icon-button', title: 'IconButton', group: 'Primitives' },
-    { slug: 'components/input', title: 'Input', group: 'Primitives' },
-    { slug: 'components/switch', title: 'Switch', group: 'Primitives' },
     { slug: 'components/link', title: 'Link', group: 'Primitives' },
     { slug: 'components/tooltip', title: 'Tooltip', group: 'Primitives' },
     { slug: 'components/divider', title: 'Divider', group: 'Primitives' },
@@ -54,6 +53,14 @@ export const PAGES: DocsPage[] = [
     { slug: 'components/panel', title: 'Panel', group: 'Primitives' },
     { slug: 'components/top-bar', title: 'TopBar', group: 'Primitives' },
     { slug: 'components/brand-mark', title: 'BrandMark', group: 'Primitives' },
+
+    { slug: 'components/input', title: 'Input', group: 'Forms' },
+    { slug: 'components/textarea', title: 'Textarea', group: 'Forms' },
+    { slug: 'components/select', title: 'Select', group: 'Forms' },
+    { slug: 'components/checkbox', title: 'Checkbox', group: 'Forms' },
+    { slug: 'components/radio-group', title: 'RadioGroup', group: 'Forms' },
+    { slug: 'components/switch', title: 'Switch', group: 'Forms' },
+    { slug: 'components/slider', title: 'Slider', group: 'Forms' },
 
     { slug: 'components/corner-brackets', title: 'CornerBrackets', group: 'HUD decoration' },
     { slug: 'components/scanlines', title: 'Scanlines', group: 'HUD decoration' },

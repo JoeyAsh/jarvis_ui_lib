@@ -2,6 +2,7 @@ export type DocsGroup =
     | 'Getting started'
     | 'Customization'
     | 'Primitives'
+    | 'Forms'
     | 'HUD decoration'
     | 'Voice & status'
     | 'Dev tools'

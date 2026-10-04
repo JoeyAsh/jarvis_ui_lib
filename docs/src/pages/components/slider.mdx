@@ -1,0 +1,46 @@
+# Slider
+
+<Lead>
+    A horizontal range input for values such as volume, gain or a scan radius. Drag the glowing
+    thumb, click anywhere on the track, or use the keyboard.
+</Lead>
+
+<ComponentMeta component="Slider" />
+
+## Basic
+
+`label` names the slider and is shown above the track; `showValue` adds the current value on the
+right. Without a visible label pass `aria-label`.
+
+<Demo name="slider/Basic" />
+
+## Range, step and format
+
+`min`, `max` and `step` define the range; the value always snaps to a step. `formatValue` formats
+the readout and the value announced by screen readers.
+
+<Demo name="slider/Range" />
+
+## Controlled
+
+Pass `value` and update it in `onValueChange`, which fires on every move. `onValueCommit` fires once
+when a drag ends or after a key press: use it for expensive work such as saving a setting.
+
+<Demo name="slider/Controlled" />
+
+## Sound
+
+Hovering plays `hover_button`; a drag plays `drag_start` and `drag_end` through the nearest
+`SfxProvider`. See [Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- The thumb has `role="slider"` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and, with
+  `formatValue`, `aria-valuetext`. The `label` names it through `aria-labelledby`.
+- Arrow keys change the value by one step, PageUp and PageDown by ten steps, Home and End jump to
+  `min` and `max`.
+- `disabled` removes the thumb from the tab order and sets `aria-disabled`.
+
+## API
+
+<ApiTable component="Slider" />

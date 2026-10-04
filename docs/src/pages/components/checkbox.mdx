@@ -1,0 +1,40 @@
+# Checkbox
+
+<Lead>
+    A checkbox for options that are submitted or applied together. For a setting that takes effect
+    immediately, use a [Switch](/components/switch).
+</Lead>
+
+<ComponentMeta component="Checkbox" />
+
+## Basic
+
+Without `checked` the checkbox keeps its own state; set the start state with `defaultChecked`.
+`size="sm"` makes box and text smaller.
+
+<Demo name="checkbox/Basic" />
+
+## Indeterminate
+
+`indeterminate` shows a dash for a mixed state, typically on a "select all" box when only some
+items are selected. Clicking it reports `true`. Control `checked` and `indeterminate` together from
+the state of the items.
+
+<Demo name="checkbox/Indeterminate" />
+
+## Sound
+
+Hovering plays `hover_button` and toggling plays `click` through the nearest `SfxProvider`. See
+[Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- A real `<input type="checkbox">` stays in the DOM, visually hidden; the box graphic is
+  `aria-hidden`. Space toggles it, and it works in forms with `name` and `value`.
+- The `label` wraps the input, so it is the accessible name and clicking it toggles the box.
+- `indeterminate` sets the native property, so screen readers announce "mixed".
+- The `ref` is forwarded to the input.
+
+## API
+
+<ApiTable component="Checkbox" />

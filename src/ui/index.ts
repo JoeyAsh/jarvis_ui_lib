@@ -117,6 +117,15 @@ export type { TooltipProps, TooltipPlacement, TooltipTriggerProps } from './prim
 export { Switch } from './primitives/Switch';
 export type { SwitchProps, SwitchSize } from './primitives/Switch';
 
+export { Slider } from './primitives/Slider';
+export type { SliderProps, SliderSize } from './primitives/Slider';
+
+export { Checkbox } from './primitives/Checkbox';
+export type { CheckboxProps, CheckboxSize } from './primitives/Checkbox';
+
+export { Textarea } from './primitives/Textarea';
+export type { TextareaProps, TextareaSize } from './primitives/Textarea';
+
 export { Divider } from './primitives/Divider';
 export type { DividerProps, DividerOrientation, DividerVariant } from './primitives/Divider';
 
@@ -195,6 +204,17 @@ export type { NavListProps, NavListGroup, NavListItem } from './compositions/Nav
 
 export { Tabs } from './compositions/Tabs';
 export type { TabsProps, TabItem } from './compositions/Tabs';
+
+export { RadioGroup } from './compositions/RadioGroup';
+export type {
+    RadioGroupProps,
+    RadioItem,
+    RadioGroupOrientation,
+    RadioGroupSize,
+} from './compositions/RadioGroup';
+
+export { Select } from './compositions/Select';
+export type { SelectProps, SelectOption, SelectSize } from './compositions/Select';
 
 export { Table } from './compositions/Table';
 export type { TableProps, TableColumn, TableAlign } from './compositions/Table';
