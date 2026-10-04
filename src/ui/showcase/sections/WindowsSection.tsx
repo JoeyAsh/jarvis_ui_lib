@@ -3,6 +3,7 @@ import { WindowManager } from '../../compositions/WindowManager';
 import type { ManagedWindow, PanelMode } from '../../compositions/WindowManager';
 import type { SlotId } from '../../window/slotGrid';
 import { Table } from '../../compositions/Table';
+import { Button } from '../../primitives/Button';
 import type { TableColumn } from '../../compositions/Table';
 import { SectionHeader } from '../SectionHeader';
 import { makeRenderer } from './WindowsSection.utils';
@@ -56,6 +57,24 @@ export function WindowsSection(): ReactElement {
     const [assignments, setAssignments] = useState<Record<string, SlotId>>(INITIAL_ASSIGNMENTS);
     const [focusedId, setFocusedId] = useState<string | null>(null);
     const [modes, setModes] = useState<Record<string, PanelMode>>({});
+    const [floating, setFloating] = useState<ManagedWindow[]>([]);
+    const [spawned, setSpawned] = useState(0);
+
+    const spawnWindow = (): void => {
+        const n = spawned + 1;
+        setSpawned(n);
+        setFloating([
+            ...floating,
+            {
+                id: `win-float-${n}`,
+                title: `FLOATING ${n}`,
+                ix: '◇',
+                badge: 'NEW',
+                floating: true,
+                itemRenderer: makeRenderer(`FLOATING ${n}`),
+            },
+        ]);
+    };
 
     const rows: WindowStateRow[] = Object.entries(assignments).map(([id, slot]) => ({
         id: id.replace('win-', ''),
@@ -68,8 +87,16 @@ export function WindowsSection(): ReactElement {
             <SectionHeader title="Windows">
                 WindowManager with dual-mode windows. Compact: drag a header onto another slot to
                 move or swap · ↺ restores the home slot. Expanded (⊞ or double-click the header):
-                drag to move · resize via edges/corners · ⊟ docks back.
+                drag to move · resize via edges/corners · ⊟ docks back. Floating: spawned at runtime
+                without a slot, closable with ✕ or Escape, last used on top.
             </SectionHeader>
+
+            <div className="flex items-center gap-3">
+                <Button variant="primary" onClick={spawnWindow}>
+                    Spawn floating window
+                </Button>
+                <span className="text-[10px] text-text-secondary">{floating.length} open</span>
+            </div>
 
             <Table
                 caption="Live window state"
@@ -82,13 +109,14 @@ export function WindowsSection(): ReactElement {
             {/* Scoped stage: transform-gpu contains the fixed WindowManager layers */}
             <div className="relative h-[860px] w-full overflow-hidden border border-border bg-[rgba(5,5,8,0.9)] transform-gpu">
                 <WindowManager
-                    windows={MANAGED_WINDOWS}
+                    windows={[...MANAGED_WINDOWS, ...floating]}
                     assignments={assignments}
                     onAssignmentsChange={setAssignments}
                     focusedId={focusedId}
                     onFocusChange={setFocusedId}
                     modes={modes}
                     onModesChange={setModes}
+                    onClose={(id) => setFloating(floating.filter((w) => w.id !== id))}
                 />
             </div>
         </section>

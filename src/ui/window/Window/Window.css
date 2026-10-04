@@ -76,7 +76,8 @@
     box-shadow:
         0 0 0 1px color-mix(in srgb, var(--accent) 30%, var(--border)),
         var(--glow);
-    z-index: 50;
+    /* --lib-window-z: stacking rank set by WindowManager (last used window on top). */
+    z-index: calc(50 + var(--lib-window-z, 0));
 }
 
 /* ── settling state — subtle position snap animation ── */
@@ -96,7 +97,7 @@
 
 /* expanded + focused gets higher elevation */
 .lib-window[data-mode='expanded'][data-state='focused'] {
-    z-index: 200;
+    z-index: calc(200 + var(--lib-window-z, 0));
 }
 
 /* ── drag handle (ix + title span — visual only, no pointer binding) ── */

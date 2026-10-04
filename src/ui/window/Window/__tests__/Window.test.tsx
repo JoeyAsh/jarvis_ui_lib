@@ -272,3 +272,39 @@ describe('Window — gesture callbacks', () => {
         fireEvent.pointerUp(window, { clientX: 5, clientY: 5 });
     });
 });
+
+describe('Window — close and stacking', () => {
+    it('Close button plays menu_close', () => {
+        const sfx = makeSfx();
+        renderWindow(sfx, { onClose: vi.fn() });
+        fireEvent.click(screen.getByRole('button', { name: /close window/i }));
+        expect(sfx.playOneShot).toHaveBeenCalledWith('menu_close');
+    });
+
+    it('Escape closes the window only with closeOnEscape', () => {
+        const sfx = makeSfx();
+        const onClose = vi.fn();
+        const { rerender } = renderWindow(sfx, { onClose });
+        fireEvent.keyDown(screen.getByText('content'), { key: 'Escape' });
+        expect(onClose).not.toHaveBeenCalled();
+        rerender(
+            <SfxContext.Provider value={sfx}>
+                <Window
+                    id="test-win"
+                    position={defaultPosition}
+                    itemRenderer={() => <div>content</div>}
+                    onClose={onClose}
+                    closeOnEscape
+                />
+            </SfxContext.Provider>,
+        );
+        fireEvent.keyDown(screen.getByText('content'), { key: 'Escape' });
+        expect(onClose).toHaveBeenCalledWith('test-win');
+    });
+
+    it('exposes stackIndex as --lib-window-z', () => {
+        const { container } = renderWindow(makeSfx(), { stackIndex: 3 });
+        const root = container.querySelector<HTMLElement>('.lib-window');
+        expect(root?.style.getPropertyValue('--lib-window-z')).toBe('3');
+    });
+});

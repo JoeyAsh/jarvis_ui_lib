@@ -7,6 +7,7 @@ import {
     type ReactElement,
 } from 'react';
 import { cx } from '@common/utils/cx';
+import { useSfx } from '@core/audio';
 import { Window } from '../../window/Window';
 import type { WindowState } from '../../window/Window';
 import { SnapOverlay } from '../../window/SnapOverlay';
@@ -31,6 +32,8 @@ import {
     applyResize,
     clampExpandedRect,
     defaultExpandedRect,
+    cascadeRect,
+    withoutKeys,
 } from './utils';
 import { MIN_EXPANDED_W, MIN_EXPANDED_H } from './constants';
 
@@ -54,9 +57,19 @@ export function WindowManager({
     onModesChange,
     expandedRects: expandedRectsProp,
     onExpandedRectsChange,
+    onClose,
     className,
 }: WindowManagerProps): ReactElement {
+    const { playOneShot } = useSfx();
     const [viewport, setViewport] = useState(getViewport);
+
+    // Stacking order of windows, last used last; drawn on top via `stackIndex`.
+    const [zOrder, setZOrder] = useState<string[]>([]);
+    const bringToFront = useCallback((id: string): void => {
+        setZOrder((prev) =>
+            prev[prev.length - 1] === id ? prev : [...prev.filter((x) => x !== id), id],
+        );
+    }, []);
 
     // Per-window local state (resizing/idle).
     const [windowStates, setWindowStates] = useState<Record<string, WindowLocalState>>({});
@@ -161,6 +174,17 @@ export function WindowManager({
         modesRef.current = modes;
     });
 
+    // Floating windows are always expanded, whatever the modes map says.
+    const floatingRef = useRef<Set<string>>(new Set());
+    useLayoutEffect(() => {
+        floatingRef.current = new Set(windows.filter((w) => w.floating === true).map((w) => w.id));
+    });
+    const modeOf = useCallback(
+        (id: string): PanelMode =>
+            floatingRef.current.has(id) ? 'expanded' : (modesRef.current[id] ?? 'compact'),
+        [],
+    );
+
     const expandedRectsRef = useRef(expandedRects);
     useLayoutEffect(() => {
         expandedRectsRef.current = expandedRects;
@@ -243,19 +267,36 @@ export function WindowManager({
                 }
             }
             setMode(id, next);
+            bringToFront(id);
             // Focus the toggled window.
             if (onFocusChange) onFocusChange(id);
         },
-        [setMode, setExpandedRect, onFocusChange],
+        [setMode, setExpandedRect, onFocusChange, bringToFront],
     );
 
     // ── Focus ─────────────────────────────────────────────────────────────────
 
     const handleFocus = useCallback(
         (id: string): void => {
+            bringToFront(id);
             if (onFocusChange) onFocusChange(id);
         },
-        [onFocusChange],
+        [onFocusChange, bringToFront],
+    );
+
+    // ── Close ─────────────────────────────────────────────────────────────────
+
+    const focusedIdRef = useRef(focusedId);
+    useLayoutEffect(() => {
+        focusedIdRef.current = focusedId;
+    });
+
+    const handleClose = useCallback(
+        (id: string): void => {
+            if (focusedIdRef.current === id && onFocusChange) onFocusChange(null);
+            if (onClose) onClose(id);
+        },
+        [onClose, onFocusChange],
     );
 
     // ── Compact drag: slot-swap ────────────────────────────────────────────────
@@ -267,19 +308,22 @@ export function WindowManager({
         return null;
     }, []);
 
-    const handleDragStart = useCallback((id: string): void => {
-        const current = modesRef.current[id] ?? 'compact';
-        if (current === 'expanded') return; // expanded drag handled separately
-        const origin = assignmentsRef.current[id] as SlotId | undefined;
-        if (origin === undefined) return;
-        setActiveDrag({ windowId: id, originSlot: origin });
-        setSnapTarget(null);
-        setSwapTarget(null);
-    }, []);
+    const handleDragStart = useCallback(
+        (id: string): void => {
+            const current = modeOf(id);
+            if (current === 'expanded') return; // expanded drag handled separately
+            const origin = assignmentsRef.current[id] as SlotId | undefined;
+            if (origin === undefined) return;
+            setActiveDrag({ windowId: id, originSlot: origin });
+            setSnapTarget(null);
+            setSwapTarget(null);
+        },
+        [modeOf],
+    );
 
     const handleDragMove = useCallback(
         (id: string, _dx: number, _dy: number, e: PointerEvent): void => {
-            const current = modesRef.current[id] ?? 'compact';
+            const current = modeOf(id);
             if (current === 'expanded') return;
             const g = measureContainer(rootRef.current);
             const p = toLocalPoint(e.clientX, e.clientY, g);
@@ -288,12 +332,12 @@ export function WindowManager({
             const swap = hovered !== null ? windowAtSlot(hovered, id) : null;
             setSwapTarget(swap);
         },
-        [windowAtSlot],
+        [windowAtSlot, modeOf],
     );
 
     const handleDragEnd = useCallback(
         (id: string, e: PointerEvent): void => {
-            const current = modesRef.current[id] ?? 'compact';
+            const current = modeOf(id);
             if (current === 'expanded') return;
 
             const g = measureContainer(rootRef.current);
@@ -321,14 +365,14 @@ export function WindowManager({
             setSnapTarget(null);
             setSwapTarget(null);
         },
-        [windowAtSlot, onAssignmentsChange],
+        [windowAtSlot, onAssignmentsChange, modeOf],
     );
 
     // ── Expanded free-drag ─────────────────────────────────────────────────────
 
     const handleExpandedDragStart = useCallback(
         (id: string, e: PointerEvent): void => {
-            const current = modesRef.current[id] ?? 'compact';
+            const current = modeOf(id);
             if (current !== 'expanded') return;
             const rect = expandedRectsRef.current[id];
             if (!rect) return;
@@ -340,14 +384,15 @@ export function WindowManager({
                 originY: rect.y,
             });
             setFreeDragPos({ x: rect.x, y: rect.y });
+            bringToFront(id);
             if (onFocusChange) onFocusChange(id);
         },
-        [onFocusChange, setFreeDrag, setFreeDragPos],
+        [onFocusChange, setFreeDrag, setFreeDragPos, modeOf, bringToFront],
     );
 
     const handleExpandedDragMove = useCallback(
         (id: string, dx: number, dy: number, _e: PointerEvent): void => {
-            const current = modesRef.current[id] ?? 'compact';
+            const current = modeOf(id);
             if (current !== 'expanded') return;
             const drag = freeDragRef.current;
             if (!drag || drag.windowId !== id) return;
@@ -361,12 +406,12 @@ export function WindowManager({
             const y = Math.max(TOP_BAR_HEIGHT, Math.min(rawY, Math.max(TOP_BAR_HEIGHT, vp.h - h)));
             setFreeDragPos({ x, y });
         },
-        [setFreeDragPos],
+        [setFreeDragPos, modeOf],
     );
 
     const handleExpandedDragEnd = useCallback(
         (id: string, _e: PointerEvent): void => {
-            const current = modesRef.current[id] ?? 'compact';
+            const current = modeOf(id);
             if (current !== 'expanded') return;
             const drag = freeDragRef.current;
             if (!drag || drag.windowId !== id) return;
@@ -379,16 +424,14 @@ export function WindowManager({
             setFreeDrag(null);
             setFreeDragPos(null);
         },
-        [setExpandedRect, setFreeDrag, setFreeDragPos],
+        [setExpandedRect, setFreeDrag, setFreeDragPos, modeOf],
     );
 
     // ── Compact resize handlers ────────────────────────────────────────────────
 
     const handleResizeStart = useCallback(
         (id: string, _dir: ResizeDir): void => {
-            const mode = modesRef.current[id] ?? 'compact';
-            const slotId = assignmentsRef.current[id] as SlotId | undefined;
-            if (slotId === undefined) return;
+            const mode = modeOf(id);
 
             if (mode === 'expanded') {
                 // Expanded resize — capture current expanded rect.
@@ -396,6 +439,8 @@ export function WindowManager({
                 if (rect) expandedResizeStartRef.current[id] = rect;
             } else {
                 // Compact resize.
+                const slotId = assignmentsRef.current[id] as SlotId | undefined;
+                if (slotId === undefined) return;
                 const currentCustom = customRects[id];
                 const baseRect = currentCustom ?? slotRects[slotId];
                 resizeStartRectRef.current[id] = baseRect;
@@ -403,12 +448,12 @@ export function WindowManager({
 
             setWindowStates((prev) => ({ ...prev, [id]: 'resizing' }));
         },
-        [customRects, slotRects],
+        [customRects, slotRects, modeOf],
     );
 
     const handleResizeMove = useCallback(
         (id: string, dir: ResizeDir, dx: number, dy: number): void => {
-            const mode = modesRef.current[id] ?? 'compact';
+            const mode = modeOf(id);
             if (mode === 'expanded') {
                 const startRect = expandedResizeStartRef.current[id];
                 if (!startRect) return;
@@ -421,7 +466,7 @@ export function WindowManager({
                 setCustomRects((prev) => ({ ...prev, [id]: newRect }));
             }
         },
-        [setExpandedRect],
+        [setExpandedRect, modeOf],
     );
 
     const handleResizeEnd = useCallback((id: string): void => {
@@ -452,6 +497,51 @@ export function WindowManager({
         [onAssignmentsChange, clearExpandedRect, setMode],
     );
 
+    // ── Floating windows: seed rects, open sound, prune state of removed windows ──
+
+    const knownIdsRef = useRef<Set<string> | null>(null);
+    useLayoutEffect(() => {
+        const ids = new Set(windows.map((w) => w.id));
+        const previous = knownIdsRef.current;
+        knownIdsRef.current = ids;
+
+        const g = measureContainer(rootRef.current);
+        let floatingIndex = 0;
+        let opened = false;
+        for (const win of windows) {
+            if (win.floating !== true) continue;
+            const index = floatingIndex;
+            floatingIndex += 1;
+            if (expandedRectsRef.current[win.id] !== undefined) continue;
+            setExpandedRect(
+                win.id,
+                win.defaultRect !== undefined
+                    ? clampExpandedRect(win.defaultRect, g.w, g.h)
+                    : cascadeRect(index, g.w, g.h),
+            );
+            if (previous !== null && !previous.has(win.id)) {
+                opened = true;
+                bringToFront(win.id);
+            }
+        }
+        if (opened) playOneShot('menu_open');
+
+        if (previous === null) return;
+        const removed = [...previous].filter((id) => !ids.has(id));
+        if (removed.length === 0) return;
+        setWindowStates((prev) => withoutKeys(prev, removed));
+        setCustomRects((prev) => withoutKeys(prev, removed));
+        if (!isExpandedControlled) {
+            expandedRectsRef.current = withoutKeys(expandedRectsRef.current, removed);
+            setInternalExpandedRects((prev) => withoutKeys(prev, removed));
+        }
+        for (const id of removed) {
+            delete resizeStartRectRef.current[id];
+            delete expandedResizeStartRef.current[id];
+        }
+        setZOrder((prev) => prev.filter((id) => ids.has(id)));
+    }, [windows, setExpandedRect, bringToFront, playOneShot, isExpandedControlled]);
+
     // Click outside windows → clear focus.
     useEffect(() => {
         const onDocPointerDown = (e: PointerEvent): void => {
@@ -476,11 +566,17 @@ export function WindowManager({
     return (
         <div ref={rootRef} className={rootCls}>
             {windows.map((win) => {
+                const isFloating = win.floating === true;
                 const slotId = assignments[win.id] as SlotId | undefined;
-                if (slotId === undefined) return null;
+                if (slotId === undefined && !isFloating) return null;
 
-                const mode: PanelMode = modes[win.id] ?? 'compact';
-                const baseRect = slotRects[slotId];
+                const mode: PanelMode = isFloating ? 'expanded' : (modes[win.id] ?? 'compact');
+                // A floating window has no slot; its rect is seeded before the first paint.
+                const baseRect =
+                    slotId !== undefined
+                        ? slotRects[slotId]
+                        : (win.defaultRect ?? cascadeRect(0, viewport.w, viewport.h));
+                const closable = win.closable ?? isFloating;
                 const localState = windowStates[win.id] ?? 'idle';
                 const isCompactDragging =
                     activeDrag !== null && activeDrag.windowId === win.id && mode === 'compact';
@@ -551,8 +647,11 @@ export function WindowManager({
                         onResizeStart={handleResizeStart}
                         onResizeMove={handleResizeMove}
                         onResizeEnd={handleResizeEnd}
-                        onReset={handleReset}
-                        onModeToggle={handleModeToggle}
+                        onReset={isFloating ? undefined : handleReset}
+                        onModeToggle={isFloating ? undefined : handleModeToggle}
+                        onClose={closable ? handleClose : undefined}
+                        closeOnEscape={closable && isFloating}
+                        stackIndex={zOrder.indexOf(win.id) + 1}
                         draggable={isDraggable}
                         resizable={isResizable}
                         itemRenderer={win.itemRenderer}

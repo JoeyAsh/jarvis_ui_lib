@@ -56,7 +56,8 @@ the [slot grid helpers](/utilities/slot-grid).
 ## Header actions
 
 The reset, dock/undock and close buttons are only rendered when you pass `onReset`, `onModeToggle`
-or `onClose`. Pressing them never starts a drag.
+or `onClose`. Pressing them never starts a drag. `stackIndex` raises an expanded window above
+others with a lower index; [WindowManager](/components/window-manager) sets it for you.
 
 <Demo name="window/HeaderActions" />
 
@@ -67,7 +68,7 @@ Through the nearest `SfxProvider`:
 - Dragging the header plays `drag_start`, loops `drag_move` and plays `drag_end`.
 - Resizing loops `resize` until the pointer is released.
 - The reset button plays `click` and `recall`; the dock/undock button plays `click` plus `expand`
-  (undock) or `collapse` (dock); the close button plays `click`.
+  (undock) or `collapse` (dock); the close button plays `click` and `menu_close`.
 - Double-clicking the header plays the same `expand` or `collapse` sound as the dock/undock button
   (without the `click`).
 - Hovering the window plays `hover_panel`; hovering a header button plays `hover_button`.
@@ -83,6 +84,8 @@ See [Sound effects](/getting-started/sound).
 - The header buttons are native buttons named **Reset window**, **Undock window** / **Dock window**
   and **Close window**, so they work with the keyboard. The dock/undock button is the keyboard
   equivalent of the header double-click.
+- With `closeOnEscape` and `onClose`, the window is focusable (`tabIndex={-1}`) and Escape calls
+  `onClose` while focus is inside it.
 - Dragging and resizing are pointer-only: there are no arrow-key or other keyboard shortcuts to
   move or resize a window. Offer another way to move or resize content when keyboard users need
   it.

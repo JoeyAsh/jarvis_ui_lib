@@ -1,4 +1,12 @@
-import { useCallback, useId, useRef, type ReactElement, type MouseEvent } from 'react';
+import {
+    useCallback,
+    useEffect,
+    useId,
+    useRef,
+    type CSSProperties,
+    type ReactElement,
+    type MouseEvent,
+} from 'react';
 import { Minimize2, RotateCcw, Square, X } from 'lucide-react';
 import { cx } from '@common/utils/cx';
 import { useClickSfx, useHoverSfx, useSfx } from '@core/audio';
@@ -29,6 +37,8 @@ export function Window({
     onResizeEnd,
     onReset,
     onClose,
+    closeOnEscape = false,
+    stackIndex = 0,
     onModeToggle,
     draggable = true,
     resizable = true,
@@ -118,10 +128,27 @@ export function Window({
     const handleClose = useCallback(
         (e: MouseEvent<HTMLButtonElement>): void => {
             e.stopPropagation();
+            playOneShot('menu_close');
             if (onClose) onClose(id);
         },
-        [id, onClose],
+        [id, onClose, playOneShot],
     );
+
+    // Escape closes the window while focus is inside it. A native listener, because the root is a
+    // `region` landmark and not an interactive element.
+    const rootRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const el = rootRef.current;
+        if (el === null || !closeOnEscape || !onClose) return;
+        const onKeyDown = (e: globalThis.KeyboardEvent): void => {
+            if (e.key !== 'Escape' || e.defaultPrevented) return;
+            e.preventDefault();
+            playOneShot('menu_close');
+            onClose(id);
+        };
+        el.addEventListener('keydown', onKeyDown);
+        return () => el.removeEventListener('keydown', onKeyDown);
+    }, [id, closeOnEscape, onClose, playOneShot]);
 
     // Shared by the dock/undock button and the header double-click: plays the
     // expand/collapse sound for the current mode, then toggles it.
@@ -160,7 +187,10 @@ export function Window({
 
     const effectiveState: WindowState = resizing ? 'resizing' : dragging ? 'dragging' : state;
 
-    const rootStyle = rectVars('lib-window', position);
+    const rootStyle = {
+        ...rectVars('lib-window', position),
+        '--lib-window-z': stackIndex,
+    } as CSSProperties;
 
     const hasTitle = title !== undefined && title !== null && title !== false && title !== '';
 
@@ -232,6 +262,7 @@ export function Window({
 
     return (
         <div
+            ref={rootRef}
             className={cx('lib-window', className)}
             data-state={effectiveState}
             data-mode={mode}
@@ -239,6 +270,7 @@ export function Window({
             style={rootStyle}
             role="region"
             aria-labelledby={hasTitle ? titleId : undefined}
+            tabIndex={closeOnEscape ? -1 : undefined}
             onPointerDownCapture={handlePointerDownCapture}
         >
             <Panel
