@@ -58,6 +58,23 @@ body {
 For the full HUD look, add the decorative layers `GridBackground`, `Scanlines` and
 `ViewportCorners`, or the complete `HUDShell` frame.
 
+## Layout
+
+The components bring their own styles; the layout around them is yours. Size and place them with
+`className` and your own CSS (or Tailwind, if your project uses it):
+
+```css
+.reactor-panel {
+    width: 320px;
+    height: 220px;
+}
+```
+
+The demos on these pages lay themselves out with Tailwind utilities such as `flex gap-3`. Without
+Tailwind in your project, replace those with your own CSS: the utility classes inside
+`style.css` are an internal subset and not meant for your markup (see
+[Tailwind](/customization/tailwind)).
+
 ## Props and refs
 
 - Every component accepts `className`, merged onto its root element.

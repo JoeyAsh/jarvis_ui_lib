@@ -4,8 +4,9 @@ import { Pill, Table } from '@ui';
 import type { TableColumn } from '@ui';
 import type { ApiProp } from '../api.types';
 import { apiDoc } from '../utils/registry';
+import { DocsCodeBlock } from './DocsCodeBlock';
 import { InlineText } from './InlineText';
-import type { ApiTableProps } from './ApiTable.types';
+import type { ApiTableProps, TypeDetailsProps } from './ApiTable.types';
 
 const COLUMNS: TableColumn<ApiProp>[] = [
     {
@@ -44,6 +45,36 @@ const COLUMNS: TableColumn<ApiProp>[] = [
     },
 ];
 
+const FIELD_COLUMNS: TableColumn<ApiProp>[] = COLUMNS.map((c) =>
+    c.key === 'name' ? { ...c, header: 'Field' } : c,
+);
+
+/** A helper type the props refer to: its fields, or its definition for unions and aliases. */
+function TypeDetails({ type }: TypeDetailsProps): ReactElement {
+    return (
+        <div className="flex flex-col gap-2">
+            {type.description !== '' && (
+                <p className="m-0 text-[11px] leading-[1.7] text-text-secondary">
+                    <code className="text-accent-bright">{type.name}</code>:{' '}
+                    <InlineText text={type.description} />
+                </p>
+            )}
+            {type.definition === null ? (
+                <Table
+                    caption={type.name}
+                    showCaption
+                    dense
+                    columns={FIELD_COLUMNS}
+                    rows={type.fields}
+                    getRowKey={(f) => f.name}
+                />
+            ) : (
+                <DocsCodeBlock code={`type ${type.name} = ${type.definition};`} language="ts" />
+            )}
+        </div>
+    );
+}
+
 export function ApiTableContent({ component }: ApiTableProps): ReactElement {
     const doc = use(apiDoc(component));
     const forwardsRef = doc.inherited.some((i) => i.from === 'RefAttributes');
@@ -75,6 +106,16 @@ export function ApiTableContent({ component }: ApiTableProps): ReactElement {
                         </>
                     )}
                 </p>
+            )}
+            {doc.types.length > 0 && (
+                <>
+                    <p className="m-0 mt-2 text-[10px] uppercase tracking-[0.12em] text-text-muted">
+                        Types used by the props
+                    </p>
+                    {doc.types.map((t) => (
+                        <TypeDetails key={t.name} type={t} />
+                    ))}
+                </>
             )}
         </div>
     );

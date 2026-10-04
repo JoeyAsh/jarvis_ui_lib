@@ -9,8 +9,10 @@
 
 ## Basic
 
-A panel takes the size of its container or of the classes you give it. Size it with Tailwind
-utilities on `className`; the body scrolls when its content overflows.
+A panel is as wide as its container and, without a set height, grows with its content. Size it
+with `className` (a class from your own CSS, or Tailwind utilities if your project uses Tailwind)
+or with `style`. With a fixed height the body scrolls when its content overflows. The body has 12px
+padding, so content such as [Tabs](/components/tabs) needs no extra spacing.
 
 <Demo name="panel/Basic" />
 

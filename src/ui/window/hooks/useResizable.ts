@@ -2,6 +2,7 @@ import { useLayoutEffect, useCallback, useEffect, useRef, useState } from 'react
 import type React from 'react';
 import { useSfx } from '@core/audio';
 
+/** Edge or corner a window is resized from, as compass directions (`se` = bottom-right corner). */
 export type ResizeDir = 'n' | 's' | 'e' | 'w' | 'ne' | 'nw' | 'se' | 'sw';
 
 export interface ResizeState {

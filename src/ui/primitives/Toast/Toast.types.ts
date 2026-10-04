@@ -2,6 +2,7 @@ import type { HTMLAttributes, ReactNode } from 'react';
 
 export type ToastVariant = 'info' | 'success' | 'warning' | 'error';
 
+/** Action button shown in a toast, e.g. `{ label: 'Undo', onClick: undo }`. */
 export interface ToastAction {
     /** Button text, e.g. `Undo`. */
     label: string;

@@ -4,6 +4,7 @@ import type { ResizeDir } from '../hooks/useResizable';
 /** `compact`: docked in a slot. `expanded`: free-floating and resizable. */
 export type PanelMode = 'compact' | 'expanded';
 
+/** Window state passed to `itemRenderer`, so content can adapt to docked or floating mode. */
 export interface PanelContentRenderProps {
     /** `compact` while docked in a slot, `expanded` while free-floating. */
     mode: PanelMode;

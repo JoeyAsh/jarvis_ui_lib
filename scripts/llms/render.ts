@@ -3,7 +3,7 @@
  * what it shows on the site (demo source, API table, import statement, token table), purely
  * interactive widgets are dropped and in-app links become absolute links to the Markdown pages.
  */
-import type { ApiDoc } from '../../docs/src/api.types';
+import type { ApiDoc, ApiProp } from '../../docs/src/api.types';
 import type { TokenGroup } from '../../docs/src/utils/tokens.types';
 
 export interface RenderContext {
@@ -44,20 +44,35 @@ function codeBlock(language: string, code: string): string {
 
 /** The generated API table of a component as a Markdown table. */
 export function apiTable(doc: ApiDoc): string {
-    const rows = doc.props.map((p) => {
-        const name = p.required ? `\`${p.name}\` (required)` : `\`${p.name}\``;
-        const def = p.default === null ? '' : `\`${cell(p.default)}\``;
-        return `| ${name} | \`${cell(p.type)}\` | ${def} | ${cell(p.description)} |`;
-    });
     const lines =
-        rows.length === 0
-            ? ['No own props.']
-            : ['| Prop | Type | Default | Description |', '| --- | --- | --- | --- |', ...rows];
+        doc.props.length === 0 ? ['No own props.'] : propTable('Prop', doc.props).split('\n');
     if (doc.inherited.length > 0) {
         const from = doc.inherited.map((i) => `\`${i.from}\` (${i.count})`).join(', ');
         lines.push('', `Also accepts inherited props from ${from}.`);
     }
+    for (const type of doc.types) {
+        lines.push('', `### Type \`${type.name}\``, '');
+        if (type.description !== '') lines.push(type.description, '');
+        lines.push(
+            type.definition === null
+                ? propTable('Field', type.fields)
+                : codeBlock('ts', `type ${type.name} = ${type.definition};`),
+        );
+    }
     return lines.join('\n');
+}
+
+function propTable(header: string, props: ApiProp[]): string {
+    const rows = props.map((p) => {
+        const name = p.required ? `\`${p.name}\` (required)` : `\`${p.name}\``;
+        const def = p.default === null ? '' : `\`${cell(p.default)}\``;
+        return `| ${name} | \`${cell(p.type)}\` | ${def} | ${cell(p.description)} |`;
+    });
+    return [
+        `| ${header} | Type | Default | Description |`,
+        '| --- | --- | --- | --- |',
+        ...rows,
+    ].join('\n');
 }
 
 function tokenTables(groups: TokenGroup[]): string {

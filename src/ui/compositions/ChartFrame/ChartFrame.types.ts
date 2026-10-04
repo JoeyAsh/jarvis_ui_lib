@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 /** Token color of a chart series. */
 export type ChartColor = 'accent' | 'bright' | 'success' | 'warning' | 'error' | 'muted';
 
+/** One data series of a `LineChart`, `AreaChart` or `BarChart`. */
 export interface ChartSeries {
     /** Unique id of the series. */
     id: string;

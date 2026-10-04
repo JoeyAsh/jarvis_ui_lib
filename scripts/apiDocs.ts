@@ -5,6 +5,7 @@
 import { join } from 'node:path';
 import { withCustomConfig } from 'react-docgen-typescript';
 import type { PropItem } from 'react-docgen-typescript';
+import { createTypeExtractor, referencedTypes } from './apiTypes';
 import { listPublicComponents, ROOT } from './publicApi';
 import type { ApiDoc, ApiProp, InheritedProps } from '../docs/src/api.types';
 
@@ -56,6 +57,8 @@ export function buildApiDocs(): ApiDoc[] {
         skipChildrenPropWithoutDoc: false,
     });
 
+    const types = createTypeExtractor();
+
     return listPublicComponents().map((component) => {
         const docs = parser.parse(join(ROOT, component.file));
         const doc = docs.find((d) => d.displayName === component.name) ?? docs[0];
@@ -97,6 +100,10 @@ export function buildApiDocs(): ApiDoc[] {
             description: doc?.description.trim() ?? '',
             props,
             inherited: inheritedList,
+            types: referencedTypes(
+                types,
+                props.map((p) => p.type),
+            ),
         };
     });
 }

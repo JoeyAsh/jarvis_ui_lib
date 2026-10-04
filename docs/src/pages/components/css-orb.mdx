@@ -23,12 +23,16 @@
 `follow_up`, the sixth `AppOrbState` value, has no style of its own and looks like `idle`. The demo
 cycles through the five styled states every three seconds.
 
+The states come from a voice assistant, but they work for any app: use `idle` when nothing happens,
+`listening` while waiting for or receiving input, `thinking` while computing an answer, `speaking`
+while presenting a result and `working` for background tasks (a scan, a sync, a tool run).
+
 <Demo name="css-orb/Cycle" height="tall" align="stretch" />
 
 ## Rings and particles
 
 `rings` draws five concentric rings (360 to 920px wide) and a rotating tick ring around the core.
-`particles` adds six dots orbiting at 180 to 330px. Both are on by default; turn them off for a
+`particles` adds six dots orbiting at a radius of 180 to 330px. Both are on by default; turn them off for a
 quieter orb or a small container. Pick a state with the
 [StateSimulator](/components/state-simulator) to compare.
 
@@ -37,9 +41,27 @@ quieter orb or a small container. Pick a state with the
 ## Sizing
 
 The root element is a zero-size anchor centred (`left: 50%; top: 50%`) in its nearest positioned
-ancestor. The core is 280px wide and the rings reach 920px, so place the orb in a
-`position: relative` container with a fixed height and `overflow: hidden` when it should not spill
-over the surrounding layout.
+ancestor. The orb has no size prop; its parts have fixed sizes:
+
+| Part                | Diameter     |
+| ------------------- | ------------ |
+| Core                | 280px        |
+| Particles           | 360 to 660px |
+| Rings and tick ring | 360 to 920px |
+
+Place the orb in a `position: relative` container with a fixed height, and add `overflow: hidden`
+when it should not spill over the surrounding layout. As a rule of thumb:
+
+- Full orb: a container of about 920 × 920px, or a full-screen background where the outer rings may
+  be cut off.
+- Smaller boxes (300 to 700px): turn `rings` off and, below about 660px, `particles` too. The core
+  needs at least 300 × 300px.
+
+```tsx
+<div style={{ position: 'relative', height: 360, overflow: 'hidden' }}>
+    <CssOrb state="idle" rings={false} particles={false} />
+</div>
+```
 
 ## Accessibility
 

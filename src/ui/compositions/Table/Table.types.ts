@@ -13,7 +13,7 @@ export interface TableColumn<T> {
     render: (row: T, index: number) => ReactNode;
     /** Horizontal alignment of header and cells. @default 'left' */
     align?: TableAlign;
-    /** Extra class name for every cell in this column, e.g. a width (`w-[30%]`). */
+    /** Extra class name for every cell in this column, e.g. one that sets the column width. */
     className?: string;
 }
 
