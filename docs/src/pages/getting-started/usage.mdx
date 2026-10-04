@@ -70,9 +70,19 @@ The components bring their own styles; the layout around them is yours. Size and
 }
 ```
 
+For rows, columns and grids use [Stack](/components/stack) and [Grid](/components/grid): they space
+their children with the design tokens and need no Tailwind.
+
+```tsx
+<Stack direction="row" align="center" gap="sm">
+    <Pill variant="ok">online</Pill>
+    <Button>Run diagnostics</Button>
+</Stack>
+```
+
 The demos on these pages lay themselves out with Tailwind utilities such as `flex gap-3`. Without
-Tailwind in your project, replace those with your own CSS: the utility classes inside
-`style.css` are an internal subset and not meant for your markup (see
+Tailwind in your project, replace those with `Stack`, `Grid` or your own CSS: the utility classes
+inside `style.css` are an internal subset and not meant for your markup (see
 [Tailwind](/customization/tailwind)).
 
 ## Props and refs

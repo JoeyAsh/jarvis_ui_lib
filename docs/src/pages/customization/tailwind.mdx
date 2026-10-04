@@ -22,12 +22,13 @@ styles with the CSS variables:
     The stylesheet also contains some Tailwind utility classes (`flex`, `h-[120px]`, ...), but only
     the ones the components happen to use internally. They are not part of the public API: most
     utilities are missing, and the set changes between releases. Without Tailwind in your project,
-    do not put utility classes in your own markup. Use your own CSS classes with the tokens, as
-    above.
+    do not put utility classes in your own markup. Use [Stack](/components/stack) and
+    [Grid](/components/grid) for layout and your own CSS classes with the tokens, as above.
 </Callout>
 
 The docs demos use Tailwind utilities for their layout (`flex gap-3`, `w-[280px]`, ...). Without
-Tailwind, replace them with your own CSS when you copy a demo; the component props stay the same.
+Tailwind, replace them with `Stack`, `Grid` or your own CSS when you copy a demo; the component props
+stay the same.
 
 ## With Tailwind v4
 
