@@ -1,0 +1,32 @@
+# Grid
+
+<Lead>
+    Lays out its children in equal columns with spacing from the design tokens: a fixed number of
+    columns, or as many as fit.
+</Lead>
+
+<ComponentMeta component="Grid" />
+
+## Fixed columns
+
+`columns` takes 1 to 6 equal columns. `gap` uses the same steps as [Stack](/components/stack).
+
+<Demo name="grid/Columns" align="stretch" />
+
+## Auto-fit
+
+With `columns="auto"` (the default) the grid fits as many columns of at least `minColumnWidth`
+pixels as the width allows, and reflows when it changes, e.g. when a window is resized. On narrower
+containers a column never gets wider than the container. Like any grid, it fills the width of a block
+container; inside a flex container (such as a row `Stack`) give it a width.
+
+<Demo name="grid/Auto" align="stretch" />
+
+## Accessibility
+
+Grid renders a plain `<div>` with `display: grid` and adds no semantics. The reading order is the
+order of the children.
+
+## API
+
+<ApiTable component="Grid" />

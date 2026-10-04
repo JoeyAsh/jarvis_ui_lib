@@ -16,6 +16,10 @@ import { SectionHeader } from '../SectionHeader';
 import { ToastTriggers } from './ToastTriggers';
 import { DialogDemo } from './DialogDemo';
 import { Kbd } from '../../primitives/Kbd';
+import { Stack } from '../../primitives/Stack';
+import { Grid } from '../../primitives/Grid';
+import { Metric } from '../../primitives/Metric';
+import { Label } from '../../primitives/Label';
 
 interface DemoPropRow {
     name: string;
@@ -70,10 +74,65 @@ export function CompositionsLayoutSection(): ReactElement {
     return (
         <section id="compositions-layout" className="flex flex-col gap-4">
             <SectionHeader title="Compositions · Layout">
-                NavList · Tabs · Table · CodeBlock · Callout · Toast · Dialog · Kbd · TopBar
-                position
+                Stack · Grid · NavList · Tabs · Table · CodeBlock · Callout · Toast · Dialog · Kbd ·
+                TopBar position
             </SectionHeader>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+                <ShowcaseCard
+                    label="STACK · ROW + COLUMN"
+                    code={`<Stack direction="row" align="center" justify="between" gap="md">
+  <Stack gap="xs">
+    <Label>Output</Label>
+    <Metric value={87} unit="%" />
+  </Stack>
+  <Stack direction="row" gap="sm">
+    <Pill variant="ok">online</Pill>
+    <Button size="sm">Scan</Button>
+  </Stack>
+</Stack>`}
+                    dark
+                >
+                    <Stack
+                        direction="row"
+                        align="center"
+                        justify="between"
+                        gap="md"
+                        className="w-full"
+                    >
+                        <Stack gap="xs">
+                            <Label>Output</Label>
+                            <Metric value={87} unit="%" />
+                        </Stack>
+                        <Stack direction="row" align="center" gap="sm">
+                            <Pill variant="ok">online</Pill>
+                            <Button size="sm">Scan</Button>
+                        </Stack>
+                    </Stack>
+                </ShowcaseCard>
+
+                <ShowcaseCard
+                    label="GRID · 3 COLUMNS · AUTO"
+                    code={`<Grid columns={3} gap="lg">…</Grid>
+<Grid minColumnWidth={90} gap="sm">…</Grid>`}
+                    dark
+                >
+                    <Stack gap="lg" className="w-full">
+                        <Grid columns={3} gap="lg">
+                            {['CPU', 'GPU', 'RAM'].map((name, i) => (
+                                <Stack key={name} gap="xs">
+                                    <Label>{name}</Label>
+                                    <Metric value={42 + i * 13} unit="%" />
+                                </Stack>
+                            ))}
+                        </Grid>
+                        <Grid minColumnWidth={90} gap="sm">
+                            {['Radar', 'Comms', 'Shields', 'Thrust', 'Nav'].map((name) => (
+                                <Pill key={name}>{name}</Pill>
+                            ))}
+                        </Grid>
+                    </Stack>
+                </ShowcaseCard>
+
                 <ShowcaseCard
                     label="NAV LIST (click to activate)"
                     code={`<NavList\n  groups={groups}\n  activeId={active}\n  onItemClick={(item, e) => {\n    e.preventDefault();\n    setActive(item.id);\n  }}\n/>`}

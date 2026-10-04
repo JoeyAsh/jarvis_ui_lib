@@ -1,0 +1,32 @@
+# Stack
+
+<Lead>
+    Lays out its children in a column or a row with spacing from the design tokens. It covers most
+    layout needs without Tailwind, and it is the layout building block for generated windows.
+</Lead>
+
+<ComponentMeta component="Stack" />
+
+## Column
+
+By default the children stack top to bottom and stretch to the full width. `gap` takes a spacing
+step: `xs` (4px), `sm` (8px), `md` (12px, the default), `lg` (24px), `xl` (32px) or `none`. The
+steps read the `--s-*` tokens, so they follow a theme.
+
+<Demo name="stack/Column" align="start" />
+
+## Row
+
+`direction="row"` lays the children out left to right. `align` sets the cross-axis alignment,
+`justify` the distribution along the row, and `wrap` lets them flow onto further lines. Stacks nest.
+
+<Demo name="stack/Row" align="stretch" />
+
+## Accessibility
+
+Stack renders a plain `<div>` and adds no semantics. Pass `role` or `aria-*` attributes when the group
+needs them; they reach the root element, and so does the `ref`.
+
+## API
+
+<ApiTable component="Stack" />

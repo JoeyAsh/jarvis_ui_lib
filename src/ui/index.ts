@@ -126,6 +126,18 @@ export type { CheckboxProps, CheckboxSize } from './primitives/Checkbox';
 export { Textarea } from './primitives/Textarea';
 export type { TextareaProps, TextareaSize } from './primitives/Textarea';
 
+export { Stack } from './primitives/Stack';
+export type {
+    StackProps,
+    StackGap,
+    StackDirection,
+    StackAlign,
+    StackJustify,
+} from './primitives/Stack';
+
+export { Grid } from './primitives/Grid';
+export type { GridProps, GridColumns, GridAlign } from './primitives/Grid';
+
 export { Divider } from './primitives/Divider';
 export type { DividerProps, DividerOrientation, DividerVariant } from './primitives/Divider';
 

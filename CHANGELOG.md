@@ -9,6 +9,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Layout: `Stack` (column or row, `gap` on the `--s-*` tokens, `align`, `justify`, `wrap`) and `Grid`
+  (1–6 equal columns or auto-fit with `minColumnWidth`) lay out content without Tailwind.
 - Form controls:
     - `Slider`: range input with pointer drag, track click and keyboard (arrows, PageUp/PageDown,
       Home/End), `onValueChange` / `onValueCommit`, `min` / `max` / `step`, `formatValue`, `fullWidth`.

@@ -36,6 +36,8 @@ export const PAGES: DocsPage[] = [
     { slug: 'customization/tokens', title: 'Design tokens', group: 'Customization' },
     { slug: 'customization/tailwind', title: 'Tailwind', group: 'Customization' },
 
+    { slug: 'components/stack', title: 'Stack', group: 'Primitives' },
+    { slug: 'components/grid', title: 'Grid', group: 'Primitives' },
     { slug: 'components/button', title: 'Button', group: 'Primitives' },
     { slug: 'components/icon-button', title: 'IconButton', group: 'Primitives' },
     { slug: 'components/link', title: 'Link', group: 'Primitives' },

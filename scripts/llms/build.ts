@@ -69,7 +69,7 @@ const USAGE_RULES = `## Usage rules
 - Wrap the app once in \`JarvisProvider\` (UI sounds, toasts, \`useJarvis()\`). \`useToast()\` and \`useJarvis()\` throw outside of it; without a provider the other components work but stay silent.
 - Give the page the dark surface: \`body { background: var(--bg); color: var(--text); }\`. Style with the design tokens (\`var(--accent)\`, ...), not hard-coded colors.
 - Every component accepts \`className\`; components wrapping a native element accept its attributes and forward \`ref\`.
-- Layout (size, spacing, flex/grid) is up to the app: use the project's own CSS classes, or Tailwind only if the project has Tailwind. The demos below use Tailwind utilities (\`flex gap-3\`, \`w-[280px]\`) for layout; without Tailwind, replace them with own CSS. Do not rely on utility classes from \`style.css\`: it contains only an internal subset that changes between releases.
+- Layout: use \`Stack\` (rows/columns) and \`Grid\` (columns) with token gaps (\`xs\`–\`xl\`); sizes via the project's own CSS classes, or Tailwind only if the project has Tailwind. The demos below use Tailwind utilities (\`flex gap-3\`, \`w-[280px]\`) for layout; without Tailwind, replace them with \`Stack\`, \`Grid\` or own CSS. Do not rely on utility classes from \`style.css\`: it contains only an internal subset that changes between releases.
 - Use only the props listed in the API tables; do not invent props or variants. Helper types used by props (e.g. \`TabItem\`, \`TableColumn<T>\`) are documented under "Type" after each API table.`;
 
 function pagePath(slug: string): string {
