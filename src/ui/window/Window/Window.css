@@ -170,6 +170,14 @@
 }
 
 /* ── body ── */
+/* The panel body becomes a column so the window body fills the window height; content can then use
+   height: 100% (e.g. a WebFrame or a player). */
+.lib-window .lib-panel__body {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
 .lib-window__body {
     flex: 1;
     overflow: auto;

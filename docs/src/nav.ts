@@ -103,6 +103,7 @@ export const PAGES: DocsPage[] = [
     { slug: 'components/media-controls', title: 'MediaControls', group: 'Media' },
     { slug: 'components/media-player', title: 'MediaPlayer', group: 'Media' },
     { slug: 'components/you-tube-player', title: 'YouTubePlayer', group: 'Media' },
+    { slug: 'components/web-frame', title: 'WebFrame', group: 'Media' },
 
     { slug: 'components/window', title: 'Window', group: 'Window' },
     { slug: 'components/snap-overlay', title: 'SnapOverlay', group: 'Window' },

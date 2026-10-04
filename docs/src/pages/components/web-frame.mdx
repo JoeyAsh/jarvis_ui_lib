@@ -1,0 +1,53 @@
+# WebFrame
+
+<Lead>
+    Shows a web page inside your interface, for example in a floating window, with a small toolbar:
+    the address, reload and "open in new tab".
+</Lead>
+
+<ComponentMeta component="WebFrame" />
+
+## Basic
+
+Pass the page as `url`; only `http:` and `https:` addresses are loaded, anything else shows an
+error. `title` names the embedded page for screen readers (default: the host). Without `height` the
+frame fills the height of its container, e.g. a window; `height` sets a fixed height in pixels.
+
+<Demo name="web-frame/Basic" align="stretch" />
+
+## In a floating window
+
+<Demo name="web-frame/InWindow" height="tall" align="start" />
+
+## Pages that cannot be embedded
+
+<Callout variant="warning" title="Many sites forbid embedding">
+    Sites such as GitHub or Google send `X-Frame-Options` or a `frame-ancestors` policy, and the
+    browser then leaves the frame empty. A page cannot detect this reliably, so the "Open in new
+    tab" button is always there. For a real browser window inside your app, use a webview in
+    Electron or Tauri.
+</Callout>
+
+<Demo name="web-frame/Blocked" align="stretch" />
+
+## Security
+
+The page runs in a sandboxed iframe. The default `sandbox` allows scripts, its own origin, forms and
+popups, which most pages need; pass a stricter value (`""` blocks everything) for untrusted content.
+`allow` grants features like `fullscreen` or `autoplay`. The page gets only the origin as referrer,
+and "open in new tab" opens without `window.opener`.
+
+## Sound
+
+The toolbar buttons play `hover_button` and `click` through the nearest `SfxProvider`. See
+[Sound effects](/getting-started/sound).
+
+## Accessibility
+
+- The iframe is named by `title` (or the host). The toolbar buttons are named **Reload** and **Open
+  in new tab**.
+- An invalid address is announced with `role="alert"`.
+
+## API
+
+<ApiTable component="WebFrame" />
