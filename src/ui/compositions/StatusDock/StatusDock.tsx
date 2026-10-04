@@ -10,6 +10,8 @@ export function StatusDock({
     onPTT,
     ptt,
     pttLabel,
+    labels,
+    brand,
     className,
 }: StatusDockProps): ReactElement {
     const isActive = state !== 'idle';
@@ -23,7 +25,7 @@ export function StatusDock({
                 )}
                 <WaveformMeter active={isActive} mirrored />
             </div>
-            <StatusLabel state={state} live />
+            <StatusLabel state={state} labels={labels} brand={brand} live />
         </div>
     );
 }

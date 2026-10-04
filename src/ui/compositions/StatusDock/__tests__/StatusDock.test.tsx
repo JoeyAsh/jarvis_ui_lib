@@ -98,4 +98,22 @@ describe('StatusDock', () => {
         rerender(<StatusDock state="thinking" />);
         expect(screen.getByRole('status').textContent).toBe('thinking...');
     });
+
+    it('labels localizes the status text and keeps built-in texts for omitted states', () => {
+        const labels = { idle: 'BEREIT', listening: 'hört zu …' };
+        const { rerender } = render(<StatusDock state="idle" labels={labels} />);
+        expect(screen.getByRole('status').textContent).toBe('BEREIT');
+        rerender(<StatusDock state="listening" labels={labels} />);
+        expect(screen.getByRole('status').textContent).toBe('hört zu …');
+        rerender(<StatusDock state="speaking" labels={labels} />);
+        expect(screen.getByRole('status').textContent).toBe('speaking...');
+    });
+
+    it('brand replaces the brand text', () => {
+        const { rerender } = render(<StatusDock state="idle" />);
+        expect(screen.getByText('J A R V I S')).toBeDefined();
+        rerender(<StatusDock state="idle" brand="F R I D A Y" />);
+        expect(screen.getByText('F R I D A Y')).toBeDefined();
+        expect(screen.queryByText('J A R V I S')).toBeNull();
+    });
 });

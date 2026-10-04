@@ -14,6 +14,14 @@ import { ShowcaseCard } from '../ShowcaseCard';
 import { SectionHeader } from '../SectionHeader';
 
 const VITALS = ['CPU', 'RAM', 'GPU', 'TEMP'];
+const GERMAN_LABELS: Partial<Record<AppOrbState, string>> = {
+    idle: 'BEREIT',
+    listening: 'hört zu …',
+    thinking: 'denkt nach …',
+    speaking: 'spricht …',
+    follow_up: 'Rückfrage …',
+    working: 'arbeitet …',
+};
 
 export function CompositionsSection(): ReactElement {
     const [dockState, setDockState] = useState<AppOrbState>('idle');
@@ -146,6 +154,21 @@ export function CompositionsSection(): ReactElement {
                                 }
                             />
                         </div>
+                    </div>
+                </ShowcaseCard>
+                <ShowcaseCard
+                    label="STATUS DOCK · LOCALIZED (labels, brand, pttLabel)"
+                    code={`<StatusDock\n  state={state}\n  labels={{ idle: 'BEREIT', listening: 'hört zu …', thinking: 'denkt nach …' }}\n  brand="J A R V I S"\n  pttLabel="Sprechen"\n/>`}
+                    dark
+                >
+                    <div className="relative h-[170px] w-full overflow-hidden border border-border bg-bg transform-gpu">
+                        <StatusDock
+                            state={dockState}
+                            labels={GERMAN_LABELS}
+                            brand="J A R V I S"
+                            pttLabel="Sprechen"
+                            onPTT={() => setDockState((s) => (s === 'idle' ? 'listening' : 'idle'))}
+                        />
                     </div>
                 </ShowcaseCard>
             </div>

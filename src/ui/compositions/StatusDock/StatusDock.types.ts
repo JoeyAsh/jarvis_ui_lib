@@ -18,6 +18,17 @@ export interface StatusDockProps {
      * @default 'Push to talk'
      */
     pttLabel?: string;
+    /**
+     * Custom status texts per state for the built-in StatusLabel, e.g. for localization; states you
+     * leave out keep their built-in text (`READY`, `listening...`, `thinking...`, `speaking...`,
+     * `follow-up...`, `working...`).
+     */
+    labels?: Partial<Record<AppOrbState, string>>;
+    /**
+     * Brand text shown in small, widely spaced letters below the status.
+     * @default 'J A R V I S'
+     */
+    brand?: string;
     /** Additional class names for the root `<div>`, which is fixed to the bottom center. */
     className?: string;
 }

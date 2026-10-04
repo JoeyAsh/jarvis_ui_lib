@@ -40,12 +40,15 @@ function Assistant({ state, onTalk }: { state: AppOrbState; onTalk: () => void }
 }
 ```
 
-## Custom button
+## Localization
 
-To only rename the built-in button, e.g. for localization, set `pttLabel`; it becomes the
-button's accessible name.
+`labels` replaces the status texts per state; states you leave out keep their built-in text.
+`pttLabel` renames the built-in button and becomes its accessible name, and `brand` replaces the
+`J A R V I S` line under the status.
 
 <Demo name="status-dock/Localized" height="tall" />
+
+## Custom button
 
 `ptt` replaces the built-in button. Pass your own `PushToTalkButton` to change its icon or other
 props; `onPTT` and `pttLabel` are then unused, so wire the click on your button.
