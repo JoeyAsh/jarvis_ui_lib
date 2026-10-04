@@ -41,6 +41,10 @@ export default defineConfig({
                 find: /^jarvis-react-ui\/orb$/,
                 replacement: resolve(import.meta.dirname, 'src/ui/orb/index.ts'),
             },
+            {
+                find: /^jarvis-react-ui\/generative$/,
+                replacement: resolve(import.meta.dirname, 'src/ui/generative/index.ts'),
+            },
             { find: /^@ui$/, replacement: resolve(import.meta.dirname, 'src/ui/index.ts') },
             { find: /^@ui\/(.*)/, replacement: resolve(import.meta.dirname, 'src/ui') + '/$1' },
             { find: /^@core\/(.*)/, replacement: resolve(import.meta.dirname, 'src/core') + '/$1' },

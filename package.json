@@ -101,6 +101,10 @@
             "types": "./dist/ui/orb/index.d.ts",
             "import": "./dist/orb.js"
         },
+        "./generative": {
+            "types": "./dist/ui/generative/index.d.ts",
+            "import": "./dist/generative.js"
+        },
         "./style.css": "./dist/style.css",
         "./llms.txt": "./dist/llms.txt",
         "./llms-full.txt": "./dist/llms-full.txt",

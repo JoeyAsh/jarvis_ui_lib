@@ -36,6 +36,7 @@ export default defineConfig({
             entry: {
                 index: resolve(root, 'src/lib.ts'),
                 orb: resolve(root, 'src/ui/orb/index.ts'),
+                generative: resolve(root, 'src/ui/generative/index.ts'),
             },
             formats: ['es'],
             cssFileName: 'style',

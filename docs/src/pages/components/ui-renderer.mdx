@@ -1,0 +1,102 @@
+# UiRenderer
+
+<Lead>
+    Renders a window from a JSON spec, for example one an assistant produced: a tree of library
+    components with state, bindings, conditions and actions. Nothing has to exist in your code
+    beforehand, and only allowlisted components and props can be used.
+</Lead>
+
+<ComponentMeta component="UiRenderer" />
+
+## Basic
+
+A spec has an `id`, initial `state` and a `root` node. Each node names a component (`type`) and
+sets its `props`; `{ "$bind": "volume" }` binds a control to a state value in both directions, and
+`visibleIf` shows a node only while a condition holds. Text may contain `{{key}}` templates.
+
+<Demo name="ui-renderer/Basic" align="start" />
+
+## The spec
+
+```json
+{
+    "id": "volume",
+    "title": "Volume",
+    "size": { "w": 360, "h": 240 },
+    "state": { "volume": 40, "muted": false },
+    "root": {
+        "type": "Stack",
+        "children": [
+            {
+                "type": "Slider",
+                "props": {
+                    "label": "Volume",
+                    "value": { "$bind": "volume" },
+                    "formatValue": "{value} %"
+                }
+            },
+            {
+                "type": "Mono",
+                "children": "Output at {{volume}} %",
+                "visibleIf": { "state": "muted", "eq": false }
+            },
+            {
+                "type": "Button",
+                "children": "Apply",
+                "on": { "onClick": { "emit": "apply", "payload": { "$state": "volume" } } }
+            }
+        ]
+    }
+}
+```
+
+| Part                | Meaning                                                                                                    |
+| ------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `type`              | A component from the allowlist (`UI_REGISTRY`); others render a placeholder.                               |
+| `props`             | Allowed props of that component; others are ignored.                                                       |
+| `{ "$state": "k" }` | Reads a state value.                                                                                       |
+| `{ "$bind": "k" }`  | Two-way binding on `value` / `checked`; the change handler is wired for you.                               |
+| `"…{{k}}…"`         | Template in any text.                                                                                      |
+| `children`          | Text, or an array of nodes for layout components.                                                          |
+| `on`                | Actions per event prop: `{ "set": "k", "value"? }`, `{ "toggle": "k" }`, `{ "emit": "name", "payload"? }`. |
+| `visibleIf`         | `{ "state": "k" }` (truthy), `{ "state": "k", "eq": v }` or `{ "state": "k", "ne": v }`.                   |
+| `id`                | Makes a player addressable through `call(...)`.                                                            |
+
+Some props are translated: text props (`label`, `title`, …) take text or a nested node, icon props
+take a name from `UI_ICONS` (`"Play"`), format functions take a template (`"{value} %"`), `Table`
+takes `columns: [{ key, header, align? }]` and `rows` objects, and `Tabs` items take text or a node
+as `content`.
+
+## Several windows
+
+`useUiWindows()` manages generated windows for a [WindowManager](/components/window-manager): `open`
+validates a spec and opens it as a floating window (an existing id is replaced), `patchState`
+changes a window's state without rebuilding it, `call` controls players, and `onAction` receives
+every `emit`. Try opening both windows, then the buttons.
+
+<Demo name="ui-renderer/Windows" height="tall" align="start" />
+
+## Validation
+
+`validateUiSpec(spec)` returns every problem with its JSON path, so you can send them back to the
+model and ask for a fixed spec. `open` refuses invalid specs; `UiRenderer` renders what it can and
+reports the rest through `onError`.
+
+<Demo name="ui-renderer/Validation" align="stretch" />
+
+## Safety
+
+- Only components and props in `UI_REGISTRY` are rendered. There is no way to set `className`,
+  inline styles, raw HTML (`CodeBlock.html` is not allowed) or event handlers other than actions.
+- Links, media sources and web frames accept only `http(s)` URLs or relative paths; `WebFrame`'s
+  sandbox cannot be changed from a spec.
+- Text is always rendered as text. Specs are limited to 24 levels and 500 nodes.
+
+## Accessibility
+
+The rendered components keep their own semantics and keyboard support. Ask the model for labels:
+`label` on form controls, `aria-label` where there is no visible text.
+
+## API
+
+<ApiTable component="UiRenderer" />

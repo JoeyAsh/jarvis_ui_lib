@@ -28,8 +28,8 @@ export interface ApiType {
 export interface ApiDoc {
     name: string;
     slug: string;
-    group: 'primitives' | 'compositions' | 'window' | 'orb';
-    entry: 'jarvis-react-ui' | 'jarvis-react-ui/orb';
+    group: 'primitives' | 'compositions' | 'window' | 'orb' | 'generative';
+    entry: 'jarvis-react-ui' | 'jarvis-react-ui/orb' | 'jarvis-react-ui/generative';
     /** Repo-relative source file. */
     file: string;
     description: string;
