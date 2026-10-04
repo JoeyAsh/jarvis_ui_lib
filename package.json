@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "vite",
         "build": "npm run build:lib",
-        "build:lib": "vite build -c vite.config.lib.ts",
+        "build:lib": "vite build -c vite.config.lib.ts && tsx scripts/gen-llms.ts",
         "build:showcase": "npm run typecheck && vite build",
         "preview": "vite preview --outDir dist-showcase",
         "docs:api": "tsx scripts/gen-api.ts",
@@ -102,6 +102,9 @@
             "import": "./dist/orb.js"
         },
         "./style.css": "./dist/style.css",
+        "./llms.txt": "./dist/llms.txt",
+        "./llms-full.txt": "./dist/llms-full.txt",
+        "./api.json": "./dist/api.json",
         "./sounds/*": "./public/sounds/*",
         "./package.json": "./package.json"
     },

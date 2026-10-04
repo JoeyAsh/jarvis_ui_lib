@@ -28,6 +28,7 @@ export const PAGES: DocsPage[] = [
     { slug: 'getting-started/usage', title: 'Usage', group: 'Getting started' },
     { slug: 'getting-started/sound', title: 'Sound effects', group: 'Getting started' },
     { slug: 'components/jarvis-provider', title: 'JarvisProvider', group: 'Getting started' },
+    { slug: 'getting-started/ai', title: 'Using with AI', group: 'Getting started' },
 
     { slug: 'customization/theming', title: 'Theming', group: 'Customization' },
     { slug: 'customization/tokens', title: 'Design tokens', group: 'Customization' },

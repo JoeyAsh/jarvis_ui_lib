@@ -155,6 +155,15 @@ page has a live playground, and the full list is under
 [Design tokens](https://joeyash.github.io/jarvis_ui_lib/customization/tokens). Design rules: sharp
 edges (max 4px radius), glow instead of drop shadows, JetBrains Mono only, dark only.
 
+## Using with AI
+
+The docs are available as Markdown for AI coding assistants:
+[`llms.txt`](https://joeyash.github.io/jarvis_ui_lib/llms.txt) and
+[`llms-full.txt`](https://joeyash.github.io/jarvis_ui_lib/llms-full.txt) on the docs site, and
+`dist/llms.txt`, `dist/llms-full.txt` and `dist/api.json` in the package (matching the installed
+version). Point your agent at `node_modules/jarvis-react-ui/dist/llms-full.txt`, see
+[Using with AI](https://joeyash.github.io/jarvis_ui_lib/getting-started/ai).
+
 ## Development
 
 ```bash
