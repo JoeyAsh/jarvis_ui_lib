@@ -89,10 +89,14 @@ variant designs; it also makes a `viewport` orb take pointer events, so use it w
 With `fill="container"` the orb fills its parent element, which needs a size. With the default
 `fill="viewport"` the canvas is `position: fixed` at the top-left corner, sized to the window (it follows window
 resizes), sits at `z-index: 0` and ignores the pointer, so it works as a background layer behind
-the HUD. It is transparent, so put your background color or
-[GridBackground](/components/grid-background) behind it. Inside an ancestor with a `transform`, the
-fixed canvas is positioned relative to that ancestor instead of the viewport; the demo above uses
-`className="h-full! w-full!"` to fit it into the demo frame.
+the HUD. Every variant renders on a transparent canvas: only the orb and its glow are drawn, so put
+your background color or [GridBackground](/components/grid-background) behind it. In the `orb` slot
+of [HUDShell](/components/hud-shell), the shell's grid, stars and horizon stay visible around the
+orb. Inside an ancestor with a `transform`, the fixed canvas is positioned relative to that
+ancestor instead of the viewport; this demo uses `className="h-full! w-full!"` to fit it into the
+demo frame.
+
+<Demo name="three-orb/OverScene" height="tall" />
 
 ## Without React
 
