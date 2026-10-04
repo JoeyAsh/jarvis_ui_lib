@@ -25,6 +25,17 @@ const BUTTON: ApiDoc = {
         },
     ],
     inherited: [{ from: 'ButtonHTMLAttributes', count: 10 }],
+    types: [
+        {
+            name: 'ButtonItem',
+            description: 'One entry.',
+            definition: null,
+            fields: [
+                { name: 'id', type: 'string', required: true, default: null, description: 'Id.' },
+            ],
+        },
+        { name: 'ButtonTone', description: '', definition: "'a' | 'b'", fields: [] },
+    ],
 };
 
 const ctx: RenderContext = {
@@ -106,7 +117,16 @@ describe('pageToMarkdown', () => {
 
 describe('apiTable', () => {
     it('says so when a component has no own props', () => {
-        expect(apiTable({ ...BUTTON, props: [], inherited: [] })).toBe('No own props.');
+        expect(apiTable({ ...BUTTON, props: [], inherited: [], types: [] })).toBe('No own props.');
+    });
+
+    it('documents the helper types after the props', () => {
+        const md = apiTable(BUTTON);
+        expect(md).toContain(
+            '### Type `ButtonItem`\n\nOne entry.\n\n| Field | Type | Default | Description |',
+        );
+        expect(md).toContain('| `id` (required) | `string` |  | Id. |');
+        expect(md).toContain("```ts\ntype ButtonTone = 'a' | 'b';\n```");
     });
 });
 
@@ -124,6 +144,7 @@ describe('buildLlms on the real docs', () => {
         description: '',
         props: [],
         inherited: [],
+        types: [],
     }));
     const input = loadLlmsInput(api, BASE);
     const out = buildLlms(input);

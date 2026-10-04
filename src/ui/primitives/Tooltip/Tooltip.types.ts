@@ -4,6 +4,7 @@ export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
 /** Props the tooltip injects into its trigger element. */
 export interface TooltipTriggerProps {
+    /** Id of the tooltip bubble while it is open, so screen readers announce it. */
     'aria-describedby'?: string;
 }
 

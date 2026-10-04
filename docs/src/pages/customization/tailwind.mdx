@@ -7,7 +7,7 @@
 
 ## Without Tailwind
 
-Nothing to do. `jarvis-react-ui/style.css` contains every class the components use. Write your own
+Nothing to do. `jarvis-react-ui/style.css` contains everything the components need. Write your own
 styles with the CSS variables:
 
 ```css
@@ -17,6 +17,17 @@ styles with the CSS variables:
     color: var(--text-secondary);
 }
 ```
+
+<Callout variant="warning" title="Don't use the utility classes without Tailwind">
+    The stylesheet also contains some Tailwind utility classes (`flex`, `h-[120px]`, ...), but only
+    the ones the components happen to use internally. They are not part of the public API: most
+    utilities are missing, and the set changes between releases. Without Tailwind in your project,
+    do not put utility classes in your own markup. Use your own CSS classes with the tokens, as
+    above.
+</Callout>
+
+The docs demos use Tailwind utilities for their layout (`flex gap-3`, `w-[280px]`, ...). Without
+Tailwind, replace them with your own CSS when you copy a demo; the component props stay the same.
 
 ## With Tailwind v4
 

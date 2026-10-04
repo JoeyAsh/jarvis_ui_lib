@@ -15,7 +15,7 @@ export interface PanelProps {
     onFocus?: () => void;
     /** Additional class names for the root element, e.g. width and height utilities. */
     className?: string;
-    /** Inline style for the root element. Prefer `className` for sizing. */
+    /** Inline style for the root element, e.g. `{ width: 320, height: 220 }`. */
     style?: CSSProperties;
     /** Panel body content. */
     children?: ReactNode;

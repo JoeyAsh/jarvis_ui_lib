@@ -13,6 +13,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `dist/api.json` (every public component with entry point, props and demo sources), also exported as
   `jarvis-react-ui/llms.txt`, `jarvis-react-ui/llms-full.txt` and `jarvis-react-ui/api.json`. The docs
   site serves `/llms.txt`, `/llms-full.txt` and a Markdown version of every page (`<page>.md`).
+- API reference: the public helper types that props use (`TabItem`, `TableColumn<T>`, `TableAlign`,
+  `AppOrbState`, `NavListGroup`, `ChartSeries`, ...) are documented with their fields or definition
+  below each API table, in `llms-full.txt` and in `api.json` (`types` per component).
 
 ## [0.3.0] - 2026-10-03
 

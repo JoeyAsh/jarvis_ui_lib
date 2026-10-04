@@ -56,9 +56,13 @@ export interface ManagedWindow {
 
 /** Rectangular geometry used for the expanded (free-floating) position. */
 export interface ExpandedRect {
+    /** Left edge in px. */
     x: number;
+    /** Top edge in px. */
     y: number;
+    /** Width in px. */
     w: number;
+    /** Height in px. */
     h: number;
 }
 

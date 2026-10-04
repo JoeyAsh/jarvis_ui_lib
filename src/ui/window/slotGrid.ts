@@ -23,9 +23,13 @@ export const SLOT_IDS: ReadonlyArray<SlotId> = [
 
 /** Rectangular geometry (pixel-absolute, viewport-relative). */
 export interface SlotRect {
+    /** Left edge in px. */
     x: number;
+    /** Top edge in px. */
     y: number;
+    /** Width in px. */
     w: number;
+    /** Height in px. */
     h: number;
 }
 

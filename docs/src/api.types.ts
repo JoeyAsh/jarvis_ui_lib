@@ -14,6 +14,17 @@ export interface InheritedProps {
     count: number;
 }
 
+/** A public helper type that props refer to, e.g. `TabItem` or `AppOrbState`. */
+export interface ApiType {
+    /** Name with type parameters, e.g. `TableColumn<T>`. */
+    name: string;
+    description: string;
+    /** Type text for unions and aliases (`'idle' | 'listening'`); null for object types. */
+    definition: string | null;
+    /** Fields of an object type (empty for unions and aliases). */
+    fields: ApiProp[];
+}
+
 export interface ApiDoc {
     name: string;
     slug: string;
@@ -24,4 +35,6 @@ export interface ApiDoc {
     description: string;
     props: ApiProp[];
     inherited: InheritedProps[];
+    /** Public helper types the props refer to, in order of first mention. */
+    types: ApiType[];
 }

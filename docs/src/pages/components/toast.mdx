@@ -63,6 +63,8 @@ countdown bar.
 | `action`      | `{ label: string; onClick: () => void }`      | —        | Action button; also closes the toast.     |
 | `id`          | `string`                                      | auto     | Reuse to replace an existing toast.       |
 
+Every option is optional. Pass at least a `title` or a `description`; one of them is enough.
+
 `useToast()` returns `{ toast, dismiss, dismissAll }` and throws when no provider is mounted.
 Placement, the number of visible toasts and the default duration are set on
 [ToastProvider](/components/toast-provider) or [JarvisProvider](/components/jarvis-provider).
