@@ -3,7 +3,7 @@ import { join, resolve } from 'node:path';
 
 export const ROOT = resolve(import.meta.dirname, '..');
 
-export type ComponentGroup = 'primitives' | 'compositions' | 'window' | 'orb';
+export type ComponentGroup = 'primitives' | 'compositions' | 'window' | 'orb' | 'generative';
 
 export interface PublicComponent {
     /** Export name, e.g. `IconButton`. */
@@ -14,12 +14,17 @@ export interface PublicComponent {
     /** Repo-relative path of the component source file. */
     file: string;
     /** Entry point consumers import it from. */
-    entry: 'jarvis-react-ui' | 'jarvis-react-ui/orb';
+    entry: 'jarvis-react-ui' | 'jarvis-react-ui/orb' | 'jarvis-react-ui/generative';
 }
 
 const BARRELS = [
     { barrel: 'src/ui/index.ts', base: 'src/ui', entry: 'jarvis-react-ui' },
     { barrel: 'src/ui/orb/index.ts', base: 'src/ui/orb', entry: 'jarvis-react-ui/orb' },
+    {
+        barrel: 'src/ui/generative/index.ts',
+        base: 'src/ui/generative',
+        entry: 'jarvis-react-ui/generative',
+    },
 ] as const;
 
 const EXPORT_RE = /^export\s*\{([^}]+)\}\s*from\s*'\.\/([^']+)';/gm;
@@ -36,6 +41,7 @@ function groupOf(file: string): ComponentGroup {
     if (file.includes('/compositions/')) return 'compositions';
     if (file.includes('/window/')) return 'window';
     if (file.includes('/orb/')) return 'orb';
+    if (file.includes('/generative/')) return 'generative';
     return 'primitives';
 }
 

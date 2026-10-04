@@ -517,7 +517,7 @@ export function WindowManager({
                 win.id,
                 win.defaultRect !== undefined
                     ? clampExpandedRect(win.defaultRect, g.w, g.h)
-                    : cascadeRect(index, g.w, g.h),
+                    : cascadeRect(index, g.w, g.h, win.defaultSize),
             );
             if (previous !== null && !previous.has(win.id)) {
                 opened = true;
@@ -575,7 +575,8 @@ export function WindowManager({
                 const baseRect =
                     slotId !== undefined
                         ? slotRects[slotId]
-                        : (win.defaultRect ?? cascadeRect(0, viewport.w, viewport.h));
+                        : (win.defaultRect ??
+                          cascadeRect(0, viewport.w, viewport.h, win.defaultSize));
                 const closable = win.closable ?? isFloating;
                 const localState = windowStates[win.id] ?? 'idle';
                 const isCompactDragging =

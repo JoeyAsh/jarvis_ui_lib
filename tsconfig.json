@@ -24,7 +24,8 @@
             "@test/*": ["./src/test/*"],
             "@docs/*": ["./docs/src/*"],
             "jarvis-react-ui": ["./src/lib.ts"],
-            "jarvis-react-ui/orb": ["./src/ui/orb/index.ts"]
+            "jarvis-react-ui/orb": ["./src/ui/orb/index.ts"],
+            "jarvis-react-ui/generative": ["./src/ui/generative/index.ts"]
         }
     },
     "include": ["src", "docs/src"],

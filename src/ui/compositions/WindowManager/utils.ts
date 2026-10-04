@@ -80,9 +80,14 @@ export function defaultExpandedRect(slotRect: SlotRect, W: number, H: number): E
  * Default rect of the `index`-th floating window: centred in the workspace below the top bar and
  * shifted by `CASCADE_OFFSET` per index, so new windows don't cover each other exactly.
  */
-export function cascadeRect(index: number, W: number, H: number): ExpandedRect {
-    const w = Math.min(FLOATING_DEFAULT_W, W);
-    const h = Math.min(FLOATING_DEFAULT_H, H - TOP_BAR_HEIGHT);
+export function cascadeRect(
+    index: number,
+    W: number,
+    H: number,
+    size?: { w: number; h: number },
+): ExpandedRect {
+    const w = Math.min(size?.w ?? FLOATING_DEFAULT_W, W);
+    const h = Math.min(size?.h ?? FLOATING_DEFAULT_H, H - TOP_BAR_HEIGHT);
     const step = (index % CASCADE_STEPS) * CASCADE_OFFSET;
     const x = Math.floor((W - w) / 2) + step;
     const y = TOP_BAR_HEIGHT + Math.floor((H - TOP_BAR_HEIGHT - h) / 2) + step;

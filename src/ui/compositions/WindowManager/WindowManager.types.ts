@@ -66,6 +66,11 @@ export interface ManagedWindow {
      */
     defaultRect?: ExpandedRect;
     /**
+     * Initial size of a floating window without `defaultRect`; it still opens centred and cascades.
+     * @default { w: 480, h: 320 }
+     */
+    defaultSize?: { w: number; h: number };
+    /**
      * Shows a close button in the header that calls `onClose`; floating windows also close with
      * Escape while focused.
      * @default true for floating windows, false for docked ones

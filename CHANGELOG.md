@@ -9,6 +9,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Generative UI (new entry `jarvis-react-ui/generative`): `UiRenderer` renders a window from a JSON spec
+  (allowlisted components and props, state with `$bind` / `$state` / `{{key}}` templates, `visibleIf`,
+  `set` / `toggle` / `emit` actions); `useUiWindows` manages several generated windows for
+  `WindowManager` (`open`, `patchState`, `call` for players, `close`); `validateUiSpec` reports
+  problems with their JSON path; `UI_REGISTRY` and `UI_ICONS` list what specs may use.
+- `WindowManager`: `ManagedWindow.defaultSize` opens a floating window at a given size while it still
+  centres and cascades.
 - `WebFrame`: a web page in a sandboxed iframe with a toolbar (address, reload, open in new tab);
   only `http(s)` URLs are loaded.
 - Layout: `Stack` (column or row, `gap` on the `--s-*` tokens, `align`, `justify`, `wrap`) and `Grid`

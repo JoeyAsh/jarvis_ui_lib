@@ -11,6 +11,7 @@ export type DocsGroup =
     | 'Media'
     | 'Window'
     | 'Orb'
+    | 'Generative UI'
     | 'Hooks'
     | 'Utilities'
     | 'Reference';
