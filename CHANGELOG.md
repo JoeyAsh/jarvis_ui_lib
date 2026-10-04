@@ -7,6 +7,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- Docs for AI coding assistants: the package ships `dist/llms.txt`, `dist/llms-full.txt` and
+  `dist/api.json` (every public component with entry point, props and demo sources), also exported as
+  `jarvis-react-ui/llms.txt`, `jarvis-react-ui/llms-full.txt` and `jarvis-react-ui/api.json`. The docs
+  site serves `/llms.txt`, `/llms-full.txt` and a Markdown version of every page (`<page>.md`).
+
 ## [0.3.0] - 2026-10-03
 
 ### Added

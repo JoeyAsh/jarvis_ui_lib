@@ -8,6 +8,7 @@ import { demoSource } from './docs/plugins/demoSource.ts';
 import { rehypeCodeBlock } from './docs/plugins/rehypeCodeBlock.ts';
 import { spaFallback } from './docs/plugins/spaFallback.ts';
 import { searchIndex } from './docs/plugins/searchIndex.ts';
+import { llmsTxt } from './docs/plugins/llmsTxt.ts';
 
 /**
  * Documentation site (docs/). Built to dist-docs/ and deployed to GitHub Pages under
@@ -27,6 +28,7 @@ export default defineConfig({
         tailwindcss(),
         react({ include: /\.(mdx|md|jsx|js|tsx|ts)$/ }),
         spaFallback(),
+        llmsTxt(),
     ],
     resolve: {
         alias: [

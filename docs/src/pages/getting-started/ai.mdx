@@ -1,0 +1,48 @@
+# Using with AI
+
+<Lead>
+    The docs are also published as plain Markdown for AI coding assistants, so they use the real
+    props and imports instead of guessing. The same files ship in the npm package and always match
+    the installed version.
+</Lead>
+
+## On the web
+
+The docs site follows the [llms.txt](https://llmstxt.org) convention:
+
+| File                                                                      | Contents                                                                        |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| [`/llms.txt`](https://joeyash.github.io/jarvis_ui_lib/llms.txt)           | Usage rules and a link to every page, with a one-line summary.                  |
+| [`/llms-full.txt`](https://joeyash.github.io/jarvis_ui_lib/llms-full.txt) | Every page in one file, with the demo code and the API tables.                  |
+| `/<page>.md`                                                              | One page as Markdown, e.g. `/components/button.md` for this site's Button page. |
+
+Point a chat assistant at `llms-full.txt`, or at the `.md` pages it needs.
+
+## In the package
+
+The package contains the same content for the version you installed:
+
+| File                                              | Contents                                                                                  |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `node_modules/jarvis-react-ui/dist/llms.txt`      | Usage rules and the page index.                                                           |
+| `node_modules/jarvis-react-ui/dist/llms-full.txt` | All pages with demo code and API tables.                                                  |
+| `node_modules/jarvis-react-ui/dist/api.json`      | Every public component: entry point, props (type, default, description) and demo sources. |
+
+They are also exported as `jarvis-react-ui/llms.txt`, `jarvis-react-ui/llms-full.txt` and
+`jarvis-react-ui/api.json`, so tools can resolve them with `require.resolve`.
+
+## Tell your assistant
+
+Coding agents read project instructions such as `CLAUDE.md`, `AGENTS.md` or `.cursorrules`. Add a
+short note so they load the docs before writing UI code:
+
+```md
+## UI components
+
+This app uses `jarvis-react-ui`. Before building or changing UI, read
+`node_modules/jarvis-react-ui/dist/llms-full.txt` and use only the components, props and imports
+documented there.
+```
+
+`llms-full.txt` is large. Agents that search files can read `api.json` or grep `llms-full.txt` for
+the component they need instead of loading all of it.
