@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "vite",
         "build": "npm run build:lib",
-        "build:lib": "vite build -c vite.config.lib.ts && tsx scripts/gen-llms.ts",
+        "build:lib": "vite build -c vite.config.lib.ts && tsx scripts/check-dist-css.ts && tsx scripts/gen-llms.ts",
         "build:showcase": "npm run typecheck && vite build",
         "preview": "vite preview --outDir dist-showcase",
         "docs:api": "tsx scripts/gen-api.ts",

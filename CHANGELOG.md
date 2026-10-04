@@ -7,6 +7,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- `style.css`: the published stylesheet contained no component styles and none of the library's
+  keyframes (`.lib-panel`, `.hud-shell`, `.lib-scene`, ... had no rules), so components rendered
+  unstyled. Affected every release up to 0.4.0. The build now fails when a component stylesheet
+  or keyframe is missing from `dist/style.css`.
+- `Panel`, `TopBar`, `StateSimulator` and `Tweaks`: the glass blur (`backdrop-filter`) was dropped
+  from the built CSS in Chrome and Firefox; only the `-webkit-` variant was left.
+
 ## [0.4.0] - 2026-10-04
 
 ### Added
