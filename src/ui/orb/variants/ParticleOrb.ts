@@ -7,7 +7,6 @@
  * `buildShell` and `buildRings` hooks.
  */
 import {
-    ACESFilmicToneMapping,
     AdditiveBlending,
     BufferAttribute,
     BufferGeometry,
@@ -19,28 +18,23 @@ import {
     Line,
     Material,
     Mesh,
-    PerspectiveCamera,
     Points,
     RingGeometry,
-    Scene,
     ShaderMaterial,
     Sprite,
     SpriteMaterial,
     SRGBColorSpace,
     Texture,
-    Vector2,
     Vector4,
-    WebGLRenderer,
 } from 'three';
-import type { Object3D } from 'three';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import type { Object3D, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import type { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import type { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { createFrameClock } from '../frameClock';
 import type { FrameClock } from '../frameClock.types';
 import { BAND_COUNT, ORB_VISUAL_STATES } from './constants';
 import { NOISE_GLSL } from './glsl';
+import { createOrbPipeline } from './pipeline';
 import type {
     CoreUniforms,
     ParticleCore,
@@ -445,17 +439,16 @@ export class ParticleOrb implements OrbRenderer {
         this.quality = options.quality === 'low' ? 'low' : 'high';
         const q = QUALITY[this.quality];
 
-        // Renderer, scene, camera
-        this.renderer = new WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, q.maxPixelRatio));
-        this.renderer.toneMapping = ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 1.1;
-        container.appendChild(this.renderer.domElement);
-
-        this.scene = new Scene();
-        this.scene.background = new Color(0x01040a);
-        this.camera = new PerspectiveCamera(35, 1, 0.1, 100);
-        this.camera.position.set(0, 0, 6.6);
+        // Renderer, scene, camera and post-processing (transparent canvas, see pipeline.ts).
+        const pipeline = createOrbPipeline(container, {
+            maxPixelRatio: q.maxPixelRatio,
+            bloom: [0.8, 0.35, 0.18],
+        });
+        this.renderer = pipeline.renderer;
+        this.scene = pipeline.scene;
+        this.camera = pipeline.camera;
+        this.composer = pipeline.composer;
+        this.bloom = pipeline.bloom;
 
         this.root = new Group();
         this.scene.add(this.root);
@@ -464,13 +457,6 @@ export class ParticleOrb implements OrbRenderer {
         this.shell = this.buildShell(q);
         this.rings = this.buildRings();
         this.shocks = this.buildShocks();
-
-        // Post-processing
-        this.composer = new EffectComposer(this.renderer);
-        this.composer.addPass(new RenderPass(this.scene, this.camera));
-        this.bloom = new UnrealBloomPass(new Vector2(256, 256), 0.8, 0.35, 0.18);
-        this.composer.addPass(this.bloom);
-        this.composer.addPass(new OutputPass());
 
         this.resizeObserver = new ResizeObserver(() => {
             this.resize();

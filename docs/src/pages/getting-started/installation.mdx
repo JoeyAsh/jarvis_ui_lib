@@ -51,6 +51,13 @@ Tailwind's preflight reset. You do **not** need Tailwind in your project.
 The package is ESM only and ships TypeScript declarations. The Three.js orb lives in its own entry,
 so `three` never ends up in your bundle unless you import it.
 
+## Upgrading
+
+After `npm install jarvis-react-ui@<new version>`, restart the Vite dev server with
+`npm run dev -- --force` (or delete `node_modules/.vite`). npm writes package files with fixed
+timestamps, so Vite's dependency cache may keep serving the old `style.css` or JavaScript
+otherwise.
+
 ## Next steps
 
 - Build a first screen in [Usage](/getting-started/usage).

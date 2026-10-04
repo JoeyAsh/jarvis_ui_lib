@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from 'react';
+import { Suspense, lazy, useState, type ReactElement } from 'react';
 import type { AppOrbState } from '@common/types';
 import { HUDShell } from '../../compositions/HUDShell';
 import { StatusDock } from '../../compositions/StatusDock';
@@ -7,29 +7,52 @@ import { BrandMark } from '../../primitives/BrandMark';
 import { Panel } from '../../primitives/Panel';
 import { Label } from '../../primitives/Label';
 import { Switch } from '../../primitives/Switch';
+import { Button } from '../../primitives/Button';
 import { CssOrb } from '../../orb/CssOrb';
+import { ORB_VARIANTS } from '../../orb/variants/constants';
+import type { ShellOrb } from './HUDShellSection.types';
 import { ShowcaseCard } from '../ShowcaseCard';
 import { SectionHeader } from '../SectionHeader';
+
+const SHELL_ORBS: ShellOrb[] = ['css', 'constellation', ...ORB_VARIANTS];
+
+// Three.js stays in its own chunk.
+const ThreeOrb = lazy(() => import('../../orb/ThreeOrb'));
 
 export function HUDShellSection(): ReactElement {
     const [idle, setIdle] = useState(false);
     const [state, setState] = useState<AppOrbState>('idle');
+    const [orb, setOrb] = useState<ShellOrb>('css');
 
     return (
         <section id="hud-shell" className="flex flex-col gap-4">
             <SectionHeader title="HUD Shell">
                 HUDShell = Scene · Reactor · ViewportCorners · TopBar · Orb · panels · StatusDock.
                 It is fixed to the viewport in production; here it is scoped to the preview box.
-                Click the push-to-talk button to toggle listening.
+                Click the push-to-talk button to toggle listening. The WebGL orbs are transparent:
+                grid, stars and horizon must stay visible around them.
             </SectionHeader>
 
             <ShowcaseCard
                 label="HUD SHELL (scoped preview)"
-                code={`<HUDShell\n  idle={idle}\n  topbar={<TopBar left={<BrandMark />} />}\n  orb={<CssOrb state={state} />}\n  dock={<StatusDock state={state} onPTT={toggle} />}\n>\n  <Panel title="SYSTEM">…</Panel>\n</HUDShell>`}
+                code={`<HUDShell\n  idle={idle}\n  topbar={<TopBar left={<BrandMark />} />}\n  orb={${orb === 'css' ? '<CssOrb state={state} />' : `<ThreeOrb state={state} variant="${orb}" />`}}\n  dock={<StatusDock state={state} onPTT={toggle} />}\n>\n  <Panel title="SYSTEM">…</Panel>\n</HUDShell>`}
                 dark
             >
                 <div className="flex w-full flex-col gap-3">
-                    <Switch label="Idle mode" checked={idle} onCheckedChange={setIdle} />
+                    <div className="flex flex-wrap items-center gap-2">
+                        <Switch label="Idle mode" checked={idle} onCheckedChange={setIdle} />
+                        {SHELL_ORBS.map((o) => (
+                            <Button
+                                key={o}
+                                size="sm"
+                                variant={o === orb ? 'primary' : 'ghost'}
+                                aria-pressed={o === orb}
+                                onClick={() => setOrb(o)}
+                            >
+                                {o === 'css' ? 'CssOrb' : o}
+                            </Button>
+                        ))}
+                    </div>
                     {/* transform-gpu makes this box the containing block for the fixed shell */}
                     <div className="relative h-[640px] w-full overflow-hidden border border-border transform-gpu">
                         <HUDShell
@@ -41,7 +64,16 @@ export function HUDShellSection(): ReactElement {
                                     right={<Label dim>N 48.21 · E 16.37</Label>}
                                 />
                             }
-                            orb={<CssOrb state={state} />}
+                            orb={
+                                orb === 'css' ? (
+                                    <CssOrb state={state} />
+                                ) : (
+                                    <Suspense fallback={null}>
+                                        {/* fill="container": the preview box, not the window */}
+                                        <ThreeOrb state={state} variant={orb} fill="container" />
+                                    </Suspense>
+                                )
+                            }
                             dock={
                                 <StatusDock
                                     state={state}

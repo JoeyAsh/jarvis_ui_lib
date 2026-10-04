@@ -27,6 +27,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `menu_open`.
 - `Window`: `closeOnEscape` and `stackIndex` props; closing now also plays `menu_close`.
 
+### Fixed
+
+- `ThreeOrb` (`particle`, `halo`, `signal`, `reactor`, `lattice`) and `createVariantOrb`: the canvas
+  painted an opaque dark background over everything behind it, e.g. the `HUDShell` grid, stars and
+  horizon. The variant orbs now render on a transparent canvas, including their bloom glow.
+
 ## [0.4.1] - 2026-10-04
 
 ### Fixed

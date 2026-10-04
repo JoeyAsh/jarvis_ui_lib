@@ -1,28 +1,15 @@
 /**
- * OrbBase: shared scaffolding for the variant orbs. Renderer, camera, bloom composer, resize,
- * state easing and audio smoothing. Subclasses implement `build(q)` and `update(dt, t, p, audio)`.
+ * OrbBase: shared scaffolding for the variant orbs. Renderer, camera, bloom composer (transparent
+ * canvas, see `pipeline.ts`), resize, state easing and audio smoothing. Subclasses implement `build(q)` and `update(dt, t, p, audio)`.
  */
-import {
-    ACESFilmicToneMapping,
-    Color,
-    Line,
-    Mesh,
-    PerspectiveCamera,
-    Points,
-    Scene,
-    Sprite,
-    Texture,
-    Vector2,
-    WebGLRenderer,
-} from 'three';
-import type { Material, Object3D } from 'three';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
+import { Line, Mesh, Points, Sprite, Texture } from 'three';
+import type { Material, Object3D, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import type { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import type { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { createFrameClock } from '../frameClock';
 import type { FrameClock } from '../frameClock.types';
 import { BAND_COUNT, ORB_VISUAL_STATES } from './constants';
+import { createOrbPipeline } from './pipeline';
 import type {
     OrbBloomParams,
     OrbParamValue,
@@ -115,25 +102,14 @@ export abstract class OrbBase<
 
         this.params = structuredClone(presets.idle);
 
-        this.renderer = new WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, q.maxPixelRatio));
-        this.renderer.toneMapping = ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 1.1;
-        container.appendChild(this.renderer.domElement);
-
-        this.scene = new Scene();
-        this.scene.background = new Color(0x01040a);
-        this.camera = new PerspectiveCamera(35, 1, 0.1, 100);
-        this.camera.position.set(0, 0, 6.6);
+        const pipeline = createOrbPipeline(container, { maxPixelRatio: q.maxPixelRatio, bloom });
+        this.renderer = pipeline.renderer;
+        this.scene = pipeline.scene;
+        this.camera = pipeline.camera;
+        this.composer = pipeline.composer;
+        this.bloom = pipeline.bloom;
 
         this.parts = this.build(q);
-
-        this.composer = new EffectComposer(this.renderer);
-        this.composer.addPass(new RenderPass(this.scene, this.camera));
-        const [strength, radius, threshold] = bloom;
-        this.bloom = new UnrealBloomPass(new Vector2(256, 256), strength, radius, threshold);
-        this.composer.addPass(this.bloom);
-        this.composer.addPass(new OutputPass());
 
         this.resizeObserver = new ResizeObserver(() => this.resize());
         this.resizeObserver.observe(container);
