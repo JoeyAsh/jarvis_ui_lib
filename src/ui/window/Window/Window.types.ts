@@ -70,8 +70,22 @@ export interface WindowProps {
     onResizeEnd?: (id: string, e: PointerEvent) => void;
     /** Shows a reset button in the header and is called when it is clicked. */
     onReset?: (id: string) => void;
-    /** Shows a close button in the header and is called when it is clicked. */
+    /**
+     * Shows a close button in the header and is called when it is clicked. Closing plays the
+     * `menu_close` sound.
+     */
     onClose?: (id: string) => void;
+    /**
+     * Calls `onClose` when Escape is pressed while focus is inside the window.
+     * @default false
+     */
+    closeOnEscape?: boolean;
+    /**
+     * Stacking rank among expanded windows; a higher rank is drawn on top. Set by `WindowManager`
+     * to bring the last used floating window to the front.
+     * @default 0
+     */
+    stackIndex?: number;
     /**
      * Shows a dock/undock button in the header; called when it is clicked or the header is
      * double-clicked. Both play the `expand` / `collapse` sound.

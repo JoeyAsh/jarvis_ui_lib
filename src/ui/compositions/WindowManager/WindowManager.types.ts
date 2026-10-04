@@ -52,6 +52,25 @@ export interface ManagedWindow {
      * dragging state so the consumer can render compact vs expanded views.
      */
     itemRenderer: (props: PanelContentRenderProps) => ReactNode;
+    /**
+     * Opens the window free-floating instead of docked: it needs no entry in `assignments`, is
+     * always `expanded`, can be moved and resized but not docked, and has no slot limit. Use it for
+     * windows created at runtime.
+     * @default false
+     */
+    floating?: boolean;
+    /**
+     * Initial position and size of a floating window, relative to the container. Without it,
+     * floating windows open centred and cascade by 24px. Ignored once the window has a rect in
+     * `expandedRects`.
+     */
+    defaultRect?: ExpandedRect;
+    /**
+     * Shows a close button in the header that calls `onClose`; floating windows also close with
+     * Escape while focused.
+     * @default true for floating windows, false for docked ones
+     */
+    closable?: boolean;
 }
 
 /** Rectangular geometry used for the expanded (free-floating) position. */
@@ -67,7 +86,10 @@ export interface ExpandedRect {
 }
 
 export interface WindowManagerProps {
-    /** Windows to render. A window without an entry in `assignments` is not rendered. */
+    /**
+     * Windows to render. A docked window without an entry in `assignments` is not rendered;
+     * `floating` windows need no assignment.
+     */
     windows: ManagedWindow[];
     /** Window id → slot id (controlled). Each window is docked in its assigned slot. */
     assignments: Record<string, SlotId>;
@@ -114,6 +136,12 @@ export interface WindowManagerProps {
      * controlled and uncontrolled mode.
      */
     onExpandedRectsChange?: (next: Record<string, ExpandedRect>) => void;
+
+    /**
+     * Called with the window id when its close button is clicked (or Escape is pressed in a
+     * focused floating window). Remove the window from `windows` to close it.
+     */
+    onClose?: (id: string) => void;
 
     /** Additional class names for the root element. */
     className?: string;

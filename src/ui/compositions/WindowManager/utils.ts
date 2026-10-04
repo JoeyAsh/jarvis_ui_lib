@@ -4,6 +4,10 @@ import type { ContainerGeometry, ExpandedRect, ViewportSize } from './WindowMana
 import {
     MIN_EXPANDED_W,
     MIN_EXPANDED_H,
+    FLOATING_DEFAULT_W,
+    FLOATING_DEFAULT_H,
+    CASCADE_OFFSET,
+    CASCADE_STEPS,
     FALLBACK_VIEWPORT_W,
     FALLBACK_VIEWPORT_H,
 } from './constants';
@@ -70,6 +74,27 @@ export function defaultExpandedRect(slotRect: SlotRect, W: number, H: number): E
     const x = Math.floor(cx - w / 2);
     const y = Math.floor(cy - h / 2);
     return clampExpandedRect({ x, y, w, h }, W, H);
+}
+
+/**
+ * Default rect of the `index`-th floating window: centred in the workspace below the top bar and
+ * shifted by `CASCADE_OFFSET` per index, so new windows don't cover each other exactly.
+ */
+export function cascadeRect(index: number, W: number, H: number): ExpandedRect {
+    const w = Math.min(FLOATING_DEFAULT_W, W);
+    const h = Math.min(FLOATING_DEFAULT_H, H - TOP_BAR_HEIGHT);
+    const step = (index % CASCADE_STEPS) * CASCADE_OFFSET;
+    const x = Math.floor((W - w) / 2) + step;
+    const y = TOP_BAR_HEIGHT + Math.floor((H - TOP_BAR_HEIGHT - h) / 2) + step;
+    return clampExpandedRect({ x, y, w, h }, W, H);
+}
+
+/** Copy of `record` without `keys`; returns `record` itself when none of them is present. */
+export function withoutKeys<T>(record: Record<string, T>, keys: string[]): Record<string, T> {
+    if (!keys.some((k) => k in record)) return record;
+    const next = { ...record };
+    for (const k of keys) delete next[k];
+    return next;
 }
 
 /**

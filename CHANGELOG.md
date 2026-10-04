@@ -7,6 +7,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- `WindowManager`: floating windows for content created at runtime. `ManagedWindow.floating` opens a
+  window free-floating without a slot (no limit of nine), `defaultRect` sets its initial rect
+  (otherwise it opens centred and cascades), and `closable` plus the new `onClose` prop add a close
+  button and Escape-to-close. The window used last is drawn on top. A new floating window plays
+  `menu_open`.
+- `Window`: `closeOnEscape` and `stackIndex` props; closing now also plays `menu_close`.
+
 ## [0.4.1] - 2026-10-04
 
 ### Fixed
