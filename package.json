@@ -1,6 +1,6 @@
 {
     "name": "jarvis-react-ui",
-    "version": "0.4.1",
+    "version": "0.5.0",
     "type": "module",
     "description": "Sharp, dark HUD-style React component library: primitives, compositions, a window/slot-grid system and a CSS/Three.js orb, with built-in UI sound effects.",
     "scripts": {
