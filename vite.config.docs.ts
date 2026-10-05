@@ -6,7 +6,7 @@ import remarkGfm from 'remark-gfm';
 import { resolve } from 'node:path';
 import { demoSource } from './docs/plugins/demoSource.ts';
 import { rehypeCodeBlock } from './docs/plugins/rehypeCodeBlock.ts';
-import { spaFallback } from './docs/plugins/spaFallback.ts';
+import { staticPages } from './docs/plugins/staticPages.ts';
 import { searchIndex } from './docs/plugins/searchIndex.ts';
 import { llmsTxt } from './docs/plugins/llmsTxt.ts';
 
@@ -27,7 +27,7 @@ export default defineConfig({
         },
         tailwindcss(),
         react({ include: /\.(mdx|md|jsx|js|tsx|ts)$/ }),
-        spaFallback(),
+        staticPages(),
         llmsTxt(),
     ],
     resolve: {

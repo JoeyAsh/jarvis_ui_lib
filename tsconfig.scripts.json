@@ -21,6 +21,7 @@
         "docs/src/search.types.ts",
         "docs/src/nav.ts",
         "docs/src/nav.types.ts",
+        "docs/src/utils/pageTitle.ts",
         "vite.config.docs.ts"
     ]
 }

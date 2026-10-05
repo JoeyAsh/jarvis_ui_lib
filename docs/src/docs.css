@@ -40,3 +40,16 @@ h3[class] {
     color: inherit;
     border-bottom: 0;
 }
+
+/* Prerendered page content in the static HTML (for search engines and no-JS readers); the SPA
+   replaces it on mount. */
+.docs-prerender {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 16px;
+    overflow-wrap: anywhere;
+}
+
+.docs-prerender pre {
+    overflow-x: auto;
+}
