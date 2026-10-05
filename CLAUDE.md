@@ -73,7 +73,7 @@ docs/                   DOCUMENTATION SITE (not part of the package)
   src/demos/<slug>/     live demo files; their source is shown as example code
   src/nav.ts            sidebar entries (must match pages; checked by docs:check)
   src/components/       Demo, ApiTable, ComponentMeta, TokenTable, ... (docs glue only)
-  plugins/              Vite/MDX build plugins (shiki highlighting, ?highlight, 404 fallback)
+  plugins/              Vite/MDX build plugins (shiki highlighting, ?highlight, static pages + sitemap)
 scripts/                gen-api.ts, check-docs.ts (run with tsx; typed by tsconfig.scripts.json)
 ```
 

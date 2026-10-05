@@ -9,7 +9,7 @@ import { DOCS_URL, loadLlmsInput } from '../../scripts/llms/load.ts';
 const API_DIR = join(import.meta.dirname, '../generated/api');
 
 /** API data written by `npm run docs:api` (which docs:dev and build:docs run first). */
-function readApi(): ApiDoc[] {
+export function readApi(): ApiDoc[] {
     if (!existsSync(API_DIR)) return [];
     return readdirSync(API_DIR)
         .filter((f) => f.endsWith('.json') && f !== 'index.json')
